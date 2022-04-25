@@ -1,14 +1,14 @@
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useLayoutEffect, useRef } from 'react'
 
 type Props = {
     draw: (context: CanvasRenderingContext2D, frameCount: number) => void
 }
 
 export default function useCanvas({ draw }: Props) {
-    const canvasRef = useRef<HTMLCanvasElement>(null)
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
 
         const canvas = canvasRef.current as HTMLCanvasElement;
         const context = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -16,16 +16,16 @@ export default function useCanvas({ draw }: Props) {
         let animationFrameId: number;
 
         const render = () => {
-            frameCount++
-            draw(context, frameCount)
-            animationFrameId = window.requestAnimationFrame(render)
-        }
-        render()
+            frameCount++;
+            draw(context, frameCount);
+            animationFrameId = window.requestAnimationFrame(render);
+        };
+        render();
 
         return () => {
-            window.cancelAnimationFrame(animationFrameId)
+            window.cancelAnimationFrame(animationFrameId);
         }
-    }, [draw])
+    }, [draw]);
 
     return canvasRef
 }

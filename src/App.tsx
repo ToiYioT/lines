@@ -1,41 +1,108 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './css/app.css'
 import Canvas from './components/Canvas';
+import { Slider } from '@mantine/core';
 
-const [centerX, centerY] = [100, 100];
-const magnitude = 50;
-const angle = Math.PI / 1.5;
+const [centerX, centerY] = [400, 400];
+const spread = 250;
+// const angle = Math.PI / 1.5;
 
 function App() {
 
+  const [angle, setAngle] = useState(Math.PI);
+  const [angleFine, setAngleFine] = useState(0);
+  const [angleMicro, setAngleMicro] = useState(0);
+  const [numOfLines, setNumOfLines] = useState(100);
+
+  const [lengthChange, setLengthChange] = useState(0);
+  const [lengthChangeFrequency, setLengthChangeFrequency] = useState(1);
+  const [lengthChangeFrequencyMicro, setLengthChangeFrequencyMicro] = useState(0);
+
+  const totalAngle = angle + angleFine + angleMicro;
+  const lengthChangeFrequencyTotal = lengthChangeFrequency + lengthChangeFrequencyMicro;
 
   const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
 
-    const skew = 1 + Math.sin(frameCount * 0.01) * 0.03;
-
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-    ctx.strokeStyle = '#800000'
+    ctx.strokeStyle = '#80000080'
     ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < numOfLines; i++) {
 
-      const size = magnitude + 10 * Math.sin(i / 10);
+      const size = spread + lengthChange * Math.sin(i / lengthChangeFrequencyTotal);
 
       ctx.lineTo(
-        centerX + size * Math.cos(i * angle * skew),
-        centerY + size * Math.sin(i * angle * skew)
+        centerX + size * Math.cos(i * totalAngle),
+        centerY + size * Math.sin(i * totalAngle)
       );
     }
 
-    // ctx.fill();
     ctx.stroke();
   }
 
   return (
-    <Canvas
-      draw={draw}
-    ></Canvas>
+    <div className="app-container">
+      <Canvas
+        draw={draw}
+      ></Canvas>
+      <div className="sliders-container">
+        Angle
+        <Slider
+          min={-0.2}
+          max={6}
+          step={.01}
+          onChange={setAngle}
+        />
+
+        Angle Fine
+        <Slider
+          min={-.05}
+          max={.05}
+          defaultValue={0}
+          step={.0001}
+          onChange={setAngleFine}
+        />
+
+        Angle Micro
+        <Slider
+          min={-.001}
+          max={.001}
+          defaultValue={0}
+          step={.000001}
+          onChange={setAngleMicro}
+        />
+
+        Number of lines
+        <Slider
+          min={1}
+          max={4000}
+          onChange={setNumOfLines}
+        />
+
+        Line Length Change
+        <Slider
+          min={0}
+          max={150}
+          onChange={setLengthChange}
+        />
+
+        Line Length Change Frequency
+        <Slider
+          min={.9}
+          max={1.1}
+          step={.0001}
+          onChange={setLengthChangeFrequency}
+        />
+
+        Line Length Change Frequency Micro
+        <Slider
+          min={-0.001}
+          max={0.001}
+          step={.000001}
+          onChange={setLengthChangeFrequencyMicro}
+        />
+      </div>
+    </div>
   );
 }
 

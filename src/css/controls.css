@@ -1,0 +1,8 @@
+.controls-container {
+    flex-grow: 1;
+    padding: 1rem;
+}
+
+.control-group {
+    margin: 1rem 0rem;
+}

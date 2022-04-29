@@ -1,5 +1,5 @@
 import Canvas from './Canvas';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Slider } from '@mantine/core';
 
 type Props = {}
@@ -53,10 +53,13 @@ export default function Controls({ }: Props) {
                 centerY + size * Math.sin(angle)
             );
         }
-
         ctx.stroke();
     }
 
+    function resetAngleEnd(endValue: number) {
+        setAngle(prevValue => prevValue += endValue);
+        setAngleMicro(0);
+    }
 
     return (
         <>
@@ -88,9 +91,10 @@ export default function Controls({ }: Props) {
                     <Slider
                         min={-.001}
                         max={.001}
-                        defaultValue={0}
                         step={.000001}
+                        value={angleMicro}
                         onChange={setAngleMicro}
+                        onChangeEnd={resetAngleEnd}
                     />
 
                 </div>

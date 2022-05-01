@@ -9,3 +9,18 @@
     background-color: rgb(255, 205, 211);
     border-radius: 1rem;
 }
+
+.slider-name {}
+
+.slider-and-buttons-container {
+    display: flex;
+    align-items: center;
+}
+
+.slider-container {
+    flex-grow: 1;
+}
+
+.buttons-container {
+    margin-left: 1rem;
+}

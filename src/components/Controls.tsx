@@ -1,6 +1,8 @@
 import Canvas from './Canvas';
 import React, { useEffect, useState } from 'react'
 import { Slider } from '@mantine/core';
+import { Exchange } from 'tabler-icons-react';
+import SliderControl from './SliderControl';
 
 type Props = {}
 
@@ -13,10 +15,11 @@ export default function Controls({ }: Props) {
     const [angleFine, setAngleFine] = useState(0);
     const [angleMicro, setAngleMicro] = useState(0);
     const [numOfLines, setNumOfLines] = useState(100);
+    const [subLines, setSubLines] = useState(1);
+    const [subLinesFine, setSubLinesFine] = useState(0);
+    const [subLinesMicro, setSubLinesMicro] = useState(0);
 
     const [lengthChange, setLengthChange] = useState(200);
-    const [lengthChangeFrequency, setLengthChangeFrequency] = useState(1);
-    const [lengthChangeFrequencyMicro, setLengthChangeFrequencyMicro] = useState(0);
 
     const [sineFactor, setSineFactor] = useState(1);
     const [cosineFactor, setCosineFactor] = useState(1);
@@ -28,10 +31,11 @@ export default function Controls({ }: Props) {
     const [cosineFreqFine, setCosineFreqFine] = useState(0);
 
     const totalAngleInterval = angle + angleFine + angleMicro;
-    const lengthChangeFrequencyTotal = lengthChangeFrequency + lengthChangeFrequencyMicro;
 
     const sineFreqTotal = sineFreq + sineFreqFine;
     const cosineFreqTotal = cosineFreq + cosineFreqFine;
+
+    const lineIncrement = 1 / (subLines + subLinesFine + subLinesMicro);
 
     const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
 
@@ -39,9 +43,8 @@ export default function Controls({ }: Props) {
         ctx.strokeStyle = '#80000080'
         ctx.beginPath();
 
-        for (let i = 0; i < numOfLines; i++) {
+        for (let i = 0; i < numOfLines; i += lineIncrement) {
 
-            // const size = spread + lengthChange * Math.sin(i / lengthChangeFrequencyTotal);
             const size = lengthChange *
                 (sineFactor * Math.sin(sineFreqTotal * i) +
                     cosineFactor * Math.cos(cosineFreqTotal * i));
@@ -55,11 +58,6 @@ export default function Controls({ }: Props) {
         }
         ctx.stroke();
     }
-
-    // function resetAngleEnd(endValue: number) {
-    //     setAngle(prevValue => prevValue += endValue);
-    //     setAngleMicro(0);
-    // }
 
     function handleAdditiveControlEnd(
         endValue: number,
@@ -95,16 +93,40 @@ export default function Controls({ }: Props) {
                     onChange={setNumOfLines}
                 />
 
+                <div className="control-group">
+                    <SliderControl name={'Sub Lines'}
+                        min={0.1} max={10} step={0.01} value={subLines}
+                        onChange={setSubLines}
+                        resetValue={1}
+                    />
+
+                    Sub Lines Fine
+                    <Slider
+                        min={-0.01}
+                        max={0.01}
+                        value={subLinesFine}
+                        step={.0001}
+                        onChange={setSubLinesFine}
+                    />
+
+                    Sub Lines Micro
+                    <Slider
+                        min={-0.0001}
+                        max={0.0001}
+                        value={subLinesMicro}
+                        step={.000001}
+                        onChange={setSubLinesMicro}
+                    /></div>
+
 
                 <div className="control-group">
-                    Angle
-                    <Slider
-                        min={-0.2}
-                        max={6}
-                        step={.01}
-                        value={angle}
+
+                    <SliderControl name={'Angle'}
+                        min={-0.2} max={6.7} step={0.01} value={angle}
                         onChange={setAngle}
+                        resetValue={0}
                     />
+
                     Angle Fine
                     <Slider
                         min={-.05}
@@ -132,40 +154,18 @@ export default function Controls({ }: Props) {
                 </div>
 
 
-                {/* Line Length Change Frequency
-                <Slider
-                    min={.9}
-                    max={1.1}
-                    step={.0001}
-                    onChange={setLengthChangeFrequency}
-                />
-
-                Line Length Change Frequency Micro
-                <Slider
-                    min={-0.001}
-                    max={0.001}
-                    step={.000001}
-                    onChange={setLengthChangeFrequencyMicro}
-                /> */}
-
                 <div className="control-group">
 
-                    Sine Factor
-                    <Slider
-                        min={-1}
-                        max={1}
-                        value={sineFactor}
-                        step={.01}
+                    <SliderControl name={'Sine Factor'}
+                        min={-1} max={1} step={0.01} value={sineFactor}
                         onChange={setSineFactor}
+                        resetValue={0}
                     />
 
-                    Sine Freq
-                    <Slider
-                        min={-1}
-                        max={1}
-                        value={sineFreq}
-                        step={.01}
+                    <SliderControl name={'Sine Frequency'}
+                        min={-1} max={1} step={0.01} value={sineFreq}
                         onChange={setSineFreq}
+                        resetValue={0}
                     />
 
                     Sine Freq fine
@@ -183,24 +183,16 @@ export default function Controls({ }: Props) {
 
                 <div className="control-group">
 
-
-                    Cosine Factor
-                    <Slider
-                        min={-1}
-                        max={1}
-                        value={cosineFactor}
-                        step={.01}
+                    <SliderControl name={'Cosine Factor'}
+                        min={-1} max={1} step={0.01} value={cosineFactor}
                         onChange={setCosineFactor}
+                        resetValue={0}
                     />
 
-
-                    Cosine Freq
-                    <Slider
-                        min={-1}
-                        max={1}
-                        value={cosineFreq}
-                        step={.01}
+                    <SliderControl name={'Cosine Frequency'}
+                        min={-1} max={1} step={0.01} value={cosineFreq}
                         onChange={setCosineFreq}
+                        resetValue={0}
                     />
 
 

@@ -1,8 +1,8 @@
 import Canvas from './Canvas';
 import React, { useEffect, useState } from 'react'
 import { Slider } from '@mantine/core';
-import { Exchange } from 'tabler-icons-react';
 import SliderControl from './SliderControl';
+import useStateWithHistory, { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
 
 type Props = {}
 
@@ -11,31 +11,38 @@ const spread = 250;
 
 export default function Controls({ }: Props) {
 
-    const [angle, setAngle] = useState(2 * Math.PI / 100);
+    // const [angle, setAngle] = useState(2 * Math.PI / 100);
+    const angle = useStateWithHistory(0);
+
     const [angleFine, setAngleFine] = useState(0);
     const [angleMicro, setAngleMicro] = useState(0);
     const [numOfLines, setNumOfLines] = useState(100);
-    const [subLines, setSubLines] = useState(1);
+    // const [subLines, setSubLines] = useState(1);
+    const subLines = useStateWithHistory(1);
     const [subLinesFine, setSubLinesFine] = useState(0);
     const [subLinesMicro, setSubLinesMicro] = useState(0);
 
     const [lengthChange, setLengthChange] = useState(200);
 
-    const [sineFactor, setSineFactor] = useState(1);
-    const [cosineFactor, setCosineFactor] = useState(1);
+    // const [sineFactor, setSineFactor] = useState(1);
+    const sineFactor = useStateWithHistory(1);
+    // const [cosineFactor, setCosineFactor] = useState(1);
+    const cosineFactor = useStateWithHistory(1);
 
-    const [sineFreq, setSineFreq] = useState(0);
-    const [cosineFreq, setCosineFreq] = useState(0);
+    // const [sineFreq, setSineFreq] = useState(0);
+    const sineFreq = useStateWithHistory(0);
+    // const [cosineFreq, setCosineFreq] = useState(0);
+    const cosineFreq = useStateWithHistory(0);
 
     const [sineFreqFine, setSineFreqFine] = useState(0);
     const [cosineFreqFine, setCosineFreqFine] = useState(0);
 
-    const totalAngleInterval = angle + angleFine + angleMicro;
+    const totalAngleInterval = angle.value + angleFine + angleMicro;
 
-    const sineFreqTotal = sineFreq + sineFreqFine;
-    const cosineFreqTotal = cosineFreq + cosineFreqFine;
+    const sineFreqTotal = sineFreq.value + sineFreqFine;
+    const cosineFreqTotal = cosineFreq.value + cosineFreqFine;
 
-    const lineIncrement = 1 / (subLines + subLinesFine + subLinesMicro);
+    const lineIncrement = 1 / (subLines.value + subLinesFine + subLinesMicro);
 
     const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
 
@@ -46,8 +53,8 @@ export default function Controls({ }: Props) {
         for (let i = 0; i < numOfLines; i += lineIncrement) {
 
             const size = lengthChange *
-                (sineFactor * Math.sin(sineFreqTotal * i) +
-                    cosineFactor * Math.cos(cosineFreqTotal * i));
+                (sineFactor.value * Math.sin(sineFreqTotal * i) +
+                    cosineFactor.value * Math.cos(cosineFreqTotal * i));
 
             const angle = i * totalAngleInterval;
 
@@ -61,10 +68,17 @@ export default function Controls({ }: Props) {
 
     function handleAdditiveControlEnd(
         endValue: number,
-        accumulatorParameterFunction: (prevValue: (prev: number) => number) => void,
+        state: UseStateWithHistoryReturnType,
         resetParameterFunction: (resetValue: number) => void
     ) {
-        accumulatorParameterFunction((prevValue: number) => prevValue + endValue);
+        console.log("handle additive control end");
+
+        state.setValue((prevValue: number) => {
+            console.log("handle additive control end: inside callback");
+
+            state.setHistoryValue(prevValue);
+            return prevValue + endValue;
+        });
         resetParameterFunction(0);
 
     }
@@ -95,8 +109,8 @@ export default function Controls({ }: Props) {
 
                 <div className="control-group">
                     <SliderControl name={'Sub Lines'}
-                        min={0.1} max={10} step={0.01} value={subLines}
-                        onChange={setSubLines}
+                        min={0.1} max={10} step={0.01}
+                        state={subLines}
                         resetValue={1}
                     />
 
@@ -122,8 +136,8 @@ export default function Controls({ }: Props) {
                 <div className="control-group">
 
                     <SliderControl name={'Angle'}
-                        min={-0.2} max={6.7} step={0.01} value={angle}
-                        onChange={setAngle}
+                        min={-0.2} max={6.7} step={0.01}
+                        state={angle}
                         resetValue={0}
                     />
 
@@ -135,7 +149,7 @@ export default function Controls({ }: Props) {
                         step={.0001}
                         onChange={setAngleFine}
                         onChangeEnd={(endValue: number) => {
-                            handleAdditiveControlEnd(endValue, setAngle, setAngleFine);
+                            handleAdditiveControlEnd(endValue, angle, setAngleFine);
                         }}
                     />
 
@@ -147,7 +161,7 @@ export default function Controls({ }: Props) {
                         value={angleMicro}
                         onChange={setAngleMicro}
                         onChangeEnd={(endValue: number) => {
-                            handleAdditiveControlEnd(endValue, setAngle, setAngleMicro);
+                            handleAdditiveControlEnd(endValue, angle, setAngleMicro);
                         }}
                     />
 
@@ -157,14 +171,14 @@ export default function Controls({ }: Props) {
                 <div className="control-group">
 
                     <SliderControl name={'Sine Factor'}
-                        min={-1} max={1} step={0.01} value={sineFactor}
-                        onChange={setSineFactor}
+                        min={-1} max={1} step={0.01}
+                        state={sineFactor}
                         resetValue={0}
                     />
 
                     <SliderControl name={'Sine Frequency'}
-                        min={-1} max={1} step={0.01} value={sineFreq}
-                        onChange={setSineFreq}
+                        min={-1} max={1} step={0.01}
+                        state={sineFreq}
                         resetValue={0}
                     />
 
@@ -176,7 +190,7 @@ export default function Controls({ }: Props) {
                         step={.00001}
                         onChange={setSineFreqFine}
                         onChangeEnd={(endValue: number) => {
-                            handleAdditiveControlEnd(endValue, setSineFreq, setSineFreqFine);
+                            handleAdditiveControlEnd(endValue, sineFreq, setSineFreqFine);
                         }}
                     />
                 </div>
@@ -184,14 +198,14 @@ export default function Controls({ }: Props) {
                 <div className="control-group">
 
                     <SliderControl name={'Cosine Factor'}
-                        min={-1} max={1} step={0.01} value={cosineFactor}
-                        onChange={setCosineFactor}
+                        min={-1} max={1} step={0.01}
+                        state={cosineFactor}
                         resetValue={0}
                     />
 
                     <SliderControl name={'Cosine Frequency'}
-                        min={-1} max={1} step={0.01} value={cosineFreq}
-                        onChange={setCosineFreq}
+                        min={-1} max={1} step={0.01}
+                        state={cosineFreq}
                         resetValue={0}
                     />
 
@@ -204,7 +218,7 @@ export default function Controls({ }: Props) {
                         step={.00001}
                         onChange={setCosineFreqFine}
                         onChangeEnd={(endValue: number) => {
-                            handleAdditiveControlEnd(endValue, setCosineFreq, setCosineFreqFine);
+                            handleAdditiveControlEnd(endValue, cosineFreq, setCosineFreqFine);
                         }}
                     />
                 </div>

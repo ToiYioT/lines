@@ -2,6 +2,7 @@
 import { ActionIcon, Slider } from '@mantine/core';
 import { ArrowBackUp, Exchange } from 'tabler-icons-react';
 import React, { useRef } from 'react'
+import { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
 
 type Props = {
     name: string
@@ -9,42 +10,39 @@ type Props = {
     max: number
     step: number
 
-    value: number
-    onChange: (value: number) => void
+    state: UseStateWithHistoryReturnType
 
     resetValue?: number
 }
 
-export default function SliderControl({ name, min, max, step, value, onChange, resetValue }: Props) {
+export default function SliderControl({ name, min, max, step, state, resetValue }: Props) {
 
-    const historyValues = useRef<number[]>([]);
+    const { value, setValue, setHistoryValue, undoHistory } = state;
+
     const startValue = useRef<number>(value);
     const defaultValue = useRef<number>(value);
 
     const resetButton = resetValue != null;
 
     function undo() {
+        const lastValue = undoHistory();
+        startValue.current = lastValue;
+    }
 
-        const lastValue = historyValues.current.pop();
-        if (lastValue) {
-            onChange(lastValue);
-            startValue.current = lastValue;
-        } else {
-            onChange(defaultValue.current);
-            startValue.current = defaultValue.current;
-        }
+    function onChange(value: number) {
+        setValue(value);
     }
 
     function onChangeEnd(endValue: number) {
-        historyValues.current.push(startValue.current);
-        startValue.current = endValue;
 
+        setValue(endValue);
+        setHistoryValue(startValue.current);
+        startValue.current = endValue;
     }
 
     function reset() {
-        onChange(resetValue!);
-
-        historyValues.current.push(startValue.current);
+        setHistoryValue(startValue.current);
+        setValue(resetValue!);
         startValue.current = resetValue!;
     }
 
@@ -60,9 +58,9 @@ export default function SliderControl({ name, min, max, step, value, onChange, r
                         min={min}
                         max={max}
                         step={step}
+
                         value={value}
                         onChange={onChange}
-
                         onChangeEnd={onChangeEnd}
                     />
 

@@ -71,11 +71,8 @@ export default function Controls({ }: Props) {
         state: UseStateWithHistoryReturnType,
         resetParameterFunction: (resetValue: number) => void
     ) {
-        console.log("handle additive control end");
 
         state.setValue((prevValue: number) => {
-            console.log("handle additive control end: inside callback");
-
             state.setHistoryValue(prevValue);
             return prevValue + endValue;
         });
@@ -85,10 +82,11 @@ export default function Controls({ }: Props) {
 
     return (
         <>
-
-            <Canvas
-                draw={draw}
-            ></Canvas>
+            <div className="canvas-container">
+                <Canvas
+                    draw={draw}
+                ></Canvas>
+            </div>
 
             <div className="controls-container">
                 Size
@@ -106,32 +104,6 @@ export default function Controls({ }: Props) {
                     value={numOfLines}
                     onChange={setNumOfLines}
                 />
-
-                <div className="control-group">
-                    <SliderControl name={'Sub Lines'}
-                        min={0.1} max={10} step={0.01}
-                        state={subLines}
-                        resetValue={1}
-                    />
-
-                    Sub Lines Fine
-                    <Slider
-                        min={-0.01}
-                        max={0.01}
-                        value={subLinesFine}
-                        step={.0001}
-                        onChange={setSubLinesFine}
-                    />
-
-                    Sub Lines Micro
-                    <Slider
-                        min={-0.0001}
-                        max={0.0001}
-                        value={subLinesMicro}
-                        step={.000001}
-                        onChange={setSubLinesMicro}
-                    /></div>
-
 
                 <div className="control-group">
 
@@ -167,14 +139,47 @@ export default function Controls({ }: Props) {
 
                 </div>
 
+                <div className="control-group">
+                    <SliderControl name={'Sub Lines'}
+                        min={0.1} max={10} step={0.01}
+                        state={subLines}
+                        resetValue={1}
+                    />
+
+                    Sub Lines Fine
+                    <Slider
+                        min={-0.01}
+                        max={0.01}
+                        value={subLinesFine}
+                        step={.0001}
+                        onChange={setSubLinesFine}
+                        onChangeEnd={(endValue: number) => {
+                            handleAdditiveControlEnd(endValue, subLines, setSubLinesFine);
+                        }}
+                    />
+
+                    Sub Lines Micro
+                    <Slider
+                        min={-0.0001}
+                        max={0.0001}
+                        value={subLinesMicro}
+                        step={.000001}
+                        onChange={setSubLinesMicro}
+                        onChangeEnd={(endValue: number) => {
+                            handleAdditiveControlEnd(endValue, subLines, setSubLinesMicro);
+                        }}
+                    /></div>
+
+
+
+                <SliderControl name={'Sine Factor'}
+                    min={-1} max={1} step={0.01}
+                    state={sineFactor}
+                    resetValue={0}
+                />
 
                 <div className="control-group">
 
-                    <SliderControl name={'Sine Factor'}
-                        min={-1} max={1} step={0.01}
-                        state={sineFactor}
-                        resetValue={0}
-                    />
 
                     <SliderControl name={'Sine Frequency'}
                         min={-1} max={1} step={0.01}
@@ -195,13 +200,13 @@ export default function Controls({ }: Props) {
                     />
                 </div>
 
-                <div className="control-group">
+                <SliderControl name={'Cosine Factor'}
+                    min={-1} max={1} step={0.01}
+                    state={cosineFactor}
+                    resetValue={0}
+                />
 
-                    <SliderControl name={'Cosine Factor'}
-                        min={-1} max={1} step={0.01}
-                        state={cosineFactor}
-                        resetValue={0}
-                    />
+                <div className="control-group">
 
                     <SliderControl name={'Cosine Frequency'}
                         min={-1} max={1} step={0.01}

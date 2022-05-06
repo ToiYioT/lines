@@ -11,37 +11,32 @@ const spread = 250;
 
 export default function Controls({ }: Props) {
 
-    // const [angle, setAngle] = useState(2 * Math.PI / 100);
     const angle = useStateWithHistory(0);
-
     const [angleFine, setAngleFine] = useState(0);
     const [angleMicro, setAngleMicro] = useState(0);
+
     const [numOfLines, setNumOfLines] = useState(100);
-    // const [subLines, setSubLines] = useState(1);
+
     const subLines = useStateWithHistory(1);
     const [subLinesFine, setSubLinesFine] = useState(0);
     const [subLinesMicro, setSubLinesMicro] = useState(0);
 
     const [lengthChange, setLengthChange] = useState(200);
 
-    // const [sineFactor, setSineFactor] = useState(1);
     const sineFactor = useStateWithHistory(1);
-    // const [cosineFactor, setCosineFactor] = useState(1);
     const cosineFactor = useStateWithHistory(1);
 
-    // const [sineFreq, setSineFreq] = useState(0);
     const sineFreq = useStateWithHistory(0);
-    // const [cosineFreq, setCosineFreq] = useState(0);
     const cosineFreq = useStateWithHistory(0);
 
     const [sineFreqFine, setSineFreqFine] = useState(0);
     const [cosineFreqFine, setCosineFreqFine] = useState(0);
 
-    const totalAngleInterval = angle.value + angleFine + angleMicro;
 
+
+    const totalAngleInterval = angle.value + angleFine + angleMicro;
     const sineFreqTotal = sineFreq.value + sineFreqFine;
     const cosineFreqTotal = cosineFreq.value + cosineFreqFine;
-
     const lineIncrement = 1 / (subLines.value + subLinesFine + subLinesMicro);
 
     const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
@@ -81,7 +76,7 @@ export default function Controls({ }: Props) {
     }
 
     return (
-        <>
+        <div className="canvas-and-controls-container">
             <div className="canvas-container">
                 <Canvas
                     draw={draw}
@@ -228,6 +223,6 @@ export default function Controls({ }: Props) {
                     />
                 </div>
             </div>
-        </>
+        </div>
     )
 }

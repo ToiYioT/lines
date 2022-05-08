@@ -9,8 +9,11 @@ type Props = {}
 export default function Gallery({ }: Props) {
 
     const [opened, setOpened] = useState(false);
-    const { lineworkItems,
-        addNewLinework, removeLinework } = useLineworksData();
+    const {
+        lineworkItems,
+        addNewLinework,
+        removeLinework,
+        setSelectedLinework } = useLineworksData();
 
     return (
         <>
@@ -30,6 +33,10 @@ export default function Gallery({ }: Props) {
                                 return (
                                     <GalleryTile
                                         removeLinework={() => removeLinework(item.id)}
+                                        setSelected={() => {
+                                            setSelectedLinework(item.id)
+                                            setOpened(false);
+                                        }}
                                     />
                                 )
                             })

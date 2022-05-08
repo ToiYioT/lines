@@ -3,6 +3,7 @@ import './css/app.css'
 import Controls from './components/Controls';
 import Gallery from './components/Gallery';
 import { LineworksProvider } from './contexts/LineworksContext';
+import { Button } from '@mantine/core';
 
 
 function App() {

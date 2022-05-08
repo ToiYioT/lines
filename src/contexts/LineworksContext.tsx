@@ -11,6 +11,7 @@ export type LineworksContext = {
     getSelectedLinework: () => Linework
     addNewLinework: () => void
     removeLinework: (id: string) => void
+    saveLinework: (linework: Linework) => void
 }
 
 
@@ -35,7 +36,8 @@ export function LineworksProvider({ children }: Props) {
     }
 
     function getSelectedLinework() {
-        return lineworkItems.find((item: LineworkItem) => item.id === selectedLineworkId);
+        return lineworkItems.find(
+            (item: LineworkItem) => item.id === selectedLineworkId).linework;
     }
 
     function addNewLinework() {
@@ -50,6 +52,17 @@ export function LineworksProvider({ children }: Props) {
         })
     }
 
+    function saveLinework(linework: Linework) {
+        setLineworkItems((prevItems: LineworkItem[]) => {
+            return prevItems.map(item => {
+                if (item.id === selectedLineworkId) return {
+                    id: item.id, linework: linework
+                };
+                else return item;
+            });
+        });
+    }
+
 
     return (
         <LineworksContext.Provider
@@ -59,7 +72,8 @@ export function LineworksProvider({ children }: Props) {
                 getSelectedLinework,
                 setSelectedLinework,
                 addNewLinework,
-                removeLinework
+                removeLinework,
+                saveLinework
             }}
         >
             {children}
@@ -72,7 +86,7 @@ export function LineworksProvider({ children }: Props) {
 ///// DATA ///////
 //////////////////
 
-type Linework = {
+export type Linework = {
     size: number
     numOfLines: number
     angle: number

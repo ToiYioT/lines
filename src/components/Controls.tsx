@@ -1,15 +1,30 @@
 import Canvas from './Canvas';
 import React, { useEffect, useState } from 'react'
-import { Slider } from '@mantine/core';
+import { Button, Slider } from '@mantine/core';
 import SliderControl from './SliderControl';
 import useStateWithHistory, { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
+import useLineworksData, { Linework } from '../contexts/LineworksContext';
 
 type Props = {}
 
 const [centerX, centerY] = [400, 400];
-const spread = 250;
 
 export default function Controls({ }: Props) {
+
+    const { getSelectedLinework, saveLinework } = useLineworksData();
+    const linework = getSelectedLinework();
+
+    useEffect(() => {
+        angle.setValue(linework.angle);
+        subLines.setValue(linework.subLines);
+        sineFactor.setValue(linework.sineFactor);
+        cosineFactor.setValue(linework.cosineFactor);
+        sineFreq.setValue(linework.sineFreq);
+        cosineFreq.setValue(linework.cosineFreq);
+
+        setNumOfLines(linework.numOfLines);
+        setLengthChange(linework.size);
+    }, [linework])
 
     const angle = useStateWithHistory(0);
     const [angleFine, setAngleFine] = useState(0);
@@ -38,6 +53,20 @@ export default function Controls({ }: Props) {
     const sineFreqTotal = sineFreq.value + sineFreqFine;
     const cosineFreqTotal = cosineFreq.value + cosineFreqFine;
     const lineIncrement = 1 / (subLines.value + subLinesFine + subLinesMicro);
+
+    function handleSave() {
+        const newLinework: Linework = {
+            size: lengthChange,
+            numOfLines,
+            angle: angle.value,
+            subLines: subLines.value,
+            sineFactor: sineFactor.value,
+            sineFreq: sineFreq.value,
+            cosineFactor: cosineFactor.value,
+            cosineFreq: cosineFreq.value
+        }
+        saveLinework(newLinework);
+    }
 
     const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
 
@@ -222,6 +251,9 @@ export default function Controls({ }: Props) {
                         }}
                     />
                 </div>
+                <Button
+                    onClick={handleSave}
+                >Save</Button>
             </div>
         </div>
     )

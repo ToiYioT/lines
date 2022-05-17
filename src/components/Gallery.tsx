@@ -37,7 +37,7 @@ export default function Gallery({ }: Props) {
                                             setSelectedLinework(item.id)
                                             setOpened(false);
                                         }}
-                                        lineWork={item.linework}
+                                        linework={item.linework}
                                     />
                                 )
                             })

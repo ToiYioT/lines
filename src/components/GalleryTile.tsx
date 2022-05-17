@@ -5,23 +5,27 @@ import { Linework } from '../contexts/LineworksContext'
 type Props = {
     removeLinework: () => void
     setSelected: () => void
-    lineWork: Linework
+    linework: Linework
 }
 
 export default function GalleryTile({
-    removeLinework, setSelected, lineWork }: Props) {
+    removeLinework, setSelected, linework }: Props) {
 
     return (
         <div className="gallery-item"
             onClick={setSelected}
+            style={{ backgroundColor: linework.bgColor }}
         >
             <Button
                 onClick={() => removeLinework()}
                 color="red"
             >X</Button>
 
-            <div className="gallery-item-name">
-                {lineWork.name}
+            <div
+                className="gallery-item-name"
+                style={{ color: linework.lineColor }}
+            >
+                {linework.name}
             </div>
         </div>
     )

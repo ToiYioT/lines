@@ -87,6 +87,7 @@ export function LineworksProvider({ children }: Props) {
 //////////////////
 
 export type Linework = {
+    name: string
     bgColor: string
     lineColor: string
 
@@ -108,6 +109,7 @@ type LineworkItem = {
 function getNewLinework() {
 
     const newLinework: Linework = {
+        name: "New Linework",
         bgColor: "#ffffffff",
         lineColor: "#0000007f",
 

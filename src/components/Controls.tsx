@@ -1,6 +1,6 @@
 import Canvas from './Canvas';
 import React, { useEffect, useState } from 'react'
-import { Button, ColorInput, Slider } from '@mantine/core';
+import { Button, ColorInput, Slider, TextInput } from '@mantine/core';
 import SliderControl from './SliderControl';
 import useStateWithHistory, { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
 import useLineworksData, { Linework } from '../contexts/LineworksContext';
@@ -27,7 +27,10 @@ export default function Controls({ }: Props) {
 
         setBgColor(linework.bgColor);
         setLineColor(linework.lineColor);
+        setName(linework.name);
     }, [linework])
+
+    const [name, setName] = useState('New Linework');
 
     const angle = useStateWithHistory(0);
     const [angleFine, setAngleFine] = useState(0);
@@ -61,6 +64,7 @@ export default function Controls({ }: Props) {
 
     function handleSave() {
         const newLinework: Linework = {
+            name,
             bgColor,
             lineColor,
 
@@ -125,6 +129,12 @@ export default function Controls({ }: Props) {
             </div>
 
             <div className="controls-container">
+
+                <TextInput
+                    value={name}
+                    onChange={(event) => setName(event.currentTarget.value)}
+                    placeholder="Linework Name"
+                />
 
                 <div className="color-controls-container">
                     <div className="color-control-container">

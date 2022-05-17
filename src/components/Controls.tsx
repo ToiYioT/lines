@@ -1,6 +1,6 @@
 import Canvas from './Canvas';
 import React, { useEffect, useState } from 'react'
-import { Button, Slider } from '@mantine/core';
+import { Button, ColorInput, Slider } from '@mantine/core';
 import SliderControl from './SliderControl';
 import useStateWithHistory, { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
 import useLineworksData, { Linework } from '../contexts/LineworksContext';
@@ -24,6 +24,9 @@ export default function Controls({ }: Props) {
 
         setNumOfLines(linework.numOfLines);
         setLengthChange(linework.size);
+
+        setBgColor(linework.bgColor);
+        setLineColor(linework.lineColor);
     }, [linework])
 
     const angle = useStateWithHistory(0);
@@ -47,6 +50,8 @@ export default function Controls({ }: Props) {
     const [sineFreqFine, setSineFreqFine] = useState(0);
     const [cosineFreqFine, setCosineFreqFine] = useState(0);
 
+    const [bgColor, setBgColor] = useState('#ffffffff');
+    const [lineColor, setLineColor] = useState('#0000007f');
 
 
     const totalAngleInterval = angle.value + angleFine + angleMicro;
@@ -56,6 +61,9 @@ export default function Controls({ }: Props) {
 
     function handleSave() {
         const newLinework: Linework = {
+            bgColor,
+            lineColor,
+
             size: lengthChange,
             numOfLines,
             angle: angle.value,
@@ -71,7 +79,11 @@ export default function Controls({ }: Props) {
     const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
 
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-        ctx.strokeStyle = '#80000080'
+
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+        ctx.strokeStyle = lineColor;
         ctx.beginPath();
 
         for (let i = 0; i < numOfLines; i += lineIncrement) {
@@ -113,6 +125,26 @@ export default function Controls({ }: Props) {
             </div>
 
             <div className="controls-container">
+
+                <div className="color-controls-container">
+                    <div className="color-control-container">
+                        Background Color
+                        <ColorInput
+                            value={bgColor}
+                            onChange={setBgColor}
+                            format="rgba"
+                        />
+                    </div>
+
+                    <div className="color-control container">
+                        Line Color
+                        <ColorInput
+                            value={lineColor}
+                            onChange={setLineColor}
+                            format="rgba"
+                        />
+                    </div>
+                </div>
                 Size
                 <Slider
                     min={0}
@@ -251,6 +283,7 @@ export default function Controls({ }: Props) {
                         }}
                     />
                 </div>
+
                 <Button
                     onClick={handleSave}
                 >Save</Button>

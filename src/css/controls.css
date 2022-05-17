@@ -10,8 +10,6 @@
     border-radius: 1rem;
 }
 
-.slider-name {}
-
 .slider-and-buttons-container {
     display: flex;
     align-items: center;
@@ -25,4 +23,10 @@
 
 .slider-container {
     flex-grow: 1;
+}
+
+.color-controls-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }

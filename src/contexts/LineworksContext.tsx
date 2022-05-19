@@ -9,7 +9,8 @@ export type LineworksContext = {
 
     setSelectedLinework: (id: string) => void
     getSelectedLinework: () => Linework
-    addNewLinework: () => void
+    addNewLinework: () => string
+    addLinework: (linework: Linework) => string
     removeLinework: (id: string) => void
     saveLinework: (linework: Linework) => void
 }
@@ -41,9 +42,21 @@ export function LineworksProvider({ children }: Props) {
     }
 
     function addNewLinework() {
+        const newLinework = getNewLinework();
         setLineworkItems((prevItems: LineworkItem[]) => {
-            return [...prevItems, getNewLinework()];
+            return [...prevItems, newLinework];
         })
+        return newLinework.id;
+    }
+
+    function addLinework(linework: Linework) {
+
+        const newLineworkItem: LineworkItem = { id: uuidv4(), linework };
+
+        setLineworkItems((prevItems: LineworkItem[]) => {
+            return [...prevItems, newLineworkItem];
+        })
+        return newLineworkItem.id;
     }
 
     function removeLinework(id: string) {
@@ -76,6 +89,7 @@ export function LineworksProvider({ children }: Props) {
                 getSelectedLinework,
                 setSelectedLinework,
                 addNewLinework,
+                addLinework,
                 removeLinework,
                 saveLinework
             }}

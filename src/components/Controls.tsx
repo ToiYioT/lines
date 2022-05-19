@@ -11,7 +11,10 @@ const [centerX, centerY] = [400, 400];
 
 export default function Controls({ }: Props) {
 
-    const { getSelectedLinework, saveLinework } = useLineworksData();
+    const { getSelectedLinework,
+        saveLinework,
+        addLinework,
+        setSelectedLinework } = useLineworksData();
     const linework = getSelectedLinework();
 
     useEffect(() => {
@@ -62,8 +65,10 @@ export default function Controls({ }: Props) {
     const cosineFreqTotal = cosineFreq.value + cosineFreqFine;
     const lineIncrement = 1 / (subLines.value + subLinesFine + subLinesMicro);
 
-    function handleSave() {
-        const newLinework: Linework = {
+
+    function paramsToLinework(): Linework {
+
+        const linework: Linework = {
             name,
             bgColor,
             lineColor,
@@ -77,7 +82,16 @@ export default function Controls({ }: Props) {
             cosineFactor: cosineFactor.value,
             cosineFreq: cosineFreq.value
         }
+        return linework;
+    }
+
+    function handleSave() {
+        const newLinework = paramsToLinework();
         saveLinework(newLinework);
+    }
+
+    function handleSaveAsNew() {
+        setSelectedLinework(addLinework(paramsToLinework()));
     }
 
     const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
@@ -294,9 +308,14 @@ export default function Controls({ }: Props) {
                     />
                 </div>
 
-                <Button
+                <Button className='controls-button'
                     onClick={handleSave}
                 >Save</Button>
+
+                <Button className='controls-button'
+                    color='teal'
+                    onClick={handleSaveAsNew}
+                >Save As New</Button>
             </div>
         </div>
     )

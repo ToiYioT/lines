@@ -13,9 +13,10 @@ type Props = {
     state: UseStateWithHistoryReturnType
 
     resetValue?: number
+    color: string
 }
 
-export default function SliderControl({ name, min, max, step, state, resetValue }: Props) {
+export default function SliderControl({ name, min, max, step, state, resetValue, color }: Props) {
 
     const { value, setValue, setHistoryValue, undoHistory } = state;
 
@@ -62,6 +63,8 @@ export default function SliderControl({ name, min, max, step, state, resetValue 
                         value={value}
                         onChange={onChange}
                         onChangeEnd={onChangeEnd}
+
+                        color={color}
                     />
 
                 </div>

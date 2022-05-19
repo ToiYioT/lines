@@ -11,6 +11,8 @@ const [centerX, centerY] = [400, 400];
 
 export default function Controls({ }: Props) {
 
+    const sliderColor = "gray";
+
     const { getSelectedLinework,
         saveLinework,
         addLinework,
@@ -135,7 +137,7 @@ export default function Controls({ }: Props) {
     }
 
     return (
-        <div className="canvas-and-controls-container">
+        <div className="canvas-and-controls-container" >
             <div className="canvas-container">
                 <Canvas
                     draw={draw}
@@ -175,6 +177,7 @@ export default function Controls({ }: Props) {
                     max={500}
                     value={lengthChange}
                     onChange={setLengthChange}
+                    color={sliderColor}
                 />
 
                 Number of lines
@@ -183,6 +186,7 @@ export default function Controls({ }: Props) {
                     max={14000}
                     value={numOfLines}
                     onChange={setNumOfLines}
+                    color={sliderColor}
                 />
 
                 <div className="control-group">
@@ -191,6 +195,7 @@ export default function Controls({ }: Props) {
                         min={-0.2} max={6.7} step={0.01}
                         state={angle}
                         resetValue={0}
+                        color={sliderColor}
                     />
 
                     Angle Fine
@@ -203,6 +208,7 @@ export default function Controls({ }: Props) {
                         onChangeEnd={(endValue: number) => {
                             handleAdditiveControlEnd(endValue, angle, setAngleFine);
                         }}
+                        color={sliderColor}
                     />
 
                     Angle Micro
@@ -215,6 +221,7 @@ export default function Controls({ }: Props) {
                         onChangeEnd={(endValue: number) => {
                             handleAdditiveControlEnd(endValue, angle, setAngleMicro);
                         }}
+                        color={sliderColor}
                     />
 
                 </div>
@@ -224,6 +231,7 @@ export default function Controls({ }: Props) {
                         min={0.1} max={10} step={0.01}
                         state={subLines}
                         resetValue={1}
+                        color={sliderColor}
                     />
 
                     Sub Lines Fine
@@ -236,6 +244,7 @@ export default function Controls({ }: Props) {
                         onChangeEnd={(endValue: number) => {
                             handleAdditiveControlEnd(endValue, subLines, setSubLinesFine);
                         }}
+                        color={sliderColor}
                     />
 
                     Sub Lines Micro
@@ -248,6 +257,7 @@ export default function Controls({ }: Props) {
                         onChangeEnd={(endValue: number) => {
                             handleAdditiveControlEnd(endValue, subLines, setSubLinesMicro);
                         }}
+                        color={sliderColor}
                     /></div>
 
 
@@ -256,6 +266,7 @@ export default function Controls({ }: Props) {
                     min={-1} max={1} step={0.01}
                     state={sineFactor}
                     resetValue={0}
+                    color={sliderColor}
                 />
 
                 <div className="control-group">
@@ -265,6 +276,7 @@ export default function Controls({ }: Props) {
                         min={-1} max={1} step={0.01}
                         state={sineFreq}
                         resetValue={0}
+                        color={sliderColor}
                     />
 
                     Sine Freq fine
@@ -277,6 +289,7 @@ export default function Controls({ }: Props) {
                         onChangeEnd={(endValue: number) => {
                             handleAdditiveControlEnd(endValue, sineFreq, setSineFreqFine);
                         }}
+                        color={sliderColor}
                     />
                 </div>
 
@@ -284,6 +297,7 @@ export default function Controls({ }: Props) {
                     min={-1} max={1} step={0.01}
                     state={cosineFactor}
                     resetValue={0}
+                    color={sliderColor}
                 />
 
                 <div className="control-group">
@@ -292,6 +306,7 @@ export default function Controls({ }: Props) {
                         min={-1} max={1} step={0.01}
                         state={cosineFreq}
                         resetValue={0}
+                        color={sliderColor}
                     />
 
 
@@ -305,6 +320,7 @@ export default function Controls({ }: Props) {
                         onChangeEnd={(endValue: number) => {
                             handleAdditiveControlEnd(endValue, cosineFreq, setCosineFreqFine);
                         }}
+                        color={sliderColor}
                     />
                 </div>
 

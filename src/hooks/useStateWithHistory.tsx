@@ -5,6 +5,7 @@ export type UseStateWithHistoryReturnType = {
     setValue: (prevValue: ((prev: number) => number) | number) => void,
     setHistoryValue: (value: number) => void,
     undoHistory: () => number,
+    initValue: (value: number) => void,
 };
 
 
@@ -23,6 +24,12 @@ export default function useStateWithHistory(defaultValue: number): UseStateWithH
         }
     }
 
+    function initValue(newValue: number) {
+        originalValue.current = newValue;
+        historyValues.current = [originalValue.current];
+        setValue(newValue);
+    }
+
     function undoHistory() {
 
         const lastValue = historyValues.current.pop();
@@ -31,5 +38,5 @@ export default function useStateWithHistory(defaultValue: number): UseStateWithH
         return valueToSet;
     }
 
-    return { value, setValue, setHistoryValue, undoHistory };
+    return { value, setValue, setHistoryValue, undoHistory, initValue };
 }

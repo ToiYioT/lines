@@ -20,12 +20,13 @@ export default function Controls({ }: Props) {
     const linework = getSelectedLinework();
 
     useEffect(() => {
-        angle.setValue(linework.angle);
-        subLines.setValue(linework.subLines);
-        sineFactor.setValue(linework.sineFactor);
-        cosineFactor.setValue(linework.cosineFactor);
-        sineFreq.setValue(linework.sineFreq);
-        cosineFreq.setValue(linework.cosineFreq);
+
+        angle.initValue(linework.angle);
+        subLines.initValue(linework.subLines);
+        sineFactor.initValue(linework.sineFactor);
+        cosineFactor.initValue(linework.cosineFactor);
+        sineFreq.initValue(linework.sineFreq);
+        cosineFreq.initValue(linework.cosineFreq);
 
         setNumOfLines(linework.numOfLines);
         setLengthChange(linework.size);

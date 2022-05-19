@@ -3,7 +3,7 @@ import { Button } from '@mantine/core'
 import { Linework } from '../contexts/LineworksContext'
 
 type Props = {
-    removeLinework: () => void
+    removeLinework: (event: React.MouseEvent) => void
     setSelected: () => void
     linework: Linework
 }
@@ -17,7 +17,7 @@ export default function GalleryTile({
             style={{ backgroundColor: linework.bgColor }}
         >
             <Button
-                onClick={() => removeLinework()}
+                onClick={(e: React.MouseEvent) => removeLinework(e)}
                 color="red"
             >X</Button>
 

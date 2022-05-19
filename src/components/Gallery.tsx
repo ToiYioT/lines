@@ -27,21 +27,23 @@ export default function Gallery({ }: Props) {
                 size="55%"
             >
                 <div className="gallery-view">
-                    <div className="gallery-grid">
-                        {
-                            lineworkItems.map(item => {
-                                return (
-                                    <GalleryTile
-                                        removeLinework={() => removeLinework(item.id)}
-                                        setSelected={() => {
-                                            setSelectedLinework(item.id)
-                                            setOpened(false);
-                                        }}
-                                        linework={item.linework}
-                                    />
-                                )
-                            })
-                        }
+                    <div className="gallery-grid"> {
+                        lineworkItems.map(item => {
+                            return (
+                                <GalleryTile
+                                    removeLinework={(e: React.MouseEvent) => {
+                                        removeLinework(item.id)
+                                        e.stopPropagation();
+                                    }}
+                                    setSelected={() => {
+                                        setSelectedLinework(item.id)
+                                        setOpened(false);
+                                    }}
+                                    linework={item.linework}
+                                />
+                            )
+                        })
+                    }
                     </div>
 
                     <Button onClick={addNewLinework}

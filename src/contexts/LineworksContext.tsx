@@ -50,6 +50,10 @@ export function LineworksProvider({ children }: Props) {
         setLineworkItems((prevItems: LineworkItem[]) => {
             return prevItems.filter(item => item.id !== id);
         })
+
+        if (id == selectedLineworkId) {
+            setSelectedLinework(lineworkItems[0].id);
+        }
     }
 
     function saveLinework(linework: Linework) {

@@ -13,6 +13,8 @@
     height: 200px;
     border: 1px solid black;
     border-radius: 4px;
+
+    position: relative;
 }
 
 .gallery-item-name {
@@ -24,4 +26,10 @@
 
     color: rgb(87, 87, 87);
     background-color: rgba(0, 0, 0, 0);
+}
+
+.canvas-thumbnail {
+    position: absolute;
+    top: 0;
+    z-index: -1;
 }

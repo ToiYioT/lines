@@ -18,7 +18,8 @@ export default function useCanvas({ draw }: Props) {
         const render = () => {
             frameCount++;
             draw(context, frameCount);
-            animationFrameId = window.requestAnimationFrame(render);
+            // comment to cancel animation:
+            // animationFrameId = window.requestAnimationFrame(render);
         };
         render();
 

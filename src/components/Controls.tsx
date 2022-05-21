@@ -142,6 +142,7 @@ export default function Controls({ }: Props) {
             <div className="canvas-container">
                 <Canvas
                     draw={draw}
+                    dimensions={{ width: 800, height: 800 }}
                 ></Canvas>
             </div>
 

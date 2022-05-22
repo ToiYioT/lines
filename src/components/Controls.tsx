@@ -16,25 +16,31 @@ export default function Controls({ }: Props) {
     const { getSelectedLinework,
         saveLinework,
         addLinework,
-        setSelectedLinework } = useLineworksData();
-    const linework = getSelectedLinework();
+        setSelectedLinework,
+        setInitLinework } = useLineworksData();
 
     useEffect(() => {
 
-        angle.initValue(linework.angle);
-        subLines.initValue(linework.subLines);
-        sineFactor.initValue(linework.sineFactor);
-        cosineFactor.initValue(linework.cosineFactor);
-        sineFreq.initValue(linework.sineFreq);
-        cosineFreq.initValue(linework.cosineFreq);
+        const initLineworkFunc = (linework: Linework) => {
 
-        setNumOfLines(linework.numOfLines);
-        setLengthChange(linework.size);
+            angle.initValue(linework.angle);
+            subLines.initValue(linework.subLines);
+            sineFactor.initValue(linework.sineFactor);
+            cosineFactor.initValue(linework.cosineFactor);
+            sineFreq.initValue(linework.sineFreq);
+            cosineFreq.initValue(linework.cosineFreq);
 
-        setBgColor(linework.bgColor);
-        setLineColor(linework.lineColor);
-        setName(linework.name);
-    }, [linework])
+            setNumOfLines(linework.numOfLines);
+            setLengthChange(linework.size);
+
+            setBgColor(linework.bgColor);
+            setLineColor(linework.lineColor);
+            setName(linework.name);
+        };
+
+        setInitLinework(initLineworkFunc);
+        initLineworkFunc(getSelectedLinework());
+    }, [])
 
     const [name, setName] = useState('New Linework');
 

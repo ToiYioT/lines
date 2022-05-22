@@ -1,5 +1,5 @@
 
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, { createContext, ReactNode, useContext, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 import useLocalStorage from '../hooks/useLocalStorage';
 
@@ -13,6 +13,8 @@ export type LineworksContext = {
     addLinework: (linework: Linework) => string
     removeLinework: (id: string) => void
     saveLinework: (linework: Linework) => void
+
+    setInitLinework: (initFunc: (linework: Linework) => void) => void
 }
 
 
@@ -32,8 +34,15 @@ export function LineworksProvider({ children }: Props) {
         "linework-items", [getNewLinework()]);
     const [selectedLineworkId, setSelectedLineworkId] = useState<string>(lineworkItems[0].id);
 
+    const initLineworkFunc = useRef<(linework: Linework) => void>();
+
     function setSelectedLinework(id: string) {
         setSelectedLineworkId(id);
+
+        const newlySelectedLinework = lineworkItems.find(
+            (item: LineworkItem) => item.id === id).linework;
+
+        initLineworkFunc.current!(newlySelectedLinework);
     }
 
     function getSelectedLinework() {
@@ -80,6 +89,10 @@ export function LineworksProvider({ children }: Props) {
         });
     }
 
+    function setInitLinework(initFunc: (linework: Linework) => void) {
+        initLineworkFunc.current = initFunc;
+    }
+
 
     return (
         <LineworksContext.Provider
@@ -91,7 +104,9 @@ export function LineworksProvider({ children }: Props) {
                 addNewLinework,
                 addLinework,
                 removeLinework,
-                saveLinework
+                saveLinework,
+
+                setInitLinework,
             }}
         >
             {children}

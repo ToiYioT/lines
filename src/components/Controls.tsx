@@ -44,6 +44,7 @@ export default function Controls({ }: Props) {
             setBgColor(linework.bgColor);
             setLineColor(linework.lineColor);
             setName(linework.name);
+
         };
 
         setInitLinework(initLineworkFunc);
@@ -111,20 +112,20 @@ export default function Controls({ }: Props) {
         setSelectedLinework(addLinework(paramsToLinework()));
     }
 
-    function randomize() {
+    function randomizeControls() {
 
-        // angle.setValue();
-        // subLines.setValue();
-        // sineFactor.setValue();
-        // cosineFactor.setValue();
-        // sineFreq.setValue();
-        // cosineFreq.setValue();
+        angle.setValue(getRandomBetween(angleMin, angleMax));
+        subLines.setValue(getRandomBetween(subLinesMin, subLinesMax));
+        sineFactor.setValue(getRandomBetween(sineFactorMin, sineFactorMax));
+        cosineFactor.setValue(getRandomBetween(cosineFactorMin, cosineFactorMax));
+        sineFreq.setValue(getRandomBetween(sineFreqMin, sineFreqMax));
+        cosineFreq.setValue(getRandomBetween(cosineFreqMin, cosineFreqMax));
 
-        // setNumOfLines();
-        // setLengthChange();
+        setNumOfLines(getRandomBetween(100, 1000));
+        setLengthChange(400);
 
-        // setBgColor();
-        // setLineColor();
+        setBgColor(getRandomColor());
+        setLineColor(getRandomColor());
     }
 
     const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
@@ -189,6 +190,7 @@ export default function Controls({ }: Props) {
                         Background Color
                         <ColorInput
                             value={bgColor}
+                            defaultValue={bgColor}
                             onChange={setBgColor}
                             format="rgba"
                         />
@@ -198,6 +200,7 @@ export default function Controls({ }: Props) {
                         Line Color
                         <ColorInput
                             value={lineColor}
+                            defaultValue={lineColor}
                             onChange={setLineColor}
                             format="rgba"
                         />
@@ -372,11 +375,27 @@ export default function Controls({ }: Props) {
 
                     <Button className='randomize-button-container'
                         color='grey'
-                        onClick={() => null}
+                        onClick={randomizeControls}
                     >Randomize</Button>
 
                 </div>
             </div>
         </div>
     )
+}
+
+function getRandomBetween(value1: number, value2: number) {
+    const rand = Math.random();
+    return value1 + (value2 - value1) * rand;
+}
+
+function getRandomColor() {
+    const randomColor = "rgba("
+        + Math.floor(Math.random() * 255) + ", " +
+        + Math.floor(Math.random() * 255) + ", " +
+        + Math.floor(Math.random() * 255) + ", " +
+        + (Math.floor(Math.random() * 255) / 255 + .1) + ")";
+
+    return randomColor;
+
 }

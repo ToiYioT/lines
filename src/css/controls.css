@@ -31,6 +31,13 @@
     margin: 1rem 0rem;
 }
 
-.controls-button {
-    margin-right: 1rem;
+.controls-buttons-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+.saving-buttons-container {
+    display: flex;
+    gap: 1rem;
 }

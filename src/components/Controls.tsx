@@ -8,6 +8,14 @@ import useLineworksData, { Linework } from '../contexts/LineworksContext';
 type Props = {}
 
 const [centerX, centerY] = [400, 400];
+const [angleMin, angleMax] = [-.1, 6];
+const [subLinesMin, subLinesMax] = [.1, 10];
+const [sineFactorMin, sineFactorMax] = [-1, 1];
+const [cosineFactorMin, cosineFactorMax] = [-1, 1];
+const [sineFreqMin, sineFreqMax] = [-1, 1];
+const [cosineFreqMin, cosineFreqMax] = [-1, 1];
+const [numOfLinesMin, numOfLinesMax] = [1, 10000];
+const [sizeMin, sizeMax] = [0, 500];
 
 export default function Controls({ }: Props) {
 
@@ -103,6 +111,22 @@ export default function Controls({ }: Props) {
         setSelectedLinework(addLinework(paramsToLinework()));
     }
 
+    function randomize() {
+
+        // angle.setValue();
+        // subLines.setValue();
+        // sineFactor.setValue();
+        // cosineFactor.setValue();
+        // sineFreq.setValue();
+        // cosineFreq.setValue();
+
+        // setNumOfLines();
+        // setLengthChange();
+
+        // setBgColor();
+        // setLineColor();
+    }
+
     const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
 
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
@@ -181,8 +205,8 @@ export default function Controls({ }: Props) {
                 </div>
                 Size
                 <Slider
-                    min={0}
-                    max={500}
+                    min={sizeMin}
+                    max={sizeMax}
                     value={lengthChange}
                     onChange={setLengthChange}
                     color={sliderColor}
@@ -190,8 +214,8 @@ export default function Controls({ }: Props) {
 
                 Number of lines
                 <Slider
-                    min={1}
-                    max={14000}
+                    min={numOfLinesMin}
+                    max={numOfLinesMax}
                     value={numOfLines}
                     onChange={setNumOfLines}
                     color={sliderColor}
@@ -200,7 +224,7 @@ export default function Controls({ }: Props) {
                 <div className="control-group">
 
                     <SliderControl name={'Angle'}
-                        min={-0.2} max={6.7} step={0.01}
+                        min={angleMin} max={angleMax} step={0.01}
                         state={angle}
                         resetValue={0}
                         color={sliderColor}
@@ -236,7 +260,7 @@ export default function Controls({ }: Props) {
 
                 <div className="control-group">
                     <SliderControl name={'Sub Lines'}
-                        min={0.1} max={10} step={0.01}
+                        min={subLinesMin} max={subLinesMax} step={0.01}
                         state={subLines}
                         resetValue={1}
                         color={sliderColor}
@@ -271,7 +295,7 @@ export default function Controls({ }: Props) {
 
 
                 <SliderControl name={'Sine Factor'}
-                    min={-1} max={1} step={0.01}
+                    min={sineFactorMin} max={sineFactorMax} step={0.01}
                     state={sineFactor}
                     resetValue={0}
                     color={sliderColor}
@@ -281,7 +305,7 @@ export default function Controls({ }: Props) {
 
 
                     <SliderControl name={'Sine Frequency'}
-                        min={-1} max={1} step={0.01}
+                        min={sineFreqMin} max={sineFreqMax} step={0.01}
                         state={sineFreq}
                         resetValue={0}
                         color={sliderColor}
@@ -302,7 +326,7 @@ export default function Controls({ }: Props) {
                 </div>
 
                 <SliderControl name={'Cosine Factor'}
-                    min={-1} max={1} step={0.01}
+                    min={cosineFactorMin} max={cosineFactorMax} step={0.01}
                     state={cosineFactor}
                     resetValue={0}
                     color={sliderColor}
@@ -311,7 +335,7 @@ export default function Controls({ }: Props) {
                 <div className="control-group">
 
                     <SliderControl name={'Cosine Frequency'}
-                        min={-1} max={1} step={0.01}
+                        min={cosineFreqMin} max={cosineFreqMax} step={0.01}
                         state={cosineFreq}
                         resetValue={0}
                         color={sliderColor}
@@ -332,14 +356,26 @@ export default function Controls({ }: Props) {
                     />
                 </div>
 
-                <Button className='controls-button'
-                    onClick={handleSave}
-                >Save</Button>
+                <div className="controls-buttons-container">
 
-                <Button className='controls-button'
-                    color='teal'
-                    onClick={handleSaveAsNew}
-                >Save As New</Button>
+                    <div className="saving-buttons-container">
+                        <Button
+                            onClick={handleSave}
+                        >Save</Button>
+
+                        <Button
+                            color='teal'
+                            onClick={handleSaveAsNew}
+                        >Save As New</Button>
+
+                    </div>
+
+                    <Button className='randomize-button-container'
+                        color='grey'
+                        onClick={() => null}
+                    >Randomize</Button>
+
+                </div>
             </div>
         </div>
     )

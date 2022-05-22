@@ -15,6 +15,11 @@ export default function Gallery({ }: Props) {
         removeLinework,
         setSelectedLinework } = useLineworksData();
 
+    function handleAddNewLineWork() {
+        setSelectedLinework(addNewLinework());
+        setOpened(false);
+    }
+
     return (
         <>
             <Button
@@ -52,7 +57,7 @@ export default function Gallery({ }: Props) {
                     }
                     </div>
 
-                    <Button onClick={addNewLinework}
+                    <Button onClick={handleAddNewLineWork}
                     >+</Button>
 
                 </div>

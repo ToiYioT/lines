@@ -49,6 +49,10 @@ export default function GalleryTile({
                 removeLinework={removeLinework}
             />
 
+            <div className="gallery-item-name">
+                {linework.name}
+            </div>
+
             <div className="canvas-thumbnail"
                 onClick={setSelected} >
                 <Canvas

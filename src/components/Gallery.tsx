@@ -13,7 +13,8 @@ export default function Gallery({ }: Props) {
         lineworkItems,
         addNewLinework,
         removeLinework,
-        setSelectedLinework } = useLineworksData();
+        setSelectedLinework,
+        getSelectedLineworkId } = useLineworksData();
 
     function handleAddNewLineWork() {
         setSelectedLinework(addNewLinework());
@@ -51,6 +52,7 @@ export default function Gallery({ }: Props) {
                                         setOpened(false);
                                     }}
                                     linework={item.linework}
+                                    selected={item.id === getSelectedLineworkId()}
                                 />
                             )
                         })

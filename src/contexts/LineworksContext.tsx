@@ -9,6 +9,7 @@ export type LineworksContext = {
 
     setSelectedLinework: (id: string) => void
     getSelectedLinework: () => Linework
+    getSelectedLineworkId: () => string
     addNewLinework: () => string
     addLinework: (linework: Linework) => string
     removeLinework: (id: string) => void
@@ -48,6 +49,10 @@ export function LineworksProvider({ children }: Props) {
     function getSelectedLinework() {
         return lineworkItems.find(
             (item: LineworkItem) => item.id === selectedLineworkId.current).linework;
+    }
+
+    function getSelectedLineworkId() {
+        return selectedLineworkId.current;
     }
 
     function addNewLinework() {
@@ -100,6 +105,7 @@ export function LineworksProvider({ children }: Props) {
                 lineworkItems,
 
                 getSelectedLinework,
+                getSelectedLineworkId,
                 setSelectedLinework,
                 addNewLinework,
                 addLinework,

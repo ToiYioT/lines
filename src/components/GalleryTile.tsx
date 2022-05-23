@@ -8,12 +8,13 @@ type Props = {
     removeLinework: (event: React.MouseEvent) => void
     setSelected: () => void
     linework: Linework
+    selected: boolean
 }
 
 const [centerX, centerY] = [100, 100]
 
 export default function GalleryTile({
-    removeLinework, setSelected, linework }: Props) {
+    removeLinework, setSelected, linework, selected }: Props) {
 
 
     const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
@@ -43,7 +44,7 @@ export default function GalleryTile({
     }
 
     return (
-        <div className="gallery-item" >
+        <div className={"gallery-item" + (selected ? " gallery-item-selected" : "")} >
 
             <GalleryTileMenu
                 removeLinework={removeLinework}
@@ -60,6 +61,11 @@ export default function GalleryTile({
                     dimensions={{ width: 200, height: 200 }}
                 />
             </div>
+
+            {selected &&
+                <div className="gallery-item-selected-mark">
+                    Currently Selected
+                </div>}
         </div>
     )
 }

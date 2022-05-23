@@ -7,7 +7,9 @@ import useLineworksData, { Linework } from '../contexts/LineworksContext';
 
 type Props = {}
 
-const [centerX, centerY] = [400, 400];
+const canvasDimenstions = 800;
+const [centerX, centerY] = [canvasDimenstions / 2, canvasDimenstions / 2];
+
 const [angleMin, angleMax] = [-.1, 6];
 const [subLinesMin, subLinesMax] = [.1, 10];
 const [sineFactorMin, sineFactorMax] = [-1, 1];
@@ -173,7 +175,7 @@ export default function Controls({ }: Props) {
             <div className="canvas-container">
                 <Canvas
                     draw={draw}
-                    dimensions={{ width: 800, height: 800 }}
+                    dimensions={{ width: canvasDimenstions, height: canvasDimenstions }}
                 ></Canvas>
             </div>
 

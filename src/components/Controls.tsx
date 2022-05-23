@@ -15,7 +15,7 @@ const [cosineFactorMin, cosineFactorMax] = [-1, 1];
 const [sineFreqMin, sineFreqMax] = [-1, 1];
 const [cosineFreqMin, cosineFreqMax] = [-1, 1];
 const [numOfLinesMin, numOfLinesMax] = [1, 10000];
-const [sizeMin, sizeMax] = [0, 500];
+const [sizeMin, sizeMax] = [0, 4000];
 
 export default function Controls({ }: Props) {
 

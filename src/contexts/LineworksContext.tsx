@@ -32,12 +32,12 @@ export function LineworksProvider({ children }: Props) {
 
     const [lineworkItems, setLineworkItems] = useLocalStorage(
         "linework-items", [getNewLinework()]);
-    const [selectedLineworkId, setSelectedLineworkId] = useState<string>(lineworkItems[0].id);
+    const selectedLineworkId = useRef<string>(lineworkItems[0].id);
 
     const initLineworkFunc = useRef<(linework: Linework) => void>();
 
     function setSelectedLinework(id: string) {
-        setSelectedLineworkId(id);
+        selectedLineworkId.current = id;
 
         const newlySelectedLinework = lineworkItems.find(
             (item: LineworkItem) => item.id === id).linework;
@@ -47,7 +47,7 @@ export function LineworksProvider({ children }: Props) {
 
     function getSelectedLinework() {
         return lineworkItems.find(
-            (item: LineworkItem) => item.id === selectedLineworkId).linework;
+            (item: LineworkItem) => item.id === selectedLineworkId.current).linework;
     }
 
     function addNewLinework() {
@@ -73,7 +73,7 @@ export function LineworksProvider({ children }: Props) {
             return prevItems.filter(item => item.id !== id);
         })
 
-        if (id == selectedLineworkId) {
+        if (id == selectedLineworkId.current) {
             setSelectedLinework(lineworkItems[0].id);
         }
     }
@@ -81,7 +81,7 @@ export function LineworksProvider({ children }: Props) {
     function saveLinework(linework: Linework) {
         setLineworkItems((prevItems: LineworkItem[]) => {
             return prevItems.map(item => {
-                if (item.id === selectedLineworkId) return {
+                if (item.id === selectedLineworkId.current) return {
                     id: item.id, linework: linework
                 };
                 else return item;

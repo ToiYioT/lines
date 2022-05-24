@@ -1,5 +1,5 @@
 
-import React, { createContext, ReactNode, useContext, useRef, useState } from 'react'
+import React, { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 import useLocalStorage from '../hooks/useLocalStorage';
 
@@ -33,26 +33,27 @@ export function LineworksProvider({ children }: Props) {
 
     const [lineworkItems, setLineworkItems] = useLocalStorage(
         "linework-items", [getNewLinework()]);
-    const selectedLineworkId = useRef<string>(lineworkItems[0].id);
+    const [selectedLineworkId, setSelectedLineworkId] = useState<string>(lineworkItems[0].id);
 
     const initLineworkFunc = useRef<(linework: Linework) => void>();
 
+    useEffect(() => {
+        initLineworkFunc.current!(getSelectedLinework());
+
+    }, [selectedLineworkId]);
+
     function setSelectedLinework(id: string) {
-        selectedLineworkId.current = id;
 
-        const newlySelectedLinework = lineworkItems.find(
-            (item: LineworkItem) => item.id === id).linework;
-
-        initLineworkFunc.current!(newlySelectedLinework);
+        setSelectedLineworkId(id);
     }
 
     function getSelectedLinework() {
         return lineworkItems.find(
-            (item: LineworkItem) => item.id === selectedLineworkId.current).linework;
+            (item: LineworkItem) => item.id === selectedLineworkId).linework;
     }
 
     function getSelectedLineworkId() {
-        return selectedLineworkId.current;
+        return selectedLineworkId;
     }
 
     function addNewLinework() {
@@ -78,7 +79,7 @@ export function LineworksProvider({ children }: Props) {
             return prevItems.filter(item => item.id !== id);
         })
 
-        if (id == selectedLineworkId.current) {
+        if (id == selectedLineworkId) {
             setSelectedLinework(lineworkItems[0].id);
         }
     }
@@ -86,7 +87,7 @@ export function LineworksProvider({ children }: Props) {
     function saveLinework(linework: Linework) {
         setLineworkItems((prevItems: LineworkItem[]) => {
             return prevItems.map(item => {
-                if (item.id === selectedLineworkId.current) return {
+                if (item.id === selectedLineworkId) return {
                     id: item.id, linework: linework
                 };
                 else return item;

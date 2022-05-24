@@ -55,19 +55,14 @@ export default function Controls({ }: Props) {
 
     function hasLineworkChanged() {
         const saved = getSelectedLinework();
-        return !(
-            saved.bgColor === bgColor &&
-            saved.lineColor === lineColor &&
+        const current = paramsToLinework();
 
-            saved.size === lengthChange &&
-            saved.numOfLines === numOfLines &&
-            saved.angle === angle.value &&
-            saved.subLines === subLines.value &&
-            saved.sineFactor === sineFactor.value &&
-            saved.sineFreq === sineFreq.value &&
-            saved.cosineFactor === cosineFactor.value &&
-            saved.cosineFreq === cosineFreq.value
-        )
+        for (let k in saved) {
+
+            const key = k as keyof Linework;
+            if (saved[key] !== current[key]) return true;
+        }
+        return false;
     }
 
     const [name, setName] = useState('New Linework');

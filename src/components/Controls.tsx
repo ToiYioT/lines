@@ -53,6 +53,23 @@ export default function Controls({ }: Props) {
         initLineworkFunc(getSelectedLinework());
     }, [])
 
+    function hasLineworkChanged() {
+        const saved = getSelectedLinework();
+        return !(
+            saved.bgColor === bgColor &&
+            saved.lineColor === lineColor &&
+
+            saved.size === lengthChange &&
+            saved.numOfLines === numOfLines &&
+            saved.angle === angle.value &&
+            saved.subLines === subLines.value &&
+            saved.sineFactor === sineFactor.value &&
+            saved.sineFreq === sineFreq.value &&
+            saved.cosineFactor === cosineFactor.value &&
+            saved.cosineFreq === cosineFreq.value
+        )
+    }
+
     const [name, setName] = useState('New Linework');
 
     const angle = useStateWithHistory(0);
@@ -363,17 +380,19 @@ export default function Controls({ }: Props) {
 
                 <div className="controls-buttons-container">
 
-                    <div className="saving-buttons-container">
-                        <Button
-                            onClick={handleSave}
-                        >Save</Button>
+                    {hasLineworkChanged() &&
+                        <div className="saving-buttons-container">
+                            <Button
+                                onClick={handleSave}
+                            >Save</Button>
 
-                        <Button
-                            color='teal'
-                            onClick={handleSaveAsNew}
-                        >Save As New</Button>
+                            <Button
+                                color='teal'
+                                onClick={handleSaveAsNew}
+                            >Save As New</Button>
 
-                    </div>
+                        </div>
+                    }
 
                     <Button className='randomize-button-container'
                         color='grey'

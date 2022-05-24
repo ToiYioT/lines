@@ -34,7 +34,7 @@
 .controls-buttons-container {
     display: flex;
     gap: 1rem;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 .saving-buttons-container {

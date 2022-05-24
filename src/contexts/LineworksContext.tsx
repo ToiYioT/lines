@@ -45,6 +45,9 @@ export function LineworksProvider({ children }: Props) {
     function setSelectedLinework(id: string) {
 
         setSelectedLineworkId(id);
+        if (id === selectedLineworkId) {
+            initLineworkFunc.current!(getSelectedLinework());
+        }
     }
 
     function getSelectedLinework() {

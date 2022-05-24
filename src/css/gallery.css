@@ -44,7 +44,9 @@
 .gallery-item-selected-mark {
     position: absolute;
     bottom: .8rem;
-    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: red;
+    text-decoration: underline;
 }
 
 .canvas-thumbnail {

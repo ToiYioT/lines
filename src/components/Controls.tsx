@@ -27,7 +27,7 @@ export default function Controls({ }: Props) {
         saveLinework,
         addLinework,
         setSelectedLinework,
-        setInitLinework } = useLineworksData();
+        setInitLinework, revertLinework } = useLineworksData();
 
     useEffect(() => {
 
@@ -179,7 +179,6 @@ export default function Controls({ }: Props) {
             return prevValue + endValue;
         });
         resetParameterFunction(0);
-
     }
 
     return (
@@ -375,8 +374,14 @@ export default function Controls({ }: Props) {
 
                 <div className="controls-buttons-container">
 
+
                     {hasLineworkChanged() &&
                         <div className="saving-buttons-container">
+                            <Button
+                                color='gray'
+                                onClick={revertLinework}
+                            >Revert</Button>
+
                             <Button
                                 onClick={handleSave}
                             >Save</Button>
@@ -390,7 +395,7 @@ export default function Controls({ }: Props) {
                     }
 
                     <Button className='randomize-button-container'
-                        color='grey'
+                        color='gray'
                         onClick={randomizeControls}
                     >Randomize</Button>
 

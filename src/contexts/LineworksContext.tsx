@@ -15,6 +15,7 @@ export type LineworksContext = {
     removeLinework: (id: string) => void
     saveLinework: (linework: Linework) => void
 
+    revertLinework: () => void
     setInitLinework: (initFunc: (linework: Linework) => void) => void
 }
 
@@ -41,6 +42,10 @@ export function LineworksProvider({ children }: Props) {
         initLineworkFunc.current!(getSelectedLinework());
 
     }, [selectedLineworkId]);
+
+    function revertLinework() {
+        initLineworkFunc.current!(getSelectedLinework());
+    }
 
     function setSelectedLinework(id: string) {
 
@@ -117,6 +122,7 @@ export function LineworksProvider({ children }: Props) {
                 saveLinework,
 
                 setInitLinework,
+                revertLinework
             }}
         >
             {children}

@@ -22,18 +22,17 @@
     /* border: 2px solid black; */
     border: 8px ridge rgb(225, 225, 225);
     transition: 300ms;
-    filter: grayscale(1) brightness(.9);
+    filter: brightness(.9);
 }
 
 .gallery-item:hover {
     box-shadow: 1px 2px 2px 1px #616161;
-    filter: grayscale(0);
+    filter: brightness(1);
 }
 
 .gallery-item-selected {
     box-shadow: 1px 2px 2px 1px #616161;
-    filter: grayscale(0);
-    transform: scale(1);
+    border: 12px ridge rgb(255, 72, 72);
 }
 
 .gallery-item-name {

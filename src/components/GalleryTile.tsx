@@ -59,6 +59,7 @@ export default function GalleryTile({
                 <Canvas
                     draw={draw}
                     dimensions={{ width: 200, height: 200 }}
+                    animate={false}
                 />
             </div>
 

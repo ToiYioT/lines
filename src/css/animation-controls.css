@@ -1,0 +1,8 @@
+.animation-control-container {
+    display: flex;
+    gap: 1rem;
+    /* border: 1px solid red; */
+    border-radius: .3rem;
+    padding: .2rem;
+    margin-top: .5rem;
+}

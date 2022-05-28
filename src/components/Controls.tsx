@@ -1,9 +1,11 @@
 import Canvas from './Canvas';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, ColorInput, Slider, TextInput } from '@mantine/core';
 import SliderControl from './SliderControl';
 import useStateWithHistory, { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
 import useLineworksData, { Linework } from '../contexts/LineworksContext';
+import AnimationControl from './AnimationControl';
+import useAnimationState from '../hooks/useAnimationState';
 
 type Props = {}
 
@@ -41,7 +43,7 @@ export default function Controls({ }: Props) {
             cosineFreq.initValue(linework.cosineFreq);
 
             setNumOfLines(linework.numOfLines);
-            setLengthChange(linework.size);
+            setSize(linework.size);
 
             setBgColor(linework.bgColor);
             setLineColor(linework.lineColor);
@@ -70,6 +72,8 @@ export default function Controls({ }: Props) {
     const angle = useStateWithHistory(0);
     const [angleFine, setAngleFine] = useState(0);
     const [angleMicro, setAngleMicro] = useState(0);
+    const angleAnimation = useAnimationState();
+
 
     const [numOfLines, setNumOfLines] = useState(100);
 
@@ -77,9 +81,10 @@ export default function Controls({ }: Props) {
     const [subLinesFine, setSubLinesFine] = useState(0);
     const [subLinesMicro, setSubLinesMicro] = useState(0);
 
-    const [lengthChange, setLengthChange] = useState(200);
+    const [size, setSize] = useState(200);
 
     const sineFactor = useStateWithHistory(1);
+    const sineFactorAnimation = useAnimationState();
     const cosineFactor = useStateWithHistory(1);
 
     const sineFreq = useStateWithHistory(0);
@@ -105,7 +110,7 @@ export default function Controls({ }: Props) {
             bgColor,
             lineColor,
 
-            size: lengthChange,
+            size,
             numOfLines,
             angle: angle.value,
             subLines: subLines.value,
@@ -136,7 +141,7 @@ export default function Controls({ }: Props) {
         cosineFreq.setValue(getRandomBetween(cosineFreqMin, cosineFreqMax));
 
         setNumOfLines(getRandomBetween(100, 1000));
-        setLengthChange(400);
+        setSize(400);
 
         setBgColor(getRandomColor());
         setLineColor(getRandomColor());
@@ -152,17 +157,26 @@ export default function Controls({ }: Props) {
         ctx.strokeStyle = lineColor;
         ctx.beginPath();
 
+        const angleTotal = totalAngleInterval +
+            angleAnimation.activeRef.current * angleAnimation.reach *
+            Math.sin(angleAnimation.speed * frameCount);
+
+        const sineFactorTotal = sineFactor.value +
+            sineFactorAnimation.activeRef.current * sineFactorAnimation.reach *
+            Math.sin(sineFactorAnimation.speed * frameCount);
+
+
         for (let i = 0; i < numOfLines; i += lineIncrement) {
 
-            const size = lengthChange *
-                (sineFactor.value * Math.sin(sineFreqTotal * i) +
+            const lengthChange = size *
+                (sineFactorTotal * Math.sin(sineFreqTotal * i) +
                     cosineFactor.value * Math.cos(cosineFreqTotal * i));
 
-            const angle = i * totalAngleInterval;
+            const angle = i * angleTotal;
 
             ctx.lineTo(
-                centerX + size * Math.cos(angle),
-                centerY + size * Math.sin(angle)
+                centerX + lengthChange * Math.cos(angle),
+                centerY + lengthChange * Math.sin(angle)
             );
         }
         ctx.stroke();
@@ -186,6 +200,7 @@ export default function Controls({ }: Props) {
             <div className="canvas-container">
                 <Canvas
                     draw={draw}
+                    animate={true}
                     dimensions={{ width: canvasDimenstions, height: canvasDimenstions }}
                 ></Canvas>
             </div>
@@ -223,8 +238,8 @@ export default function Controls({ }: Props) {
                 <Slider
                     min={sizeMin}
                     max={sizeMax}
-                    value={lengthChange}
-                    onChange={setLengthChange}
+                    value={size}
+                    onChange={setSize}
                     color={sliderColor}
                 />
 
@@ -272,7 +287,9 @@ export default function Controls({ }: Props) {
                         color={sliderColor}
                     />
 
+                    <AnimationControl animationState={angleAnimation} />
                 </div>
+
 
                 <div className="control-group">
                     <SliderControl name={'Sub Lines'}
@@ -316,6 +333,7 @@ export default function Controls({ }: Props) {
                     resetValue={0}
                     color={sliderColor}
                 />
+                <AnimationControl animationState={sineFactorAnimation} />
 
                 <div className="control-group">
 

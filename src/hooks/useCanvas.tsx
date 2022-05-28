@@ -3,9 +3,10 @@ import React, { useEffect, useLayoutEffect, useRef } from 'react'
 
 type Props = {
     draw: (context: CanvasRenderingContext2D, frameCount: number) => void
+    animate: boolean
 }
 
-export default function useCanvas({ draw }: Props) {
+export default function useCanvas({ draw, animate }: Props) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useLayoutEffect(() => {
@@ -18,8 +19,11 @@ export default function useCanvas({ draw }: Props) {
         const render = () => {
             frameCount++;
             draw(context, frameCount);
+
             // comment to cancel animation:
-            // animationFrameId = window.requestAnimationFrame(render);
+            if (animate) {
+                animationFrameId = window.requestAnimationFrame(render);
+            }
         };
         render();
 

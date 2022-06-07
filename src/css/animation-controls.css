@@ -1,7 +1,25 @@
 .animation-control-container {
+    gap: 1rem;
+    border: 1px solid rgb(193, 193, 193);
+    border-radius: .3rem;
+    padding: 1rem;
+    margin-top: .5rem;
+}
+
+.animation-reach-speed-phase-container {
     display: flex;
     gap: 1rem;
-    /* border: 1px solid red; */
+    border-radius: .3rem;
+    padding: .2rem;
+    margin-top: .5rem;
+}
+
+
+.animation-routing-container {
+
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
     border-radius: .3rem;
     padding: .2rem;
     margin-top: .5rem;

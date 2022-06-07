@@ -1,11 +1,13 @@
 import Canvas from './Canvas';
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, ColorInput, Slider, TextInput } from '@mantine/core';
+import { Button, ColorInput, Slider, TextInput, Tabs } from '@mantine/core';
 import SliderControl from './SliderControl';
 import useStateWithHistory, { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
 import useLineworksData, { Linework } from '../contexts/LineworksContext';
 import AnimationControl from './AnimationControl';
 import useAnimationState from '../hooks/useAnimationState';
+
+import { Photo, MessageCircle, Settings } from 'tabler-icons-react';
 
 type Props = {}
 
@@ -207,217 +209,228 @@ export default function Controls({ }: Props) {
 
             <div className="controls-container">
 
-                <TextInput
-                    value={name}
-                    onChange={(event) => setName(event.currentTarget.value)}
-                    placeholder="Linework Name"
-                />
+                <Tabs>
+                    <Tabs.Tab label="Controls" icon={<Photo size={14} />}>
 
-                <div className="color-controls-container">
-                    <div className="color-control-container">
-                        Background Color
-                        <ColorInput
-                            value={bgColor}
-                            defaultValue={bgColor}
-                            onChange={setBgColor}
-                            format="rgba"
+                        <TextInput
+                            value={name}
+                            onChange={(event) => setName(event.currentTarget.value)}
+                            placeholder="Linework Name"
                         />
-                    </div>
 
-                    <div className="color-control container">
-                        Line Color
-                        <ColorInput
-                            value={lineColor}
-                            defaultValue={lineColor}
-                            onChange={setLineColor}
-                            format="rgba"
+                        <div className="color-controls-container">
+                            <div className="color-control-container">
+                                Background Color
+                                <ColorInput
+                                    value={bgColor}
+                                    defaultValue={bgColor}
+                                    onChange={setBgColor}
+                                    format="rgba"
+                                />
+                            </div>
+
+                            <div className="color-control container">
+                                Line Color
+                                <ColorInput
+                                    value={lineColor}
+                                    defaultValue={lineColor}
+                                    onChange={setLineColor}
+                                    format="rgba"
+                                />
+                            </div>
+                        </div>
+                        Size
+                        <Slider
+                            min={sizeMin}
+                            max={sizeMax}
+                            value={size}
+                            onChange={setSize}
+                            color={sliderColor}
                         />
-                    </div>
-                </div>
-                Size
-                <Slider
-                    min={sizeMin}
-                    max={sizeMax}
-                    value={size}
-                    onChange={setSize}
-                    color={sliderColor}
-                />
 
-                Number of lines
-                <Slider
-                    min={numOfLinesMin}
-                    max={numOfLinesMax}
-                    value={numOfLines}
-                    onChange={setNumOfLines}
-                    color={sliderColor}
-                />
+                        Number of lines
+                        <Slider
+                            min={numOfLinesMin}
+                            max={numOfLinesMax}
+                            value={numOfLines}
+                            onChange={setNumOfLines}
+                            color={sliderColor}
+                        />
 
-                <div className="control-group">
+                        <div className="control-group">
 
-                    <SliderControl name={'Angle'}
-                        min={angleMin} max={angleMax} step={0.01}
-                        state={angle}
-                        resetValue={0}
-                        color={sliderColor}
-                    />
+                            <SliderControl name={'Angle'}
+                                min={angleMin} max={angleMax} step={0.01}
+                                state={angle}
+                                resetValue={0}
+                                color={sliderColor}
+                            />
 
-                    Angle Fine
-                    <Slider
-                        min={-.05}
-                        max={.05}
-                        value={angleFine}
-                        step={.0001}
-                        onChange={setAngleFine}
-                        onChangeEnd={(endValue: number) => {
-                            handleAdditiveControlEnd(endValue, angle, setAngleFine);
-                        }}
-                        color={sliderColor}
-                    />
+                            Angle Fine
+                            <Slider
+                                min={-.05}
+                                max={.05}
+                                value={angleFine}
+                                step={.0001}
+                                onChange={setAngleFine}
+                                onChangeEnd={(endValue: number) => {
+                                    handleAdditiveControlEnd(endValue, angle, setAngleFine);
+                                }}
+                                color={sliderColor}
+                            />
 
-                    Angle Micro
-                    <Slider
-                        min={-.001}
-                        max={.001}
-                        step={.000001}
-                        value={angleMicro}
-                        onChange={setAngleMicro}
-                        onChangeEnd={(endValue: number) => {
-                            handleAdditiveControlEnd(endValue, angle, setAngleMicro);
-                        }}
-                        color={sliderColor}
-                    />
-
-                    <AnimationControl animationState={angleAnimation} />
-                </div>
-
-
-                <div className="control-group">
-                    <SliderControl name={'Sub Lines'}
-                        min={subLinesMin} max={subLinesMax} step={0.01}
-                        state={subLines}
-                        resetValue={1}
-                        color={sliderColor}
-                    />
-
-                    Sub Lines Fine
-                    <Slider
-                        min={-0.01}
-                        max={0.01}
-                        value={subLinesFine}
-                        step={.0001}
-                        onChange={setSubLinesFine}
-                        onChangeEnd={(endValue: number) => {
-                            handleAdditiveControlEnd(endValue, subLines, setSubLinesFine);
-                        }}
-                        color={sliderColor}
-                    />
-
-                    Sub Lines Micro
-                    <Slider
-                        min={-0.0001}
-                        max={0.0001}
-                        value={subLinesMicro}
-                        step={.000001}
-                        onChange={setSubLinesMicro}
-                        onChangeEnd={(endValue: number) => {
-                            handleAdditiveControlEnd(endValue, subLines, setSubLinesMicro);
-                        }}
-                        color={sliderColor}
-                    /></div>
-
-
-
-                <SliderControl name={'Sine Factor'}
-                    min={sineFactorMin} max={sineFactorMax} step={0.01}
-                    state={sineFactor}
-                    resetValue={0}
-                    color={sliderColor}
-                />
-                <AnimationControl animationState={sineFactorAnimation} />
-
-                <div className="control-group">
-
-
-                    <SliderControl name={'Sine Frequency'}
-                        min={sineFreqMin} max={sineFreqMax} step={0.01}
-                        state={sineFreq}
-                        resetValue={0}
-                        color={sliderColor}
-                    />
-
-                    Sine Freq fine
-                    <Slider
-                        min={-.001}
-                        max={.001}
-                        value={sineFreqFine}
-                        step={.00001}
-                        onChange={setSineFreqFine}
-                        onChangeEnd={(endValue: number) => {
-                            handleAdditiveControlEnd(endValue, sineFreq, setSineFreqFine);
-                        }}
-                        color={sliderColor}
-                    />
-                </div>
-
-                <SliderControl name={'Cosine Factor'}
-                    min={cosineFactorMin} max={cosineFactorMax} step={0.01}
-                    state={cosineFactor}
-                    resetValue={0}
-                    color={sliderColor}
-                />
-
-                <div className="control-group">
-
-                    <SliderControl name={'Cosine Frequency'}
-                        min={cosineFreqMin} max={cosineFreqMax} step={0.01}
-                        state={cosineFreq}
-                        resetValue={0}
-                        color={sliderColor}
-                    />
-
-
-                    Cosine Freq fine
-                    <Slider
-                        min={-.001}
-                        max={.001}
-                        value={cosineFreqFine}
-                        step={.00001}
-                        onChange={setCosineFreqFine}
-                        onChangeEnd={(endValue: number) => {
-                            handleAdditiveControlEnd(endValue, cosineFreq, setCosineFreqFine);
-                        }}
-                        color={sliderColor}
-                    />
-                </div>
-
-                <div className="controls-buttons-container">
-
-
-                    {hasLineworkChanged() &&
-                        <div className="saving-buttons-container">
-                            <Button
-                                color='gray'
-                                onClick={revertLinework}
-                            >Revert</Button>
-
-                            <Button
-                                onClick={handleSave}
-                            >Save</Button>
-
-                            <Button
-                                color='teal'
-                                onClick={handleSaveAsNew}
-                            >Save As New</Button>
+                            Angle Micro
+                            <Slider
+                                min={-.001}
+                                max={.001}
+                                step={.000001}
+                                value={angleMicro}
+                                onChange={setAngleMicro}
+                                onChangeEnd={(endValue: number) => {
+                                    handleAdditiveControlEnd(endValue, angle, setAngleMicro);
+                                }}
+                                color={sliderColor}
+                            />
 
                         </div>
-                    }
 
-                    <Button className='randomize-button-container'
-                        color='gray'
-                        onClick={randomizeControls}
-                    >Randomize</Button>
 
-                </div>
+                        <div className="control-group">
+                            <SliderControl name={'Sub Lines'}
+                                min={subLinesMin} max={subLinesMax} step={0.01}
+                                state={subLines}
+                                resetValue={1}
+                                color={sliderColor}
+                            />
+
+                            Sub Lines Fine
+                            <Slider
+                                min={-0.01}
+                                max={0.01}
+                                value={subLinesFine}
+                                step={.0001}
+                                onChange={setSubLinesFine}
+                                onChangeEnd={(endValue: number) => {
+                                    handleAdditiveControlEnd(endValue, subLines, setSubLinesFine);
+                                }}
+                                color={sliderColor}
+                            />
+
+                            Sub Lines Micro
+                            <Slider
+                                min={-0.0001}
+                                max={0.0001}
+                                value={subLinesMicro}
+                                step={.000001}
+                                onChange={setSubLinesMicro}
+                                onChangeEnd={(endValue: number) => {
+                                    handleAdditiveControlEnd(endValue, subLines, setSubLinesMicro);
+                                }}
+                                color={sliderColor}
+                            /></div>
+
+
+
+                        <SliderControl name={'Sine Factor'}
+                            min={sineFactorMin} max={sineFactorMax} step={0.01}
+                            state={sineFactor}
+                            resetValue={0}
+                            color={sliderColor}
+                        />
+
+                        <div className="control-group">
+
+
+                            <SliderControl name={'Sine Frequency'}
+                                min={sineFreqMin} max={sineFreqMax} step={0.01}
+                                state={sineFreq}
+                                resetValue={0}
+                                color={sliderColor}
+                            />
+
+                            Sine Freq fine
+                            <Slider
+                                min={-.001}
+                                max={.001}
+                                value={sineFreqFine}
+                                step={.00001}
+                                onChange={setSineFreqFine}
+                                onChangeEnd={(endValue: number) => {
+                                    handleAdditiveControlEnd(endValue, sineFreq, setSineFreqFine);
+                                }}
+                                color={sliderColor}
+                            />
+                        </div>
+
+                        <SliderControl name={'Cosine Factor'}
+                            min={cosineFactorMin} max={cosineFactorMax} step={0.01}
+                            state={cosineFactor}
+                            resetValue={0}
+                            color={sliderColor}
+                        />
+
+                        <div className="control-group">
+
+                            <SliderControl name={'Cosine Frequency'}
+                                min={cosineFreqMin} max={cosineFreqMax} step={0.01}
+                                state={cosineFreq}
+                                resetValue={0}
+                                color={sliderColor}
+                            />
+
+
+                            Cosine Freq fine
+                            <Slider
+                                min={-.001}
+                                max={.001}
+                                value={cosineFreqFine}
+                                step={.00001}
+                                onChange={setCosineFreqFine}
+                                onChangeEnd={(endValue: number) => {
+                                    handleAdditiveControlEnd(endValue, cosineFreq, setCosineFreqFine);
+                                }}
+                                color={sliderColor}
+                            />
+                        </div>
+
+                        <div className="controls-buttons-container">
+
+
+                            {hasLineworkChanged() &&
+                                <div className="saving-buttons-container">
+                                    <Button
+                                        color='gray'
+                                        onClick={revertLinework}
+                                    >Revert</Button>
+
+                                    <Button
+                                        onClick={handleSave}
+                                    >Save</Button>
+
+                                    <Button
+                                        color='teal'
+                                        onClick={handleSaveAsNew}
+                                    >Save As New</Button>
+
+                                </div>
+                            }
+
+                            <Button className='randomize-button-container'
+                                color='gray'
+                                onClick={randomizeControls}
+                            >Randomize</Button>
+
+                        </div>
+
+                    </Tabs.Tab>
+                    <Tabs.Tab label="Animation" icon={<MessageCircle size={14} />}>
+
+                        <AnimationControl animationState={angleAnimation} />
+                        <AnimationControl animationState={sineFactorAnimation} />
+
+                    </Tabs.Tab>
+                </Tabs>
+
             </div>
         </div>
     )

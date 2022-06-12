@@ -1,31 +1,46 @@
 
 import React, { useState } from 'react'
-import { NumberInput, Switch, MultiSelect } from '@mantine/core';
-import { AnimationState } from '../hooks/useAnimationState';
+import { NumberInput, Switch, Select } from '@mantine/core';
+import { AnimationStates } from '../hooks/useAnimationState';
 
 
 type Props = {
-    animationState: AnimationState
+    animationStates: AnimationStates
 }
 
-export default function AnimationControl({ animationState }: Props) {
+
+const animationTargets = [
+    "size", "numOfLines", "angle", "subLines",
+    "sineFactor", "cosineFactor", "sineFreq", "cosineFreq"
+]
+
+export default function AnimationControl({ animationStates }: Props) {
+
+    const [value, setValue] = useState<string | null>(null);
+
+    const animationTargetKey = value != null
+        ? value as keyof typeof animationStates
+        : "angle";
+
 
     const { active, setActive, activeRef,
         reach, setReach,
         speed, setSpeed,
-        phase, setPhase } = animationState;
+        phase, setPhase } = animationStates[animationTargetKey];
+
 
     return (
         <div className="animation-control-container">
 
             <div className="animation-routing-container">
-                <MultiSelect
-                    data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
+                <Select
+                    value={value}
+                    onChange={setValue}
+                    data={Object.keys(animationStates)}
+
                     label="Route to"
-                    placeholder="Pick all that you like"
-                    defaultValue={['']}
-                    clearButtonLabel="Clear selection"
-                    clearable
+                    placeholder="What to animate"
+                // defaultValue={['']}
                 />
                 <Switch
                     color={"lime"}
@@ -72,6 +87,9 @@ export default function AnimationControl({ animationState }: Props) {
                     size='xs'
                     value={phase} onChange={(val: number) => setPhase(val)}
                     disabled={!active}
+
+                    step={.0001}
+                    precision={4}
 
                     stepHoldDelay={300}
                     stepHoldInterval={100}

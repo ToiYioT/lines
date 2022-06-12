@@ -14,6 +14,18 @@ export type AnimationState = {
     setPhase: (phase: number) => void
 }
 
+export type AnimationStates = {
+    size: AnimationState
+    numOfLines: AnimationState
+
+    angle: AnimationState
+    subLines: AnimationState
+    sineFactor: AnimationState
+    cosineFactor: AnimationState
+    sineFreq: AnimationState
+    cosineFreq: AnimationState
+}
+
 export default function useAnimationState() {
 
     const [reach, setReach] = useState(0);

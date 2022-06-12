@@ -5,7 +5,7 @@ import SliderControl from './SliderControl';
 import useStateWithHistory, { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
 import useLineworksData, { Linework } from '../contexts/LineworksContext';
 import AnimationControl from './AnimationControl';
-import useAnimationState from '../hooks/useAnimationState';
+import useAnimationState, { AnimationStates } from '../hooks/useAnimationState';
 
 import { Photo, MessageCircle, Settings } from 'tabler-icons-react';
 
@@ -78,19 +78,26 @@ export default function Controls({ }: Props) {
 
 
     const [numOfLines, setNumOfLines] = useState(100);
+    const numOfLinesAnimation = useAnimationState();
 
     const subLines = useStateWithHistory(1);
     const [subLinesFine, setSubLinesFine] = useState(0);
     const [subLinesMicro, setSubLinesMicro] = useState(0);
+    const subLinesAnimation = useAnimationState();
 
     const [size, setSize] = useState(200);
+    const sizeAnimation = useAnimationState();
 
     const sineFactor = useStateWithHistory(1);
     const sineFactorAnimation = useAnimationState();
     const cosineFactor = useStateWithHistory(1);
+    const cosineFactorAnimation = useAnimationState();
 
     const sineFreq = useStateWithHistory(0);
+    const sineFreqAnimation = useAnimationState();
+
     const cosineFreq = useStateWithHistory(0);
+    const cosineFreqAnimation = useAnimationState();
 
     const [sineFreqFine, setSineFreqFine] = useState(0);
     const [cosineFreqFine, setCosineFreqFine] = useState(0);
@@ -98,11 +105,14 @@ export default function Controls({ }: Props) {
     const [bgColor, setBgColor] = useState('#ffffffff');
     const [lineColor, setLineColor] = useState('#0000007f');
 
+    const allAnimationTargets: AnimationStates = {
+        size: sizeAnimation, numOfLines: numOfLinesAnimation, angle: angleAnimation,
+        subLines: subLinesAnimation, sineFactor: sineFactorAnimation, cosineFactor: cosineFactorAnimation,
+        sineFreq: sineFreqAnimation, cosineFreq: cosineFreqAnimation
+    }
 
     const totalAngleInterval = angle.value + angleFine + angleMicro;
-    const sineFreqTotal = sineFreq.value + sineFreqFine;
     const cosineFreqTotal = cosineFreq.value + cosineFreqFine;
-    const lineIncrement = 1 / (subLines.value + subLinesFine + subLinesMicro);
 
 
     function paramsToLinework(): Linework {
@@ -167,12 +177,37 @@ export default function Controls({ }: Props) {
             sineFactorAnimation.activeRef.current * sineFactorAnimation.reach *
             Math.sin(sineFactorAnimation.speed * frameCount);
 
+        const cosineFactorTotal = cosineFactor.value +
+            cosineFactorAnimation.activeRef.current * cosineFactorAnimation.reach *
+            Math.sin(cosineFactorAnimation.speed * frameCount);
 
-        for (let i = 0; i < numOfLines; i += lineIncrement) {
+        const numOfLinesTotal = numOfLines +
+            numOfLinesAnimation.activeRef.current * numOfLinesAnimation.reach *
+            Math.sin(numOfLinesAnimation.speed * frameCount + numOfLinesAnimation.phase);
 
-            const lengthChange = size *
+        const sizeTotal = size +
+            sizeAnimation.activeRef.current * sizeAnimation.reach *
+            Math.sin(sizeAnimation.speed * frameCount + sizeAnimation.phase);
+
+        let lineIncrement = 1 / (subLines.value + subLinesFine + subLinesMicro +
+            subLinesAnimation.activeRef.current * subLinesAnimation.reach *
+            Math.sin(subLinesAnimation.speed * frameCount + subLinesAnimation.phase));
+        if (lineIncrement < .02) lineIncrement = .02;
+
+
+        const sineFreqTotal = sineFreq.value + sineFreqFine +
+            sineFreqAnimation.activeRef.current * sineFreqAnimation.reach *
+            Math.sin(sineFreqAnimation.speed * frameCount + sineFreqAnimation.phase);
+
+        const cosineFreqTotal = cosineFreq.value + cosineFreqFine +
+            cosineFreqAnimation.activeRef.current * cosineFreqAnimation.reach *
+            Math.sin(cosineFreqAnimation.speed * frameCount + cosineFreqAnimation.phase);
+
+        for (let i = 0; i < numOfLinesTotal; i += lineIncrement) {
+
+            const lengthChange = sizeTotal *
                 (sineFactorTotal * Math.sin(sineFreqTotal * i) +
-                    cosineFactor.value * Math.cos(cosineFreqTotal * i));
+                    cosineFactorTotal * Math.cos(cosineFreqTotal * i));
 
             const angle = i * angleTotal;
 
@@ -425,8 +460,8 @@ export default function Controls({ }: Props) {
                     </Tabs.Tab>
                     <Tabs.Tab label="Animation" icon={<MessageCircle size={14} />}>
 
-                        <AnimationControl animationState={angleAnimation} />
-                        <AnimationControl animationState={sineFactorAnimation} />
+                        <AnimationControl animationStates={allAnimationTargets} />
+                        <AnimationControl animationStates={allAnimationTargets} />
 
                     </Tabs.Tab>
                 </Tabs>

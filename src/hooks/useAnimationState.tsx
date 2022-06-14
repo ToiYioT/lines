@@ -3,7 +3,6 @@ import React, { useRef, useState } from 'react'
 export type AnimationState = {
     active: boolean
     setActive: (active: boolean) => void
-    activeRef?: React.MutableRefObject<number>
 
     reach: number
     speed: number
@@ -67,13 +66,11 @@ export default function useAnimationState() {
     const [speed, setSpeed] = useState(0);
     const [phase, setPhase] = useState(0);
     const [active, setActive] = useState<boolean>(false);
-    const activeRef = useRef<number>(0);
 
     return {
         reach, setReach,
         speed, setSpeed,
         phase, setPhase,
         active, setActive,
-        activeRef
     }
 }

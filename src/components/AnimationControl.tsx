@@ -23,7 +23,7 @@ export default function AnimationControl({ animationStates }: Props) {
         : "angle";
 
 
-    const { active, setActive, activeRef,
+    const { active, setActive,
         reach, setReach,
         speed, setSpeed,
         phase, setPhase } = animationStates[animationTargetKey];
@@ -48,9 +48,6 @@ export default function AnimationControl({ animationStates }: Props) {
                     onChange={(event) => {
                         const checked = event.currentTarget.checked;
                         setActive(checked);
-                        if (activeRef) {
-                            activeRef.current = checked ? 1 : 0;
-                        }
                     }}
                 />
             </div>

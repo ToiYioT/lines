@@ -66,12 +66,18 @@ export default function Controls() {
         const saved = getSelectedLinework();
         const current = paramsToLinework();
 
-        for (let k in saved) {
+        // for (let k in saved) {
 
-            const key = k as keyof Linework;
-            if (saved[key] !== current[key]) return true;
-        }
-        return false;
+        //     const key = k as keyof Linework;
+        //     if (key == "animation") continue;
+
+        //     if (saved[key] !== current[key]) return true;
+        // }
+        // return false;
+        const savedJSON = JSON.stringify(saved);
+        const currentJSON = JSON.stringify(current);
+
+        return savedJSON !== currentJSON;
     }
 
 
@@ -115,9 +121,6 @@ export default function Controls() {
 
     function setAnimationState(animationState: AnimationState, setTo: AnimationState) {
         setTo.setActive(animationState.active);
-        if (setTo.activeRef) {
-            setTo.activeRef.current = animationState.active ? 1 : 0;
-        }
 
         setTo.setReach(animationState.reach);
         setTo.setSpeed(animationState.speed);
@@ -511,10 +514,12 @@ function getRandomColor() {
 
 }
 
-function calculateAnimation(animationOn: boolean,
+function calculateAnimation(animationsOn: boolean,
     animation: AnimationState, frameCount: number) {
 
-    return animationOn ? animation.activeRef!.current * animation.reach
+    const active = animation.active ? 1 : 0;
+
+    return animationsOn ? active * animation.reach
         * Math.sin(animation.speed * frameCount + animation.phase * Math.PI / 2)
         : 0;
 }

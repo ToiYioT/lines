@@ -151,6 +151,7 @@ export type Linework = {
     cosineFreq: number
 
     animation: AnimationStates
+    animationOn: boolean
 }
 
 type LineworkItem = {
@@ -174,7 +175,8 @@ function getNewLinework() {
         cosineFactor: 1,
         cosineFreq: 0,
 
-        animation: getNewAnimationStates()
+        animation: getNewAnimationStates(),
+        animationOn: false
     }
 
     const newLineworkItem: LineworkItem = {

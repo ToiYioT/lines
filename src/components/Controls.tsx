@@ -4,12 +4,11 @@ import { Button, ColorInput, Slider, TextInput, Tabs } from '@mantine/core';
 import SliderControl from './SliderControl';
 import useStateWithHistory, { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
 import useLineworksData, { Linework } from '../contexts/LineworksContext';
-import AnimationControl from './AnimationControl';
 import useAnimationState, { AnimationState, AnimationStates, getNewAnimationStates } from '../hooks/useAnimationState';
 
-import { Photo, MessageCircle, Settings } from 'tabler-icons-react';
+import { Photo, MessageCircle } from 'tabler-icons-react';
+import AnimationTab from './AnimationTab';
 
-type Props = {}
 
 const canvasDimenstions = 800;
 const [centerX, centerY] = [canvasDimenstions / 2, canvasDimenstions / 2];
@@ -23,7 +22,7 @@ const [cosineFreqMin, cosineFreqMax] = [-1, 1];
 const [numOfLinesMin, numOfLinesMax] = [1, 10000];
 const [sizeMin, sizeMax] = [0, 4000];
 
-export default function Controls({ }: Props) {
+export default function Controls() {
 
     const sliderColor = "gray";
 
@@ -56,6 +55,7 @@ export default function Controls({ }: Props) {
             } else {
                 setAllAnimationStates(getNewAnimationStates());
             }
+            setAnimationOn(linework.animationOn);
         };
 
         setInitLinework(initLineworkFunc);
@@ -73,6 +73,7 @@ export default function Controls({ }: Props) {
         }
         return false;
     }
+
 
     const [name, setName] = useState('New Linework');
 
@@ -102,6 +103,7 @@ export default function Controls({ }: Props) {
     const [bgColor, setBgColor] = useState('#ffffffff');
     const [lineColor, setLineColor] = useState('#0000007f');
 
+    const [animationOn, setAnimationOn] = useState<boolean>(false);
     const angleAnimation = useAnimationState();
     const numOfLinesAnimation = useAnimationState();
     const subLinesAnimation = useAnimationState();
@@ -157,7 +159,8 @@ export default function Controls({ }: Props) {
             cosineFactor: cosineFactor.value,
             cosineFreq: cosineFreq.value,
 
-            animation: allAnimationTargets
+            animation: allAnimationTargets,
+            animationOn
         }
         return linework;
     }
@@ -197,39 +200,31 @@ export default function Controls({ }: Props) {
         ctx.strokeStyle = lineColor;
         ctx.beginPath();
 
+
         const angleTotal = angle.value + angleFine + angleMicro +
-            angleAnimation.activeRef.current * angleAnimation.reach *
-            Math.sin(angleAnimation.speed * frameCount);
+            calculateAnimation(animationOn, angleAnimation, frameCount);
 
         const sineFactorTotal = sineFactor.value +
-            sineFactorAnimation.activeRef.current * sineFactorAnimation.reach *
-            Math.sin(sineFactorAnimation.speed * frameCount);
+            calculateAnimation(animationOn, sineFactorAnimation, frameCount);
 
         const cosineFactorTotal = cosineFactor.value +
-            cosineFactorAnimation.activeRef.current * cosineFactorAnimation.reach *
-            Math.sin(cosineFactorAnimation.speed * frameCount);
+            calculateAnimation(animationOn, cosineFactorAnimation, frameCount);
 
         const numOfLinesTotal = numOfLines +
-            numOfLinesAnimation.activeRef.current * numOfLinesAnimation.reach *
-            Math.sin(numOfLinesAnimation.speed * frameCount + numOfLinesAnimation.phase);
+            calculateAnimation(animationOn, numOfLinesAnimation, frameCount);
 
         const sizeTotal = size +
-            sizeAnimation.activeRef.current * sizeAnimation.reach *
-            Math.sin(sizeAnimation.speed * frameCount + sizeAnimation.phase);
+            calculateAnimation(animationOn, sizeAnimation, frameCount);
 
         let lineIncrement = 1 / (subLines.value + subLinesFine + subLinesMicro +
-            subLinesAnimation.activeRef.current * subLinesAnimation.reach *
-            Math.sin(subLinesAnimation.speed * frameCount + subLinesAnimation.phase));
+            calculateAnimation(animationOn, subLinesAnimation, frameCount));
         if (lineIncrement < .02) lineIncrement = .02;
 
-
         const sineFreqTotal = sineFreq.value + sineFreqFine +
-            sineFreqAnimation.activeRef.current * sineFreqAnimation.reach *
-            Math.sin(sineFreqAnimation.speed * frameCount + sineFreqAnimation.phase);
+            calculateAnimation(animationOn, sineFreqAnimation, frameCount);
 
         const cosineFreqTotal = cosineFreq.value + cosineFreqFine +
-            cosineFreqAnimation.activeRef.current * cosineFreqAnimation.reach *
-            Math.sin(cosineFreqAnimation.speed * frameCount + cosineFreqAnimation.phase);
+            calculateAnimation(animationOn, cosineFreqAnimation, frameCount);
 
         for (let i = 0; i < numOfLinesTotal; i += lineIncrement) {
 
@@ -487,10 +482,11 @@ export default function Controls({ }: Props) {
 
                     </Tabs.Tab>
                     <Tabs.Tab label="Animation" icon={<MessageCircle size={14} />}>
-
-                        <AnimationControl animationStates={allAnimationTargets} />
-                        <AnimationControl animationStates={allAnimationTargets} />
-
+                        <AnimationTab
+                            animationStates={allAnimationTargets}
+                            animationOn={animationOn}
+                            setAnimationOn={setAnimationOn}
+                        />
                     </Tabs.Tab>
                 </Tabs>
 
@@ -513,4 +509,12 @@ function getRandomColor() {
 
     return randomColor;
 
+}
+
+function calculateAnimation(animationOn: boolean,
+    animation: AnimationState, frameCount: number) {
+
+    return animationOn ? animation.activeRef!.current * animation.reach
+        * Math.sin(animation.speed * frameCount + animation.phase * Math.PI / 2)
+        : 0;
 }

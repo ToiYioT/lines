@@ -1,6 +1,7 @@
 
 import React, { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
+import { AnimationStates, getNewAnimationStates } from '../hooks/useAnimationState';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 
@@ -148,6 +149,8 @@ export type Linework = {
     sineFreq: number
     cosineFactor: number
     cosineFreq: number
+
+    animation: AnimationStates
 }
 
 type LineworkItem = {
@@ -169,7 +172,9 @@ function getNewLinework() {
         sineFactor: 0,
         sineFreq: 0,
         cosineFactor: 1,
-        cosineFreq: 0
+        cosineFreq: 0,
+
+        animation: getNewAnimationStates()
     }
 
     const newLineworkItem: LineworkItem = {

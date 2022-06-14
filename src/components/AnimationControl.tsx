@@ -48,7 +48,9 @@ export default function AnimationControl({ animationStates }: Props) {
                     onChange={(event) => {
                         const checked = event.currentTarget.checked;
                         setActive(checked);
-                        activeRef.current = checked ? 1 : 0;
+                        if (activeRef) {
+                            activeRef.current = checked ? 1 : 0;
+                        }
                     }}
                 />
             </div>

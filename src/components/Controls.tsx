@@ -5,7 +5,7 @@ import SliderControl from './SliderControl';
 import useStateWithHistory, { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
 import useLineworksData, { Linework } from '../contexts/LineworksContext';
 import AnimationControl from './AnimationControl';
-import useAnimationState, { AnimationStates } from '../hooks/useAnimationState';
+import useAnimationState, { AnimationState, AnimationStates, getNewAnimationStates } from '../hooks/useAnimationState';
 
 import { Photo, MessageCircle, Settings } from 'tabler-icons-react';
 
@@ -51,6 +51,11 @@ export default function Controls({ }: Props) {
             setLineColor(linework.lineColor);
             setName(linework.name);
 
+            if (linework.animation) {
+                setAllAnimationStates(linework.animation);
+            } else {
+                setAllAnimationStates(getNewAnimationStates());
+            }
         };
 
         setInitLinework(initLineworkFunc);
@@ -74,30 +79,22 @@ export default function Controls({ }: Props) {
     const angle = useStateWithHistory(0);
     const [angleFine, setAngleFine] = useState(0);
     const [angleMicro, setAngleMicro] = useState(0);
-    const angleAnimation = useAnimationState();
 
 
     const [numOfLines, setNumOfLines] = useState(100);
-    const numOfLinesAnimation = useAnimationState();
 
     const subLines = useStateWithHistory(1);
     const [subLinesFine, setSubLinesFine] = useState(0);
     const [subLinesMicro, setSubLinesMicro] = useState(0);
-    const subLinesAnimation = useAnimationState();
 
     const [size, setSize] = useState(200);
-    const sizeAnimation = useAnimationState();
 
     const sineFactor = useStateWithHistory(1);
-    const sineFactorAnimation = useAnimationState();
     const cosineFactor = useStateWithHistory(1);
-    const cosineFactorAnimation = useAnimationState();
 
     const sineFreq = useStateWithHistory(0);
-    const sineFreqAnimation = useAnimationState();
 
     const cosineFreq = useStateWithHistory(0);
-    const cosineFreqAnimation = useAnimationState();
 
     const [sineFreqFine, setSineFreqFine] = useState(0);
     const [cosineFreqFine, setCosineFreqFine] = useState(0);
@@ -105,14 +102,43 @@ export default function Controls({ }: Props) {
     const [bgColor, setBgColor] = useState('#ffffffff');
     const [lineColor, setLineColor] = useState('#0000007f');
 
+    const angleAnimation = useAnimationState();
+    const numOfLinesAnimation = useAnimationState();
+    const subLinesAnimation = useAnimationState();
+    const sizeAnimation = useAnimationState();
+    const sineFactorAnimation = useAnimationState();
+    const cosineFactorAnimation = useAnimationState();
+    const sineFreqAnimation = useAnimationState();
+    const cosineFreqAnimation = useAnimationState();
+
+    function setAnimationState(animationState: AnimationState, setTo: AnimationState) {
+        setTo.setActive(animationState.active);
+        if (setTo.activeRef) {
+            setTo.activeRef.current = animationState.active ? 1 : 0;
+        }
+
+        setTo.setReach(animationState.reach);
+        setTo.setSpeed(animationState.speed);
+        setTo.setPhase(animationState.phase);
+    }
+
+    function setAllAnimationStates(animationStates: AnimationStates) {
+        setAnimationState(animationStates.angle, angleAnimation);
+        setAnimationState(animationStates.numOfLines, numOfLinesAnimation);
+        setAnimationState(animationStates.subLines, subLinesAnimation);
+        setAnimationState(animationStates.size, sizeAnimation);
+        setAnimationState(animationStates.sineFactor, sineFactorAnimation);
+        setAnimationState(animationStates.cosineFactor, cosineFactorAnimation);
+        setAnimationState(animationStates.sineFreq, sineFreqAnimation);
+        setAnimationState(animationStates.cosineFreq, cosineFreqAnimation);
+    }
+
     const allAnimationTargets: AnimationStates = {
         size: sizeAnimation, numOfLines: numOfLinesAnimation, angle: angleAnimation,
         subLines: subLinesAnimation, sineFactor: sineFactorAnimation, cosineFactor: cosineFactorAnimation,
         sineFreq: sineFreqAnimation, cosineFreq: cosineFreqAnimation
     }
 
-    const totalAngleInterval = angle.value + angleFine + angleMicro;
-    const cosineFreqTotal = cosineFreq.value + cosineFreqFine;
 
 
     function paramsToLinework(): Linework {
@@ -129,7 +155,9 @@ export default function Controls({ }: Props) {
             sineFactor: sineFactor.value,
             sineFreq: sineFreq.value,
             cosineFactor: cosineFactor.value,
-            cosineFreq: cosineFreq.value
+            cosineFreq: cosineFreq.value,
+
+            animation: allAnimationTargets
         }
         return linework;
     }
@@ -169,7 +197,7 @@ export default function Controls({ }: Props) {
         ctx.strokeStyle = lineColor;
         ctx.beginPath();
 
-        const angleTotal = totalAngleInterval +
+        const angleTotal = angle.value + angleFine + angleMicro +
             angleAnimation.activeRef.current * angleAnimation.reach *
             Math.sin(angleAnimation.speed * frameCount);
 

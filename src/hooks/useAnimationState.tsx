@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 export type AnimationState = {
     active: boolean
     setActive: (active: boolean) => void
-    activeRef: React.MutableRefObject<number>
+    activeRef?: React.MutableRefObject<number>
 
     reach: number
     speed: number
@@ -12,6 +12,41 @@ export type AnimationState = {
     setReach: (reach: number) => void
     setSpeed: (speed: number) => void
     setPhase: (phase: number) => void
+}
+
+
+function getNewAnimationState() {
+    return (
+        {
+            active: false,
+            setActive: () => null,
+
+            reach: 0,
+            speed: 0,
+            phase: 0,
+
+            setReach: (reach: number) => null,
+            setSpeed: (speed: number) => null,
+            setPhase: (phase: number) => null,
+        }
+    )
+}
+
+export function getNewAnimationStates() {
+    return (
+        {
+            size: getNewAnimationState(),
+            numOfLines: getNewAnimationState(),
+
+            angle: getNewAnimationState(),
+            subLines: getNewAnimationState(),
+            sineFactor: getNewAnimationState(),
+            cosineFactor: getNewAnimationState(),
+            sineFreq: getNewAnimationState(),
+            cosineFreq: getNewAnimationState(),
+        }
+    )
+
 }
 
 export type AnimationStates = {

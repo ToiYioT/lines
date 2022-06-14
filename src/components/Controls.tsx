@@ -10,8 +10,8 @@ import { Photo, MessageCircle } from 'tabler-icons-react';
 import AnimationTab from './AnimationTab';
 
 
-const canvasDimenstions = 800;
-const [centerX, centerY] = [canvasDimenstions / 2, canvasDimenstions / 2];
+const [canvasWidth, canvasHeight] = [800, 1000];
+const [centerX, centerY] = [canvasWidth / 2, canvasHeight / 2];
 
 const [angleMin, angleMax] = [-.1, 6];
 const [subLinesMin, subLinesMax] = [.1, 10];
@@ -264,7 +264,7 @@ export default function Controls() {
                 <Canvas
                     draw={draw}
                     animate={true}
-                    dimensions={{ width: canvasDimenstions, height: canvasDimenstions }}
+                    dimensions={{ width: canvasWidth, height: canvasHeight }}
                 ></Canvas>
             </div>
 

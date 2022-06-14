@@ -27,7 +27,8 @@ export default function Gallery({ }: Props) {
                 onClick={() => setOpened(true)}
                 style={{
                     position: "fixed",
-                    top: "calc(800px + 1rem)",
+                    // top: "calc(800px + 1rem)",
+                    bottom: "1rem",
                     left: ".5rem"
                 }}
             >Open Gallery</Button>

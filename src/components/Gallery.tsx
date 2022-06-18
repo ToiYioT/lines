@@ -1,6 +1,7 @@
 
-import { Button, Modal } from '@mantine/core'
+import { ActionIcon, Button, Modal } from '@mantine/core'
 import React, { useState } from 'react'
+import { NewSection, Plus } from 'tabler-icons-react';
 import useLineworksData from '../contexts/LineworksContext';
 import GalleryTile from './GalleryTile';
 
@@ -39,10 +40,24 @@ export default function Gallery({ }: Props) {
                 onClose={() => setOpened(false)}
                 title="Gallery"
                 size="55%"
+                styles={{ modal: { backgroundColor: "rgba(240,240,240,0.90)" } }}
             >
+
+                <div className="add-gallery-item-button">
+                    <Button
+                        onClick={handleAddNewLineWork}
+                        variant="light"
+                        radius="lg"
+                        color="gray"
+                    >
+                        ADD NEW
+                    </Button>
+
+                </div>
+
                 <div className="gallery-view">
                     <div className="gallery-grid"> {
-                        lineworkItems.map(item => {
+                        lineworkItems.slice(0).reverse().map(item => {
                             return (
                                 <GalleryTile
                                     removeLinework={(e: React.MouseEvent) => {
@@ -60,9 +75,6 @@ export default function Gallery({ }: Props) {
                         })
                     }
                     </div>
-
-                    <Button onClick={handleAddNewLineWork}
-                    >+</Button>
 
                 </div>
             </Modal>

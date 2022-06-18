@@ -35,7 +35,8 @@ export function LineworksProvider({ children }: Props) {
 
     const [lineworkItems, setLineworkItems] = useLocalStorage(
         "linework-items", [getNewLinework()]);
-    const [selectedLineworkId, setSelectedLineworkId] = useState<string>(lineworkItems[0].id);
+    const [selectedLineworkId, setSelectedLineworkId] = useState<string>(
+        lineworkItems[lineworkItems.length - 1].id);
 
     const initLineworkFunc = useRef<(linework: Linework) => void>();
 
@@ -89,7 +90,7 @@ export function LineworksProvider({ children }: Props) {
         })
 
         if (id == selectedLineworkId) {
-            setSelectedLinework(lineworkItems[0].id);
+            setSelectedLinework(lineworkItems[lineworkItems.length - 1].id);
         }
     }
 

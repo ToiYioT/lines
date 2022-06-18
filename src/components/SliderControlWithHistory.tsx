@@ -16,7 +16,7 @@ type Props = {
     color: string
 }
 
-export default function SliderControl({ name, min, max, step, state, resetValue, color }: Props) {
+export default function SliderControlWithHistory({ name, min, max, step, state, resetValue, color }: Props) {
 
     const { value, setValue, setHistoryValue, undoHistory } = state;
 

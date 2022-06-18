@@ -1,17 +1,18 @@
 import Canvas from './Canvas';
 import React, { useEffect, useState } from 'react'
 import { Button, ColorInput, Slider, TextInput, Tabs } from '@mantine/core';
-import SliderControl from './SliderControl';
+import SliderControlWithHistory from './SliderControlWithHistory';
 import useStateWithHistory, { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
 import useLineworksData, { Linework } from '../contexts/LineworksContext';
 import useAnimationState, { AnimationState, AnimationStates, getNewAnimationStates } from '../hooks/useAnimationState';
 
-import { Photo, MessageCircle } from 'tabler-icons-react';
+import { Adjustments, Movie } from 'tabler-icons-react';
 import AnimationTab from './AnimationTab';
 import FullScreenButton from './FullScreenButton';
 import { useFullscreen } from '@mantine/hooks';
 
 const sliderColor = "gray";
+const animatedSliderColor = "lime";
 
 const [angleMin, angleMax] = [-.1, 6];
 const [subLinesMin, subLinesMax] = [.1, 10];
@@ -264,7 +265,7 @@ export default function Controls() {
                 : "controls-container"} >
 
                 <Tabs>
-                    <Tabs.Tab label="Controls" icon={<Photo size={14} />}>
+                    <Tabs.Tab label="Controls" icon={<Adjustments size={22} />}>
 
                         <TextInput
                             value={name}
@@ -299,7 +300,7 @@ export default function Controls() {
                             max={sizeMax}
                             value={size}
                             onChange={setSize}
-                            color={sliderColor}
+                            color={sizeAnimation.active ? animatedSliderColor : sliderColor}
                         />
 
                         Number of lines
@@ -308,16 +309,16 @@ export default function Controls() {
                             max={numOfLinesMax}
                             value={numOfLines}
                             onChange={setNumOfLines}
-                            color={sliderColor}
+                            color={numOfLinesAnimation.active ? animatedSliderColor : sliderColor}
                         />
 
                         <div className="control-group">
 
-                            <SliderControl name={'Angle'}
+                            <SliderControlWithHistory name={'Angle'}
                                 min={angleMin} max={angleMax} step={0.01}
                                 state={angle}
                                 resetValue={0}
-                                color={sliderColor}
+                                color={angleAnimation.active ? animatedSliderColor : sliderColor}
                             />
 
                             Angle Fine
@@ -350,11 +351,11 @@ export default function Controls() {
 
 
                         <div className="control-group">
-                            <SliderControl name={'Sub Lines'}
+                            <SliderControlWithHistory name={'Sub Lines'}
                                 min={subLinesMin} max={subLinesMax} step={0.01}
                                 state={subLines}
                                 resetValue={1}
-                                color={sliderColor}
+                                color={subLinesAnimation.active ? animatedSliderColor : sliderColor}
                             />
 
                             Sub Lines Fine
@@ -385,21 +386,21 @@ export default function Controls() {
 
 
 
-                        <SliderControl name={'Sine Factor'}
+                        <SliderControlWithHistory name={'Sine Factor'}
                             min={sineFactorMin} max={sineFactorMax} step={0.01}
                             state={sineFactor}
                             resetValue={0}
-                            color={sliderColor}
+                            color={sineFactorAnimation.active ? animatedSliderColor : sliderColor}
                         />
 
                         <div className="control-group">
 
 
-                            <SliderControl name={'Sine Frequency'}
+                            <SliderControlWithHistory name={'Sine Frequency'}
                                 min={sineFreqMin} max={sineFreqMax} step={0.01}
                                 state={sineFreq}
                                 resetValue={0}
-                                color={sliderColor}
+                                color={sineFreqAnimation.active ? animatedSliderColor : sliderColor}
                             />
 
                             Sine Freq fine
@@ -416,20 +417,20 @@ export default function Controls() {
                             />
                         </div>
 
-                        <SliderControl name={'Cosine Factor'}
+                        <SliderControlWithHistory name={'Cosine Factor'}
                             min={cosineFactorMin} max={cosineFactorMax} step={0.01}
                             state={cosineFactor}
                             resetValue={0}
-                            color={sliderColor}
+                            color={cosineFactorAnimation.active ? animatedSliderColor : sliderColor}
                         />
 
                         <div className="control-group">
 
-                            <SliderControl name={'Cosine Frequency'}
+                            <SliderControlWithHistory name={'Cosine Frequency'}
                                 min={cosineFreqMin} max={cosineFreqMax} step={0.01}
                                 state={cosineFreq}
                                 resetValue={0}
-                                color={sliderColor}
+                                color={cosineFreqAnimation.active ? animatedSliderColor : sliderColor}
                             />
 
 
@@ -477,7 +478,7 @@ export default function Controls() {
                         </div>
 
                     </Tabs.Tab>
-                    <Tabs.Tab label="Animation" icon={<MessageCircle size={14} />}>
+                    <Tabs.Tab label="Animation" icon={<Movie size={22} />}>
                         <AnimationTab
                             animationStates={allAnimationTargets}
                             animationOn={animationOn}

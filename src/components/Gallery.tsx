@@ -23,15 +23,16 @@ export default function Gallery({ }: Props) {
 
     return (
         <>
-            <Button
+            <Button color="gray" variant='light'
                 onClick={() => setOpened(true)}
                 style={{
                     position: "fixed",
                     // top: "calc(800px + 1rem)",
                     bottom: "1rem",
-                    left: ".5rem"
+                    left: ".5rem",
+                    opacity: ".9"
                 }}
-            >Open Gallery</Button>
+            >GALLERY</Button>
 
             <Modal
                 opened={opened}

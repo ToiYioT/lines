@@ -29,3 +29,9 @@ html {
 .canvas {
   position: fixed;
 }
+
+.full-screen-button {
+  position: fixed;
+  top: .2rem;
+  left: .2rem;
+}

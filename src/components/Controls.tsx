@@ -1,5 +1,5 @@
 import Canvas from './Canvas';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, ColorInput, Slider, TextInput, Tabs } from '@mantine/core';
 import SliderControl from './SliderControl';
 import useStateWithHistory, { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
@@ -8,10 +8,10 @@ import useAnimationState, { AnimationState, AnimationStates, getNewAnimationStat
 
 import { Photo, MessageCircle } from 'tabler-icons-react';
 import AnimationTab from './AnimationTab';
+import FullScreenButton from './FullScreenButton';
+import { useFullscreen } from '@mantine/hooks';
 
-
-const [canvasWidth, canvasHeight] = [800, 1000];
-const [centerX, centerY] = [canvasWidth / 2, canvasHeight / 2];
+const sliderColor = "gray";
 
 const [angleMin, angleMax] = [-.1, 6];
 const [subLinesMin, subLinesMax] = [.1, 10];
@@ -24,13 +24,51 @@ const [sizeMin, sizeMax] = [0, 4000];
 
 export default function Controls() {
 
-    const sliderColor = "gray";
+    const [fullScreen, setFullScreen] = useState(false);
+    const { toggle: toggleFullScreen } = useFullscreen();
+
+    const [canvasWidth, canvasHeight] = [fullScreen ? window.innerWidth : 800, window.innerHeight];
+    const [centerX, centerY] = [canvasWidth / 2, canvasHeight / 2];
 
     const { getSelectedLinework,
         saveLinework,
         addLinework,
         setSelectedLinework,
         setInitLinework, revertLinework } = useLineworksData();
+
+    const [name, setName] = useState('New Linework');
+    const [numOfLines, setNumOfLines] = useState(100);
+
+    const angle = useStateWithHistory(0);
+    const [angleFine, setAngleFine] = useState(0);
+    const [angleMicro, setAngleMicro] = useState(0);
+
+    const subLines = useStateWithHistory(1);
+    const [subLinesFine, setSubLinesFine] = useState(0);
+    const [subLinesMicro, setSubLinesMicro] = useState(0);
+    const [size, setSize] = useState(200);
+
+    const sineFactor = useStateWithHistory(1);
+    const cosineFactor = useStateWithHistory(1);
+
+    const sineFreq = useStateWithHistory(0);
+    const cosineFreq = useStateWithHistory(0);
+
+    const [sineFreqFine, setSineFreqFine] = useState(0);
+    const [cosineFreqFine, setCosineFreqFine] = useState(0);
+
+    const [bgColor, setBgColor] = useState('#ffffffff');
+    const [lineColor, setLineColor] = useState('#0000007f');
+
+    const [animationOn, setAnimationOn] = useState<boolean>(false);
+    const angleAnimation = useAnimationState();
+    const numOfLinesAnimation = useAnimationState();
+    const subLinesAnimation = useAnimationState();
+    const sizeAnimation = useAnimationState();
+    const sineFactorAnimation = useAnimationState();
+    const cosineFactorAnimation = useAnimationState();
+    const sineFreqAnimation = useAnimationState();
+    const cosineFreqAnimation = useAnimationState();
 
     useEffect(() => {
 
@@ -62,63 +100,6 @@ export default function Controls() {
         initLineworkFunc(getSelectedLinework());
     }, [])
 
-    function hasLineworkChanged() {
-        const saved = getSelectedLinework();
-        const current = paramsToLinework();
-
-        // for (let k in saved) {
-
-        //     const key = k as keyof Linework;
-        //     if (key == "animation") continue;
-
-        //     if (saved[key] !== current[key]) return true;
-        // }
-        // return false;
-        const savedJSON = JSON.stringify(saved);
-        const currentJSON = JSON.stringify(current);
-
-        return savedJSON !== currentJSON;
-    }
-
-
-    const [name, setName] = useState('New Linework');
-
-    const angle = useStateWithHistory(0);
-    const [angleFine, setAngleFine] = useState(0);
-    const [angleMicro, setAngleMicro] = useState(0);
-
-
-    const [numOfLines, setNumOfLines] = useState(100);
-
-    const subLines = useStateWithHistory(1);
-    const [subLinesFine, setSubLinesFine] = useState(0);
-    const [subLinesMicro, setSubLinesMicro] = useState(0);
-
-    const [size, setSize] = useState(200);
-
-    const sineFactor = useStateWithHistory(1);
-    const cosineFactor = useStateWithHistory(1);
-
-    const sineFreq = useStateWithHistory(0);
-
-    const cosineFreq = useStateWithHistory(0);
-
-    const [sineFreqFine, setSineFreqFine] = useState(0);
-    const [cosineFreqFine, setCosineFreqFine] = useState(0);
-
-    const [bgColor, setBgColor] = useState('#ffffffff');
-    const [lineColor, setLineColor] = useState('#0000007f');
-
-    const [animationOn, setAnimationOn] = useState<boolean>(false);
-    const angleAnimation = useAnimationState();
-    const numOfLinesAnimation = useAnimationState();
-    const subLinesAnimation = useAnimationState();
-    const sizeAnimation = useAnimationState();
-    const sineFactorAnimation = useAnimationState();
-    const cosineFactorAnimation = useAnimationState();
-    const sineFreqAnimation = useAnimationState();
-    const cosineFreqAnimation = useAnimationState();
-
     function setAnimationState(animationState: AnimationState, setTo: AnimationState) {
         setTo.setActive(animationState.active);
 
@@ -144,7 +125,11 @@ export default function Controls() {
         sineFreq: sineFreqAnimation, cosineFreq: cosineFreqAnimation
     }
 
-
+    function hasLineworkChanged() {
+        const savedJSON = JSON.stringify(getSelectedLinework());
+        const currentJSON = JSON.stringify(paramsToLinework());
+        return savedJSON !== currentJSON;
+    }
 
     function paramsToLinework(): Linework {
 
@@ -260,15 +245,23 @@ export default function Controls() {
 
     return (
         <div className="canvas-and-controls-container" >
-            <div className="canvas-container">
+            <div className="canvas-container" >
                 <Canvas
                     draw={draw}
                     animate={true}
                     dimensions={{ width: canvasWidth, height: canvasHeight }}
                 ></Canvas>
+                <FullScreenButton
+                    fullScreen={fullScreen}
+                    setFullScreen={(fullScreenOn: boolean) => {
+                        setFullScreen(fullScreenOn);
+                        toggleFullScreen();
+                    }}
+                />
             </div>
 
-            <div className="controls-container">
+            <div className={fullScreen ? "controls-container opacity-zero"
+                : "controls-container"} >
 
                 <Tabs>
                     <Tabs.Tab label="Controls" icon={<Photo size={14} />}>

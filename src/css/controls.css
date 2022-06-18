@@ -1,6 +1,21 @@
 .controls-container {
     flex-grow: 1;
     padding: 1rem;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.946);
+    /* filter: opacity(.0); */
+
+    transition: .2s;
+
+    border-radius: .5rem;
+}
+
+.opacity-zero {
+    filter: opacity(.0);
+}
+
+.controls-container:hover {
+    filter: opacity(1);
 }
 
 .control-group {

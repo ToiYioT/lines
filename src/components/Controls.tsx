@@ -294,23 +294,26 @@ export default function Controls() {
                                 />
                             </div>
                         </div>
-                        Size
-                        <Slider
-                            min={sizeMin}
-                            max={sizeMax}
-                            value={size}
-                            onChange={setSize}
-                            color={sizeAnimation.active ? animatedSliderColor : sliderColor}
-                        />
 
-                        Number of lines
-                        <Slider
-                            min={numOfLinesMin}
-                            max={numOfLinesMax}
-                            value={numOfLines}
-                            onChange={setNumOfLines}
-                            color={numOfLinesAnimation.active ? animatedSliderColor : sliderColor}
-                        />
+                        <div className="control-group">
+                            Size
+                            <Slider
+                                min={sizeMin}
+                                max={sizeMax}
+                                value={size}
+                                onChange={setSize}
+                                color={sizeAnimation.active ? animatedSliderColor : sliderColor}
+                            />
+
+                            Number of lines
+                            <Slider
+                                min={numOfLinesMin}
+                                max={numOfLinesMax}
+                                value={numOfLines}
+                                onChange={setNumOfLines}
+                                color={numOfLinesAnimation.active ? animatedSliderColor : sliderColor}
+                            />
+                        </div>
 
                         <div className="control-group">
 
@@ -386,66 +389,70 @@ export default function Controls() {
 
 
 
-                        <SliderControlWithHistory name={'Sine Factor'}
-                            min={sineFactorMin} max={sineFactorMax} step={0.01}
-                            state={sineFactor}
-                            resetValue={0}
-                            color={sineFactorAnimation.active ? animatedSliderColor : sliderColor}
-                        />
-
                         <div className="control-group">
-
-
-                            <SliderControlWithHistory name={'Sine Frequency'}
-                                min={sineFreqMin} max={sineFreqMax} step={0.01}
-                                state={sineFreq}
+                            <SliderControlWithHistory name={'Sine Factor'}
+                                min={sineFactorMin} max={sineFactorMax} step={0.01}
+                                state={sineFactor}
                                 resetValue={0}
-                                color={sineFreqAnimation.active ? animatedSliderColor : sliderColor}
+                                color={sineFactorAnimation.active ? animatedSliderColor : sliderColor}
                             />
 
-                            Sine Freq fine
-                            <Slider
-                                min={-.001}
-                                max={.001}
-                                value={sineFreqFine}
-                                step={.00001}
-                                onChange={setSineFreqFine}
-                                onChangeEnd={(endValue: number) => {
-                                    handleAdditiveControlEnd(endValue, sineFreq, setSineFreqFine);
-                                }}
-                                color={sliderColor}
-                            />
+                            <div className="control-group">
+
+
+                                <SliderControlWithHistory name={'Sine Frequency'}
+                                    min={sineFreqMin} max={sineFreqMax} step={0.01}
+                                    state={sineFreq}
+                                    resetValue={0}
+                                    color={sineFreqAnimation.active ? animatedSliderColor : sliderColor}
+                                />
+
+                                Sine Freq fine
+                                <Slider
+                                    min={-.001}
+                                    max={.001}
+                                    value={sineFreqFine}
+                                    step={.00001}
+                                    onChange={setSineFreqFine}
+                                    onChangeEnd={(endValue: number) => {
+                                        handleAdditiveControlEnd(endValue, sineFreq, setSineFreqFine);
+                                    }}
+                                    color={sliderColor}
+                                />
+                            </div>
                         </div>
 
-                        <SliderControlWithHistory name={'Cosine Factor'}
-                            min={cosineFactorMin} max={cosineFactorMax} step={0.01}
-                            state={cosineFactor}
-                            resetValue={0}
-                            color={cosineFactorAnimation.active ? animatedSliderColor : sliderColor}
-                        />
-
                         <div className="control-group">
-
-                            <SliderControlWithHistory name={'Cosine Frequency'}
-                                min={cosineFreqMin} max={cosineFreqMax} step={0.01}
-                                state={cosineFreq}
+                            <SliderControlWithHistory name={'Cosine Factor'}
+                                min={cosineFactorMin} max={cosineFactorMax} step={0.01}
+                                state={cosineFactor}
                                 resetValue={0}
-                                color={cosineFreqAnimation.active ? animatedSliderColor : sliderColor}
+                                color={cosineFactorAnimation.active ? animatedSliderColor : sliderColor}
                             />
 
+                            <div className="control-group" >
 
-                            Cosine Freq fine
-                            <Slider
-                                min={-.001}
-                                max={.001}
-                                value={cosineFreqFine}
-                                step={.00001}
-                                onChange={setCosineFreqFine}
-                                onChangeEnd={(endValue: number) => {
-                                    handleAdditiveControlEnd(endValue, cosineFreq, setCosineFreqFine);
-                                }}
-                                color={sliderColor}
-                            />
+                                <SliderControlWithHistory name={'Cosine Frequency'}
+                                    min={cosineFreqMin} max={cosineFreqMax} step={0.01}
+                                    state={cosineFreq}
+                                    resetValue={0}
+                                    color={cosineFreqAnimation.active ? animatedSliderColor : sliderColor}
+                                />
+
+
+                                Cosine Freq fine
+                                <Slider
+                                    min={-.001}
+                                    max={.001}
+                                    value={cosineFreqFine}
+                                    step={.00001}
+                                    onChange={setCosineFreqFine}
+                                    onChangeEnd={(endValue: number) => {
+                                        handleAdditiveControlEnd(endValue, cosineFreq, setCosineFreqFine);
+                                    }}
+                                    color={sliderColor}
+                                />
+                            </div>
                         </div>
 
                         <div className="controls-buttons-container">

@@ -43,6 +43,8 @@ export function getNewAnimationStates() {
             cosineFactor: getNewAnimationState(),
             sineFreq: getNewAnimationState(),
             cosineFreq: getNewAnimationState(),
+
+            skewAngle: getNewAnimationState(),
         }
     )
 
@@ -58,6 +60,8 @@ export type AnimationStates = {
     cosineFactor: AnimationState
     sineFreq: AnimationState
     cosineFreq: AnimationState
+
+    skewAngle: AnimationState
 }
 
 export default function useAnimationState() {

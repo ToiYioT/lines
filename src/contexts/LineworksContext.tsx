@@ -144,6 +144,12 @@ export type Linework = {
 
     size: number
     numOfLines: number
+    skip: number
+    skew: number
+    skewAngle: number
+
+
+
     angle: number
     subLines: number
     sineFactor: number
@@ -169,6 +175,10 @@ function getNewLinework() {
 
         size: 200,
         numOfLines: 100,
+        skip: 1,
+        skew: 1,
+        skewAngle: 0,
+
         angle: 0,
         subLines: 1,
         sineFactor: 0,

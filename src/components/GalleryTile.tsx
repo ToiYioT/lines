@@ -28,16 +28,41 @@ export default function GalleryTile({
         ctx.strokeStyle = linework.lineColor;
         ctx.beginPath();
 
-        for (let i = 0; i < linework.numOfLines; i += 1 / linework.subLines) {
+
+        let lineIncrement = 1 / linework.subLines;
+        if (lineIncrement < .02) lineIncrement = .02;
+
+        const skewAngle = linework.skewAngle ? Math.PI * linework.skewAngle / 180 : 0;
+        const skip = linework.skip ? linework.skip : 1;
+        const skew = linework.skew ? linework.skew : 1;
+
+        let counter = 0;
+
+        for (let i = 0; i < linework.numOfLines; i += lineIncrement * skip) {
+            counter++;
+            const iNext = i + lineIncrement;
 
             const size = .2 * linework.size *
                 (linework.sineFactor * Math.sin(linework.sineFreq * i) +
                     linework.cosineFactor * Math.cos(linework.cosineFreq * i));
 
+            const sizeNext = .2 * linework.size *
+                (linework.sineFactor * Math.sin(linework.sineFreq * iNext) +
+                    linework.cosineFactor * Math.cos(linework.cosineFreq * iNext));
+
+            const angle = i * linework.angle;
+
+            const nextAngleBonus = 1 - ((counter % skew) / skew);
+            const angleNext = iNext * linework.angle + nextAngleBonus * skewAngle;
+
+            ctx.moveTo(
+                centerX + size * Math.cos(angle),
+                centerY + size * Math.sin(angle)
+            );
 
             ctx.lineTo(
-                centerX + size * Math.cos(i * linework.angle),
-                centerY + size * Math.sin(i * linework.angle)
+                centerX + sizeNext * Math.cos(angleNext),
+                centerY + sizeNext * Math.sin(angleNext)
             );
         }
         ctx.stroke();

@@ -40,6 +40,10 @@ export default function Controls() {
     const [name, setName] = useState('New Linework');
     const [numOfLines, setNumOfLines] = useState(100);
 
+    const [skip, setSkip] = useState(1);
+    const [skew, setSkew] = useState(1);
+    const [skewAngle, setSkewAngle] = useState(1);
+
     const angle = useStateWithHistory(0);
     const [angleFine, setAngleFine] = useState(0);
     const [angleMicro, setAngleMicro] = useState(0);
@@ -70,6 +74,7 @@ export default function Controls() {
     const cosineFactorAnimation = useAnimationState();
     const sineFreqAnimation = useAnimationState();
     const cosineFreqAnimation = useAnimationState();
+    const skewAngleAnimation = useAnimationState();
 
     useEffect(() => {
 
@@ -84,6 +89,10 @@ export default function Controls() {
 
             setNumOfLines(linework.numOfLines);
             setSize(linework.size);
+
+            linework.skip ? setSkip(linework.skip) : setSkip(1);
+            linework.skew ? setSkew(linework.skew) : setSkew(1);
+            linework.skewAngle ? setSkewAngle(linework.skewAngle) : setSkewAngle(0);
 
             setBgColor(linework.bgColor);
             setLineColor(linework.lineColor);
@@ -102,6 +111,7 @@ export default function Controls() {
     }, [])
 
     function setAnimationState(animationState: AnimationState, setTo: AnimationState) {
+        if (!animationState) return;
         setTo.setActive(animationState.active);
 
         setTo.setReach(animationState.reach);
@@ -118,12 +128,15 @@ export default function Controls() {
         setAnimationState(animationStates.cosineFactor, cosineFactorAnimation);
         setAnimationState(animationStates.sineFreq, sineFreqAnimation);
         setAnimationState(animationStates.cosineFreq, cosineFreqAnimation);
+
+        setAnimationState(animationStates.skewAngle, skewAngleAnimation);
     }
 
     const allAnimationTargets: AnimationStates = {
         size: sizeAnimation, numOfLines: numOfLinesAnimation, angle: angleAnimation,
         subLines: subLinesAnimation, sineFactor: sineFactorAnimation, cosineFactor: cosineFactorAnimation,
-        sineFreq: sineFreqAnimation, cosineFreq: cosineFreqAnimation
+        sineFreq: sineFreqAnimation, cosineFreq: cosineFreqAnimation,
+        skewAngle: skewAngleAnimation
     }
 
     function hasLineworkChanged() {
@@ -135,12 +148,9 @@ export default function Controls() {
     function paramsToLinework(): Linework {
 
         const linework: Linework = {
-            name,
-            bgColor,
-            lineColor,
+            name, bgColor, lineColor,
 
-            size,
-            numOfLines,
+            size, numOfLines, skip, skew, skewAngle,
             angle: angle.value,
             subLines: subLines.value,
             sineFactor: sineFactor.value,
@@ -215,18 +225,39 @@ export default function Controls() {
         const cosineFreqTotal = cosineFreq.value + cosineFreqFine +
             calculateAnimation(animationOn, cosineFreqAnimation, frameCount);
 
-        for (let i = 0; i < numOfLinesTotal; i += lineIncrement) {
+        const skewAngleTotal = Math.PI / 180 * (skewAngle + calculateAnimation(
+            animationOn, skewAngleAnimation, frameCount));
+
+        let counter = 0;
+
+        for (let i = 0; i < numOfLinesTotal; i += lineIncrement * skip) {
+            counter++;
 
             const lengthChange = sizeTotal *
                 (sineFactorTotal * Math.sin(sineFreqTotal * i) +
                     cosineFactorTotal * Math.cos(cosineFreqTotal * i));
 
+            const lengthChangeNext = sizeTotal *
+                (sineFactorTotal * Math.sin(sineFreqTotal * (i + lineIncrement)) +
+                    cosineFactorTotal * Math.cos(cosineFreqTotal * (i + lineIncrement)));
+
             const angle = i * angleTotal;
 
-            ctx.lineTo(
+            const nextAngleBonus = 1 - ((counter % skew) / skew);
+            const angleNext = (i + lineIncrement) * angleTotal +
+                nextAngleBonus * skewAngleTotal;
+
+
+            ctx.moveTo(
                 centerX + lengthChange * Math.cos(angle),
                 centerY + lengthChange * Math.sin(angle)
             );
+
+            ctx.lineTo(
+                centerX + lengthChangeNext * Math.cos(angleNext),
+                centerY + lengthChangeNext * Math.sin(angleNext)
+            );
+
         }
         ctx.stroke();
     }
@@ -296,6 +327,7 @@ export default function Controls() {
                         </div>
 
                         <div className="control-group">
+
                             Size
                             <Slider
                                 min={sizeMin}
@@ -315,6 +347,37 @@ export default function Controls() {
                             />
                         </div>
 
+                        <div className="control-group">
+                            Skip
+                            <Slider
+                                min={0.2}
+                                max={5}
+                                step={.1}
+                                value={skip}
+                                onChange={setSkip}
+                                // color={sizeAnimation.active ? animatedSliderColor : sliderColor}
+                                color={sliderColor}
+                            />
+                            Skew
+                            <Slider
+                                min={1}
+                                max={10}
+                                step={.1}
+                                value={skew}
+                                onChange={setSkew}
+                                // color={sizeAnimation.active ? animatedSliderColor : sliderColor}
+                                color={sliderColor}
+                            />
+                            Skew Angle
+                            <Slider
+                                min={0}
+                                max={1360}
+                                value={skewAngle}
+                                onChange={setSkewAngle}
+                                // color={sizeAnimation.active ? animatedSliderColor : sliderColor}
+                                color={sliderColor}
+                            />
+                        </div>
                         <div className="control-group">
 
                             <SliderControlWithHistory name={'Angle'}

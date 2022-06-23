@@ -1,11 +1,13 @@
 
 import React, { useState } from 'react'
-import { NumberInput, Switch, Select } from '@mantine/core';
-import { AnimationStates } from '../hooks/useAnimationState';
+import { NumberInput, Switch, Select, Menu } from '@mantine/core';
+import { AnimationState } from '../hooks/useAnimationState';
+import { Trash } from 'tabler-icons-react';
 
 
 type Props = {
-    animationStates: AnimationStates
+    name: string
+    animationState: AnimationState
 }
 
 
@@ -14,42 +16,27 @@ const animationTargets = [
     "sineFactor", "cosineFactor", "sineFreq", "cosineFreq"
 ]
 
-export default function AnimationControl({ animationStates }: Props) {
-
-    const [value, setValue] = useState<string | null>(null);
-
-    const animationTargetKey = value != null
-        ? value as keyof typeof animationStates
-        : "angle";
-
+export default function AnimationControl({ animationState, name }: Props) {
 
     const { active, setActive,
         reach, setReach,
         speed, setSpeed,
-        phase, setPhase } = animationStates[animationTargetKey];
-
+        phase, setPhase } = animationState;
 
     return (
         <div className="animation-control-container">
 
-            <div className="animation-routing-container">
-                <Select
-                    value={value}
-                    onChange={setValue}
-                    data={Object.keys(animationStates)}
+            <div className="animation-name-container">
+                {name}
+            </div>
 
-                    label="Route to"
-                    placeholder="What to animate"
-                // defaultValue={['']}
-                />
-                <Switch
-                    color={"lime"}
-                    checked={active}
-                    onChange={(event) => {
-                        const checked = event.currentTarget.checked;
-                        setActive(checked);
-                    }}
-                />
+            <div className="animation-item-menu-container">
+                <Menu>
+                    <Menu.Item
+                        icon={<Trash size={14} />}
+                        onClick={() => setActive(false)}
+                    >Remove</Menu.Item>
+                </Menu>
             </div>
 
             <div className="animation-reach-speed-phase-container">
@@ -95,9 +82,6 @@ export default function AnimationControl({ animationStates }: Props) {
                 />
             </div>
 
-
-
         </div>
-
     )
 }

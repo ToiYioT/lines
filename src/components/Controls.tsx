@@ -374,8 +374,7 @@ export default function Controls() {
                                 max={1360}
                                 value={skewAngle}
                                 onChange={setSkewAngle}
-                                // color={sizeAnimation.active ? animatedSliderColor : sliderColor}
-                                color={sliderColor}
+                                color={skewAngleAnimation.active ? animatedSliderColor : sliderColor}
                             />
                         </div>
                         <div className="control-group">

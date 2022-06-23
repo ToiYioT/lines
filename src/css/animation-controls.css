@@ -9,6 +9,19 @@
     padding: 1rem;
     padding-top: 0rem;
     margin-top: .5rem;
+
+    position: relative;
+}
+
+.animation-name-container {
+    padding-top: 1rem;
+    font-weight: bold;
+}
+
+.animation-item-menu-container {
+    position: absolute;
+    top: .2rem;
+    right: .2rem;
 }
 
 .animation-reach-speed-phase-container {
@@ -19,16 +32,6 @@
     margin-top: .5rem;
 }
 
-
-.animation-routing-container {
-
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    border-radius: .3rem;
-    padding: .2rem;
-    margin-top: .5rem;
-}
 
 .animation-speed-container {
     display: flex;

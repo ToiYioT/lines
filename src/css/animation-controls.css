@@ -32,6 +32,11 @@
     margin-top: .5rem;
 }
 
+.animation-number-input-container {
+    display: flex;
+    align-items: flex-end;
+}
+
 
 .animation-speed-container {
     display: flex;

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { NumberInput, Switch, Select, Menu } from '@mantine/core';
 import { AnimationState } from '../hooks/useAnimationState';
 import { Trash } from 'tabler-icons-react';
+import AnimationNumberInput from './AnimationNumberInput';
 
 
 type Props = {
@@ -41,30 +42,16 @@ export default function AnimationControl({ animationState, name }: Props) {
 
             <div className="animation-reach-speed-phase-container">
 
-                <NumberInput
-                    defaultValue={0}
-                    label="Reach"
-                    size='xs'
-                    value={reach} onChange={(val: number) => setReach(val)}
-                    disabled={!active}
-
-                    stepHoldDelay={300}
-                    stepHoldInterval={100}
-                    step={.0001}
-                    precision={4}
-
+                <AnimationNumberInput
+                    label='Reach'
+                    value={reach}
+                    setValue={setReach}
                 />
-                <NumberInput
-                    defaultValue={0}
-                    label="Speed"
-                    size='xs'
-                    value={speed} onChange={(val: number) => setSpeed(val)}
-                    disabled={!active}
 
-                    stepHoldDelay={300}
-                    stepHoldInterval={100}
-                    step={.0001}
-                    precision={4}
+                <AnimationNumberInput
+                    label='Speed'
+                    value={speed}
+                    setValue={setSpeed}
                 />
 
                 <NumberInput
@@ -74,11 +61,8 @@ export default function AnimationControl({ animationState, name }: Props) {
                     value={phase} onChange={(val: number) => setPhase(val)}
                     disabled={!active}
 
-                    step={.0001}
-                    precision={4}
-
-                    stepHoldDelay={300}
-                    stepHoldInterval={100}
+                    step={.5}
+                    precision={1}
                 />
             </div>
 

@@ -51,7 +51,7 @@ export default function Controls() {
     const subLines = useStateWithHistory(1);
     const [subLinesFine, setSubLinesFine] = useState(0);
     const [subLinesMicro, setSubLinesMicro] = useState(0);
-    const [size, setSize] = useState(200);
+    const [size, setSize] = useState(400);
 
     const sineFactor = useStateWithHistory(1);
     const cosineFactor = useStateWithHistory(1);

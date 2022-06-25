@@ -173,7 +173,7 @@ function getNewLinework() {
         bgColor: "#ffffffff",
         lineColor: "#0000007f",
 
-        size: 200,
+        size: 400,
         numOfLines: 100,
         skip: 1,
         skew: 1,

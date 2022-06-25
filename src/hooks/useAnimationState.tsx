@@ -20,8 +20,8 @@ function getNewAnimationState() {
             active: false,
             setActive: () => null,
 
-            reach: 0,
-            speed: 0,
+            reach: 0.0001,
+            speed: 0.1,
             phase: 0,
 
             setReach: (reach: number) => null,

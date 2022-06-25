@@ -1,3 +1,4 @@
+import { NumberInputHandlers } from '@mantine/core'
 import React, { useRef, useState } from 'react'
 
 export type AnimationState = {
@@ -14,15 +15,15 @@ export type AnimationState = {
 }
 
 
-function getNewAnimationState() {
+function getNewAnimationState(defaultReach = 0.0001, defaultSpeed = 0.05, defaultPhase = 0) {
     return (
         {
             active: false,
             setActive: () => null,
 
-            reach: 0.0001,
-            speed: 0.1,
-            phase: 0,
+            reach: defaultReach,
+            speed: defaultSpeed,
+            phase: defaultPhase,
 
             setReach: (reach: number) => null,
             setSpeed: (speed: number) => null,
@@ -34,17 +35,17 @@ function getNewAnimationState() {
 export function getNewAnimationStates() {
     return (
         {
-            size: getNewAnimationState(),
-            numOfLines: getNewAnimationState(),
+            size: getNewAnimationState(100),
+            numOfLines: getNewAnimationState(100),
 
             angle: getNewAnimationState(),
             subLines: getNewAnimationState(),
-            sineFactor: getNewAnimationState(),
-            cosineFactor: getNewAnimationState(),
+            sineFactor: getNewAnimationState(0.2),
+            cosineFactor: getNewAnimationState(0.2),
             sineFreq: getNewAnimationState(),
             cosineFreq: getNewAnimationState(),
 
-            skewAngle: getNewAnimationState(),
+            skewAngle: getNewAnimationState(10),
         }
     )
 
@@ -63,6 +64,7 @@ export type AnimationStates = {
 
     skewAngle: AnimationState
 }
+
 
 export default function useAnimationState() {
 

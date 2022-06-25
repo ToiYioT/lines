@@ -16,7 +16,7 @@ export default function AnimationNumberInput({ label, value, setValue }: Props) 
 
 
             <ActionIcon
-                onClick={() => setValue(value / 10)}
+                onClick={() => setValue(value / 2)}
             >
                 <CircleMinus size={24} />
             </ActionIcon>
@@ -33,7 +33,7 @@ export default function AnimationNumberInput({ label, value, setValue }: Props) 
                 precision={5}
             />
             <ActionIcon
-                onClick={() => setValue(value * 10)}
+                onClick={() => setValue(value * 2)}
             >
                 <CirclePlus size={24} />
             </ActionIcon>

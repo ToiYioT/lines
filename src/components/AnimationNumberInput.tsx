@@ -1,7 +1,7 @@
 
 import { ActionIcon, Button, NumberInput } from '@mantine/core'
 import React from 'react'
-import { CircleMinus, CirclePlus } from 'tabler-icons-react'
+import { CircleMinus, CirclePlus, Minus, Plus } from 'tabler-icons-react'
 
 type Props = {
     label: string
@@ -18,7 +18,7 @@ export default function AnimationNumberInput({ label, value, setValue }: Props) 
             <ActionIcon
                 onClick={() => setValue(value / 2)}
             >
-                <CircleMinus size={24} />
+                <Minus size={24} />
             </ActionIcon>
 
             <NumberInput
@@ -35,7 +35,7 @@ export default function AnimationNumberInput({ label, value, setValue }: Props) 
             <ActionIcon
                 onClick={() => setValue(value * 2)}
             >
-                <CirclePlus size={24} />
+                <Plus size={24} />
             </ActionIcon>
         </div>
     )

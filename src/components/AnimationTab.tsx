@@ -19,7 +19,10 @@ export default function AnimationTab({
 
     return (
         <div className="animation-tab-container">
-            <Switch label="Animations On"
+            <Switch
+                onLabel='ON'
+                offLabel='OFF'
+                size='lg'
                 checked={animationOn}
                 onChange={(event) => setAnimationOn(event.currentTarget.checked)}
             />

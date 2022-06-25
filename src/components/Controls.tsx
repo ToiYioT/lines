@@ -312,6 +312,7 @@ export default function Controls() {
                                     defaultValue={bgColor}
                                     onChange={setBgColor}
                                     format="rgba"
+                                    disallowInput
                                 />
                             </div>
 
@@ -322,6 +323,7 @@ export default function Controls() {
                                     defaultValue={lineColor}
                                     onChange={setLineColor}
                                     format="rgba"
+                                    disallowInput
                                 />
                             </div>
                         </div>

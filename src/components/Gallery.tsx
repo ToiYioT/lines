@@ -1,7 +1,6 @@
 
 import { ActionIcon, Button, Modal } from '@mantine/core'
 import React, { useState } from 'react'
-import { NewSection, Plus } from 'tabler-icons-react';
 import useLineworksData from '../contexts/LineworksContext';
 import GalleryTile from './GalleryTile';
 

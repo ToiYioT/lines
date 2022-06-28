@@ -14,12 +14,12 @@ import { useFullscreen } from '@mantine/hooks';
 const sliderColor = "gray";
 const animatedSliderColor = "lime";
 
-const [angleMin, angleMax] = [-.1, 6];
+const [angleMin, angleMax] = [0, 360];
 const [subLinesMin, subLinesMax] = [.1, 10];
 const [sineFactorMin, sineFactorMax] = [-1, 1];
 const [cosineFactorMin, cosineFactorMax] = [-1, 1];
-const [sineFreqMin, sineFreqMax] = [-1, 1];
-const [cosineFreqMin, cosineFreqMax] = [-1, 1];
+const [sineFreqMin, sineFreqMax] = [-180, 180];
+const [cosineFreqMin, cosineFreqMax] = [-180, 180];
 const [numOfLinesMin, numOfLinesMax] = [1, 10000];
 const [sizeMin, sizeMax] = [0, 4000];
 
@@ -200,7 +200,7 @@ export default function Controls() {
         ctx.beginPath();
 
 
-        const angleTotal = angle.value + angleFine + angleMicro +
+        const angleTotal = Math.PI / 180 * (angle.value + angleFine + angleMicro) +
             calculateAnimation(animationOn, angleAnimation, frameCount);
 
         const sineFactorTotal = sineFactor.value +
@@ -219,10 +219,10 @@ export default function Controls() {
             calculateAnimation(animationOn, subLinesAnimation, frameCount));
         if (lineIncrement < .02) lineIncrement = .02;
 
-        const sineFreqTotal = sineFreq.value + sineFreqFine +
+        const sineFreqTotal = Math.PI / 180 * (sineFreq.value + sineFreqFine) +
             calculateAnimation(animationOn, sineFreqAnimation, frameCount);
 
-        const cosineFreqTotal = cosineFreq.value + cosineFreqFine +
+        const cosineFreqTotal = Math.PI / 180 * (cosineFreq.value + cosineFreqFine) +
             calculateAnimation(animationOn, cosineFreqAnimation, frameCount);
 
         const skewAngleTotal = Math.PI / 180 * (skewAngle + calculateAnimation(
@@ -230,6 +230,16 @@ export default function Controls() {
 
         let counter = 0;
 
+        // let [px, py] = [centerX, centerY]
+        // for (let i = 0; i < numOfLinesTotal; i++) {
+        //     const angle = angleTotal * i + 10 * Math.cos(i * sineFreqTotal) * sineFactorTotal;
+        //     const lineLength = size * .1 * Math.cos(i * cosineFreqTotal) * cosineFactorTotal;
+
+        //     px += lineLength * Math.cos(angle);
+        //     py += lineLength * Math.sin(angle);
+
+        //     ctx.lineTo(px, py);
+        // }
         for (let i = 0; i < numOfLinesTotal; i += lineIncrement * skip) {
             counter++;
 
@@ -382,7 +392,7 @@ export default function Controls() {
                         <div className="control-group">
 
                             <SliderControlWithHistory name={'Angle'}
-                                min={angleMin} max={angleMax} step={0.01}
+                                min={angleMin} max={angleMax} step={1}
                                 state={angle}
                                 resetValue={0}
                                 color={angleAnimation.active ? animatedSliderColor : sliderColor}
@@ -390,10 +400,10 @@ export default function Controls() {
 
                             Angle Fine
                             <Slider
-                                min={-.05}
-                                max={.05}
+                                min={-1}
+                                max={1}
                                 value={angleFine}
-                                step={.0001}
+                                step={.001}
                                 onChange={setAngleFine}
                                 onChangeEnd={(endValue: number) => {
                                     handleAdditiveControlEnd(endValue, angle, setAngleFine);
@@ -403,9 +413,9 @@ export default function Controls() {
 
                             Angle Micro
                             <Slider
-                                min={-.001}
-                                max={.001}
-                                step={.000001}
+                                min={-.01}
+                                max={.01}
+                                step={.00001}
                                 value={angleMicro}
                                 onChange={setAngleMicro}
                                 onChangeEnd={(endValue: number) => {
@@ -414,8 +424,8 @@ export default function Controls() {
                                 color={sliderColor}
                             />
 
-                        </div>
 
+                        </div>
 
                         <div className="control-group">
                             <SliderControlWithHistory name={'Sub Lines'}
@@ -465,7 +475,7 @@ export default function Controls() {
 
 
                                 <SliderControlWithHistory name={'Sine Frequency'}
-                                    min={sineFreqMin} max={sineFreqMax} step={0.01}
+                                    min={sineFreqMin} max={sineFreqMax} step={1}
                                     state={sineFreq}
                                     resetValue={0}
                                     color={sineFreqAnimation.active ? animatedSliderColor : sliderColor}
@@ -473,10 +483,10 @@ export default function Controls() {
 
                                 Sine Freq fine
                                 <Slider
-                                    min={-.001}
-                                    max={.001}
+                                    min={-1}
+                                    max={1}
                                     value={sineFreqFine}
-                                    step={.00001}
+                                    step={.001}
                                     onChange={setSineFreqFine}
                                     onChangeEnd={(endValue: number) => {
                                         handleAdditiveControlEnd(endValue, sineFreq, setSineFreqFine);
@@ -497,7 +507,7 @@ export default function Controls() {
                             <div className="control-group" >
 
                                 <SliderControlWithHistory name={'Cosine Frequency'}
-                                    min={cosineFreqMin} max={cosineFreqMax} step={0.01}
+                                    min={cosineFreqMin} max={cosineFreqMax} step={1}
                                     state={cosineFreq}
                                     resetValue={0}
                                     color={cosineFreqAnimation.active ? animatedSliderColor : sliderColor}
@@ -506,10 +516,10 @@ export default function Controls() {
 
                                 Cosine Freq fine
                                 <Slider
-                                    min={-.001}
-                                    max={.001}
+                                    min={-1}
+                                    max={1}
                                     value={cosineFreqFine}
-                                    step={.00001}
+                                    step={.001}
                                     onChange={setCosineFreqFine}
                                     onChangeEnd={(endValue: number) => {
                                         handleAdditiveControlEnd(endValue, cosineFreq, setCosineFreqFine);

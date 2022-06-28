@@ -36,6 +36,8 @@ export default function GalleryTile({
         const skip = linework.skip ? linework.skip : 1;
         const skew = linework.skew ? linework.skew : 1;
 
+        const angle = linework.angle / 180 * Math.PI;
+
         let counter = 0;
 
         for (let i = 0; i < linework.numOfLines; i += lineIncrement * skip) {
@@ -50,14 +52,14 @@ export default function GalleryTile({
                 (linework.sineFactor * Math.sin(linework.sineFreq * iNext) +
                     linework.cosineFactor * Math.cos(linework.cosineFreq * iNext));
 
-            const angle = i * linework.angle;
+            const angleNow = i * angle;
 
             const nextAngleBonus = 1 - ((counter % skew) / skew);
             const angleNext = iNext * linework.angle + nextAngleBonus * skewAngle;
 
             ctx.moveTo(
-                centerX + size * Math.cos(angle),
-                centerY + size * Math.sin(angle)
+                centerX + size * Math.cos(angleNow),
+                centerY + size * Math.sin(angleNow)
             );
 
             ctx.lineTo(

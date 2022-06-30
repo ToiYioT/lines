@@ -10,6 +10,7 @@ import { Adjustments, Movie } from 'tabler-icons-react';
 import AnimationTab from './AnimationTab';
 import FullScreenButton from './FullScreenButton';
 import { useFullscreen } from '@mantine/hooks';
+import Dial from './Dial';
 
 const sliderColor = "gray";
 const animatedSliderColor = "lime";
@@ -308,6 +309,7 @@ export default function Controls() {
                 <Tabs>
                     <Tabs.Tab label="Controls" icon={<Adjustments size={22} />}>
 
+
                         <TextInput
                             value={name}
                             onChange={(event) => setName(event.currentTarget.value)}
@@ -390,77 +392,20 @@ export default function Controls() {
                             />
                         </div>
                         <div className="control-group">
-
-                            <SliderControlWithHistory name={'Angle'}
-                                min={angleMin} max={angleMax} step={1}
-                                state={angle}
-                                resetValue={0}
-                                color={angleAnimation.active ? animatedSliderColor : sliderColor}
+                            Angle
+                            <Dial
+                                num={angle.value}
+                                setNum={angle.setValue}
                             />
-
-                            Angle Fine
-                            <Slider
-                                min={-1}
-                                max={1}
-                                value={angleFine}
-                                step={.001}
-                                onChange={setAngleFine}
-                                onChangeEnd={(endValue: number) => {
-                                    handleAdditiveControlEnd(endValue, angle, setAngleFine);
-                                }}
-                                color={sliderColor}
-                            />
-
-                            Angle Micro
-                            <Slider
-                                min={-.01}
-                                max={.01}
-                                step={.00001}
-                                value={angleMicro}
-                                onChange={setAngleMicro}
-                                onChangeEnd={(endValue: number) => {
-                                    handleAdditiveControlEnd(endValue, angle, setAngleMicro);
-                                }}
-                                color={sliderColor}
-                            />
-
-
                         </div>
 
                         <div className="control-group">
-                            <SliderControlWithHistory name={'Sub Lines'}
-                                min={subLinesMin} max={subLinesMax} step={0.01}
-                                state={subLines}
-                                resetValue={1}
-                                color={subLinesAnimation.active ? animatedSliderColor : sliderColor}
+                            Sub Lines
+                            <Dial
+                                num={subLines.value}
+                                setNum={subLines.setValue}
                             />
-
-                            Sub Lines Fine
-                            <Slider
-                                min={-0.01}
-                                max={0.01}
-                                value={subLinesFine}
-                                step={.0001}
-                                onChange={setSubLinesFine}
-                                onChangeEnd={(endValue: number) => {
-                                    handleAdditiveControlEnd(endValue, subLines, setSubLinesFine);
-                                }}
-                                color={sliderColor}
-                            />
-
-                            Sub Lines Micro
-                            <Slider
-                                min={-0.0001}
-                                max={0.0001}
-                                value={subLinesMicro}
-                                step={.000001}
-                                onChange={setSubLinesMicro}
-                                onChangeEnd={(endValue: number) => {
-                                    handleAdditiveControlEnd(endValue, subLines, setSubLinesMicro);
-                                }}
-                                color={sliderColor}
-                            /></div>
-
+                        </div>
 
 
                         <div className="control-group">
@@ -473,25 +418,10 @@ export default function Controls() {
 
                             <div className="control-group">
 
-
-                                <SliderControlWithHistory name={'Sine Frequency'}
-                                    min={sineFreqMin} max={sineFreqMax} step={1}
-                                    state={sineFreq}
-                                    resetValue={0}
-                                    color={sineFreqAnimation.active ? animatedSliderColor : sliderColor}
-                                />
-
-                                Sine Freq fine
-                                <Slider
-                                    min={-1}
-                                    max={1}
-                                    value={sineFreqFine}
-                                    step={.001}
-                                    onChange={setSineFreqFine}
-                                    onChangeEnd={(endValue: number) => {
-                                        handleAdditiveControlEnd(endValue, sineFreq, setSineFreqFine);
-                                    }}
-                                    color={sliderColor}
+                                Sine Frequency
+                                <Dial
+                                    num={sineFreq.value}
+                                    setNum={sineFreq.setValue}
                                 />
                             </div>
                         </div>
@@ -505,26 +435,10 @@ export default function Controls() {
                             />
 
                             <div className="control-group" >
-
-                                <SliderControlWithHistory name={'Cosine Frequency'}
-                                    min={cosineFreqMin} max={cosineFreqMax} step={1}
-                                    state={cosineFreq}
-                                    resetValue={0}
-                                    color={cosineFreqAnimation.active ? animatedSliderColor : sliderColor}
-                                />
-
-
-                                Cosine Freq fine
-                                <Slider
-                                    min={-1}
-                                    max={1}
-                                    value={cosineFreqFine}
-                                    step={.001}
-                                    onChange={setCosineFreqFine}
-                                    onChangeEnd={(endValue: number) => {
-                                        handleAdditiveControlEnd(endValue, cosineFreq, setCosineFreqFine);
-                                    }}
-                                    color={sliderColor}
+                                Cosine Frequency
+                                <Dial
+                                    num={cosineFreq.value}
+                                    setNum={cosineFreq.setValue}
                                 />
                             </div>
                         </div>

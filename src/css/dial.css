@@ -1,0 +1,36 @@
+:root {
+    --digit-color: hwb(205 51% 23%);
+}
+
+.dial-container {
+    margin-top: 1rem;
+    display: flex;
+    gap: .2rem;
+}
+
+.dial-digit-container {}
+
+.dial-digit {
+    background-color: var(--digit-color);
+    color: white;
+
+    font-size: 2rem;
+    padding: .8rem;
+    border-radius: .2rem;
+    user-select: none;
+}
+
+.dial-sign {
+
+    color: var(--digit-color);
+    font-size: 2rem;
+    padding: 1rem;
+    border-radius: .2rem;
+}
+
+.decimal-separator {
+
+    color: var(--digit-color);
+    align-self: flex-end;
+    font-size: 2rem;
+}

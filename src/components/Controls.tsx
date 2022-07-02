@@ -4,7 +4,7 @@ import { Button, ColorInput, Slider, TextInput, Tabs } from '@mantine/core';
 import SliderControlWithHistory from './SliderControlWithHistory';
 import useStateWithHistory, { UseStateWithHistoryReturnType } from '../hooks/useStateWithHistory';
 import useLineworksData, { Linework } from '../contexts/LineworksContext';
-import useAnimationState, { AnimationState, AnimationStates, getNewAnimationStates } from '../hooks/useAnimationState';
+import useAnimationState, { AnimationState, AnimationStates, getNewAnimationStates, UseAnimationStateReturnType } from '../hooks/useAnimationState';
 
 import { Adjustments, Movie } from 'tabler-icons-react';
 import AnimationTab from './AnimationTab';
@@ -46,22 +46,13 @@ export default function Controls() {
     const [skewAngle, setSkewAngle] = useState(1);
 
     const angle = useStateWithHistory(0);
-    const [angleFine, setAngleFine] = useState(0);
-    const [angleMicro, setAngleMicro] = useState(0);
-
     const subLines = useStateWithHistory(1);
-    const [subLinesFine, setSubLinesFine] = useState(0);
-    const [subLinesMicro, setSubLinesMicro] = useState(0);
     const [size, setSize] = useState(400);
 
     const sineFactor = useStateWithHistory(1);
     const cosineFactor = useStateWithHistory(1);
-
     const sineFreq = useStateWithHistory(0);
     const cosineFreq = useStateWithHistory(0);
-
-    const [sineFreqFine, setSineFreqFine] = useState(0);
-    const [cosineFreqFine, setCosineFreqFine] = useState(0);
 
     const [bgColor, setBgColor] = useState('#ffffffff');
     const [lineColor, setLineColor] = useState('#0000007f');
@@ -99,19 +90,15 @@ export default function Controls() {
             setLineColor(linework.lineColor);
             setName(linework.name);
 
-            if (linework.animation) {
-                setAllAnimationStates(linework.animation);
-            } else {
-                setAllAnimationStates(getNewAnimationStates());
-            }
             setAnimationOn(linework.animationOn);
+            setAllAnimationStates(linework.animation);
         };
 
         setInitLinework(initLineworkFunc);
         initLineworkFunc(getSelectedLinework());
     }, [])
 
-    function setAnimationState(animationState: AnimationState, setTo: AnimationState) {
+    function setAnimationState(animationState: AnimationState, setTo: UseAnimationStateReturnType) {
         if (!animationState) return;
         setTo.setActive(animationState.active);
 
@@ -133,7 +120,7 @@ export default function Controls() {
         setAnimationState(animationStates.skewAngle, skewAngleAnimation);
     }
 
-    const allAnimationTargets: AnimationStates = {
+    const allAnimationTargets = {
         size: sizeAnimation, numOfLines: numOfLinesAnimation, angle: angleAnimation,
         subLines: subLinesAnimation, sineFactor: sineFactorAnimation, cosineFactor: cosineFactorAnimation,
         sineFreq: sineFreqAnimation, cosineFreq: cosineFreqAnimation,
@@ -201,7 +188,7 @@ export default function Controls() {
         ctx.beginPath();
 
 
-        const angleTotal = Math.PI / 180 * (angle.value + angleFine + angleMicro) +
+        const angleTotal = Math.PI / 180 * angle.value +
             calculateAnimation(animationOn, angleAnimation, frameCount);
 
         const sineFactorTotal = sineFactor.value +
@@ -216,14 +203,14 @@ export default function Controls() {
         const sizeTotal = size +
             calculateAnimation(animationOn, sizeAnimation, frameCount);
 
-        let lineIncrement = 1 / (subLines.value + subLinesFine + subLinesMicro +
+        let lineIncrement = 1 / (subLines.value +
             calculateAnimation(animationOn, subLinesAnimation, frameCount));
         if (lineIncrement < .02) lineIncrement = .02;
 
-        const sineFreqTotal = Math.PI / 180 * (sineFreq.value + sineFreqFine) +
+        const sineFreqTotal = Math.PI / 180 * sineFreq.value +
             calculateAnimation(animationOn, sineFreqAnimation, frameCount);
 
-        const cosineFreqTotal = Math.PI / 180 * (cosineFreq.value + cosineFreqFine) +
+        const cosineFreqTotal = Math.PI / 180 * cosineFreq.value +
             calculateAnimation(animationOn, cosineFreqAnimation, frameCount);
 
         const skewAngleTotal = Math.PI / 180 * (skewAngle + calculateAnimation(
@@ -271,19 +258,6 @@ export default function Controls() {
 
         }
         ctx.stroke();
-    }
-
-    function handleAdditiveControlEnd(
-        endValue: number,
-        state: UseStateWithHistoryReturnType,
-        resetParameterFunction: (resetValue: number) => void
-    ) {
-
-        state.setValue((prevValue: number) => {
-            state.setHistoryValue(prevValue);
-            return prevValue + endValue;
-        });
-        resetParameterFunction(0);
     }
 
     return (

@@ -26,15 +26,27 @@
 
 .animation-reach-speed-phase-container {
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
     border-radius: .3rem;
     padding: .2rem;
     margin-top: .5rem;
 }
 
-.animation-number-input-container {
+.animation-detail-container {
+    margin-bottom: 1.5rem;
+}
+
+.animation-detail-name-and-buttons {
     display: flex;
-    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.animation-detail-name {}
+
+.animation-detail-buttons {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: .2rem;
 }
 
 

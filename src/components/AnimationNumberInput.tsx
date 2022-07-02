@@ -2,41 +2,45 @@
 import { ActionIcon, Button, NumberInput } from '@mantine/core'
 import React from 'react'
 import { CircleMinus, CirclePlus, Minus, Plus } from 'tabler-icons-react'
+import Dial from './Dial'
 
 type Props = {
     label: string
     value: number
-    setValue: (value: number) => void
+    // setValue: (value: number) => void
+    setValue: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function AnimationNumberInput({ label, value, setValue }: Props) {
     return (
 
-        <div className="animation-number-input-container">
+        <div className="animation-detail-container">
 
+            <div className="animation-detail-name-and-buttons">
+                <div className="animation-detail-name">
+                    {label}
+                </div>
+                <div className="animation-detail-buttons">
+                    <ActionIcon
+                        onClick={() => setValue(value / 2)}
+                    >
+                        <Minus size={24} />
+                    </ActionIcon>
+                    <ActionIcon
+                        onClick={() => setValue(value * 2)}
+                    >
+                        <Plus size={24} />
+                    </ActionIcon>
+                </div>
+            </div>
 
-            <ActionIcon
-                onClick={() => setValue(value / 2)}
-            >
-                <Minus size={24} />
-            </ActionIcon>
-
-            <NumberInput
-                label={label}
-                size='xs'
-                value={value}
-                onChange={(val: number) => setValue(val)}
-                // disabled={!active}
-                hideControls
-
-                step={.00001}
-                precision={5}
-            />
-            <ActionIcon
-                onClick={() => setValue(value * 2)}
-            >
-                <Plus size={24} />
-            </ActionIcon>
+            < div className="animation-number-input-container" >
+                <Dial
+                    num={value}
+                    setNum={setValue}
+                />
+            </div >
         </div>
+
     )
 }

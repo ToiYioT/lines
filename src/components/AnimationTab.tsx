@@ -2,11 +2,11 @@
 import { ActionIcon, Button, Menu, Switch } from '@mantine/core'
 import React from 'react'
 import { ChevronsLeft, ChevronsRight } from 'tabler-icons-react'
-import { AnimationStates } from '../hooks/useAnimationState'
+import { AllAnimationsType } from '../hooks/useAnimationState'
 import AnimationControl from './AnimationControl'
 
 type Props = {
-    animationStates: AnimationStates
+    animationStates: AllAnimationsType
     animationOn: boolean
     setAnimationOn: (on: boolean) => void
 }
@@ -47,7 +47,7 @@ export default function AnimationTab({
 
             <Menu control={<Button>Add Animation</Button>} >
                 {emptyAnimations.map((animationName) => {
-                    const animationState = animationStates[animationName as keyof AnimationStates];
+                    const animationState = animationStates[animationName as keyof AllAnimationsType];
                     return (
                         <Menu.Item
                             onClick={() => animationState.setActive(true)}
@@ -58,7 +58,7 @@ export default function AnimationTab({
             </Menu>
 
             {ongoingAnimations.map((animationName: string) => {
-                const animationState = animationStates[animationName as keyof AnimationStates];
+                const animationState = animationStates[animationName as keyof AllAnimationsType];
                 return (
                     <AnimationControl
                         animationState={animationState}
@@ -72,7 +72,7 @@ export default function AnimationTab({
     )
 }
 
-function speedUpAnimations(animationStates: AnimationStates, speedUpBy: number) {
+function speedUpAnimations(animationStates: AllAnimationsType, speedUpBy: number) {
 
     (Object.keys(animationStates) as (keyof typeof animationStates)[])
         .forEach((animationKey) => {
@@ -84,7 +84,7 @@ function speedUpAnimations(animationStates: AnimationStates, speedUpBy: number) 
         });
 }
 
-function getEmptyAnimationNames(animationStates: AnimationStates) {
+function getEmptyAnimationNames(animationStates: AllAnimationsType) {
 
     const emptyAnimationNames: string[] = [];
 
@@ -99,7 +99,7 @@ function getEmptyAnimationNames(animationStates: AnimationStates) {
     return emptyAnimationNames;
 }
 
-function getOngoingAnimationNames(animationStates: AnimationStates) {
+function getOngoingAnimationNames(animationStates: AllAnimationsType) {
 
     const ongoingAnimationNames: string[] = [];
 

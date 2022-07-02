@@ -1,21 +1,16 @@
 
-import React, { useState } from 'react'
-import { NumberInput, Switch, Select, Menu } from '@mantine/core';
-import { AnimationState } from '../hooks/useAnimationState';
+import React, { } from 'react'
+import { NumberInput, Menu } from '@mantine/core';
+import { UseAnimationStateReturnType } from '../hooks/useAnimationState';
 import { Trash } from 'tabler-icons-react';
 import AnimationNumberInput from './AnimationNumberInput';
 
 
 type Props = {
     name: string
-    animationState: AnimationState
+    animationState: UseAnimationStateReturnType
 }
 
-
-const animationTargets = [
-    "size", "numOfLines", "angle", "subLines",
-    "sineFactor", "cosineFactor", "sineFreq", "cosineFreq"
-]
 
 export default function AnimationControl({ animationState, name }: Props) {
 

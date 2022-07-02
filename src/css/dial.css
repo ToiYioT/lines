@@ -3,7 +3,6 @@
 }
 
 .dial-container {
-    margin-top: 1rem;
     display: flex;
     gap: .2rem;
 }
@@ -15,7 +14,7 @@
     color: white;
 
     font-size: 2rem;
-    padding: .8rem;
+    padding: .4rem .8rem;
     border-radius: .2rem;
     user-select: none;
 }
@@ -24,7 +23,7 @@
 
     color: var(--digit-color);
     font-size: 2rem;
-    padding: 1rem;
+    padding: .4rem .8rem;
     border-radius: .2rem;
 }
 

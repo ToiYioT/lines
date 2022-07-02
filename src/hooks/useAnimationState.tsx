@@ -3,33 +3,44 @@ import React, { useRef, useState } from 'react'
 
 export type AnimationState = {
     active: boolean
-    setActive: (active: boolean) => void
+
+    reach: number
+    speed: number
+    phase: number
+}
+
+export type UseAnimationStateReturnType = {
+    active: boolean
+    setActive: React.Dispatch<React.SetStateAction<boolean>>
 
     reach: number
     speed: number
     phase: number
 
-    setReach: (reach: number) => void
-    setSpeed: (speed: number) => void
-    setPhase: (phase: number) => void
+    setReach: React.Dispatch<React.SetStateAction<number>>
+    setSpeed: React.Dispatch<React.SetStateAction<number>>
+    setPhase: React.Dispatch<React.SetStateAction<number>>
 }
 
+export type AllAnimationsType = {
+    size: UseAnimationStateReturnType
+    numOfLines: UseAnimationStateReturnType
+    angle: UseAnimationStateReturnType
+    subLines: UseAnimationStateReturnType
+    sineFactor: UseAnimationStateReturnType
+    cosineFactor: UseAnimationStateReturnType
+    sineFreq: UseAnimationStateReturnType
+    cosineFreq: UseAnimationStateReturnType
+    skewAngle: UseAnimationStateReturnType
+}
 
 function getNewAnimationState(defaultReach = 0.0001, defaultSpeed = 0.05, defaultPhase = 0) {
-    return (
-        {
-            active: false,
-            setActive: () => null,
-
-            reach: defaultReach,
-            speed: defaultSpeed,
-            phase: defaultPhase,
-
-            setReach: (reach: number) => null,
-            setSpeed: (speed: number) => null,
-            setPhase: (phase: number) => null,
-        }
-    )
+    return ({
+        active: false,
+        reach: defaultReach,
+        speed: defaultSpeed,
+        phase: defaultPhase,
+    });
 }
 
 export function getNewAnimationStates() {
@@ -46,9 +57,7 @@ export function getNewAnimationStates() {
             cosineFreq: getNewAnimationState(),
 
             skewAngle: getNewAnimationState(10),
-        }
-    )
-
+        })
 }
 
 export type AnimationStates = {
@@ -78,5 +87,5 @@ export default function useAnimationState() {
         speed, setSpeed,
         phase, setPhase,
         active, setActive,
-    }
+    } as UseAnimationStateReturnType;
 }

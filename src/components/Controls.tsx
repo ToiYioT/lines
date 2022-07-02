@@ -370,6 +370,8 @@ export default function Controls() {
                             <Dial
                                 num={angle.value}
                                 setNum={angle.setValue}
+                                minValue={-180}
+                                maxValue={180}
                             />
                         </div>
 
@@ -378,6 +380,9 @@ export default function Controls() {
                             <Dial
                                 num={subLines.value}
                                 setNum={subLines.setValue}
+                                minValue={0}
+                                maxValue={10}
+                                omitSign={true}
                             />
                         </div>
 
@@ -395,6 +400,8 @@ export default function Controls() {
                             <Dial
                                 num={sineFreq.value}
                                 setNum={sineFreq.setValue}
+                                minValue={-180}
+                                maxValue={180}
                             />
                         </div>
 
@@ -410,6 +417,8 @@ export default function Controls() {
                             <Dial
                                 num={cosineFreq.value}
                                 setNum={cosineFreq.setValue}
+                                minValue={-180}
+                                maxValue={180}
                             />
                         </div>
 

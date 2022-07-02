@@ -47,6 +47,10 @@ export default function AnimationControl({ animationState, name }: Props) {
                     label='Speed'
                     value={speed}
                     setValue={setSpeed}
+
+                    minValue={0}
+                    maxValue={1}
+                    omitSign={true}
                 />
 
                 <NumberInput

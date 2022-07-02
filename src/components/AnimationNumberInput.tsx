@@ -7,11 +7,15 @@ import Dial from './Dial'
 type Props = {
     label: string
     value: number
-    // setValue: (value: number) => void
     setValue: React.Dispatch<React.SetStateAction<number>>
+
+    minValue?: number
+    maxValue?: number
+    omitSign?: boolean
 }
 
-export default function AnimationNumberInput({ label, value, setValue }: Props) {
+export default function AnimationNumberInput({ label, value, setValue,
+    minValue, maxValue, omitSign }: Props) {
     return (
 
         <div className="animation-detail-container">
@@ -38,6 +42,9 @@ export default function AnimationNumberInput({ label, value, setValue }: Props) 
                 <Dial
                     num={value}
                     setNum={setValue}
+                    minValue={minValue}
+                    maxValue={maxValue}
+                    omitSign={omitSign}
                 />
             </div >
         </div>

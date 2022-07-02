@@ -5,12 +5,13 @@ import React, { useRef, useState } from 'react'
 
 type Props = {
     num: number
-    setNum: React.Dispatch<React.SetStateAction<number>>
+    setNum: (num: number) => void
+    handleRound: (num: number) => void
     digit: number
     sensitivity: number
 }
 
-export default function DialDigit({ num, setNum, digit, sensitivity }: Props) {
+export default function DialDigit({ num, setNum, handleRound, digit, sensitivity }: Props) {
 
     const previousY = useRef<number>(-1);
     const [scrollLocked, setScrollLocked] = useScrollLock();
@@ -27,9 +28,7 @@ export default function DialDigit({ num, setNum, digit, sensitivity }: Props) {
         } else {
 
             const diff = (y - previousY.current) / sensitivity;
-            setNum((prevNum: number) => {
-                return prevNum - diff;
-            })
+            setNum(diff);
             previousY.current = y;
         }
     }
@@ -57,10 +56,7 @@ export default function DialDigit({ num, setNum, digit, sensitivity }: Props) {
                     document.removeEventListener("pointerup", removeMouseMoveListener)
                 }}
 
-                onDoubleClick={() => setNum((prevNum: number) => {
-                    return Math.floor(Math.abs(prevNum) / Math.pow(10, digit))
-                        * Math.pow(10, digit) * Math.sign(prevNum);
-                })}
+                onDoubleClick={() => handleRound(digit)}
             >
                 {Math.floor(Math.abs(num) / Math.pow(10, digit)) % 10}
             </div >

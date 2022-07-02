@@ -390,14 +390,12 @@ export default function Controls() {
                                 color={sineFactorAnimation.active ? animatedSliderColor : sliderColor}
                             />
 
-                            <div className="control-group">
 
-                                Sine Frequency
-                                <Dial
-                                    num={sineFreq.value}
-                                    setNum={sineFreq.setValue}
-                                />
-                            </div>
+                            Sine Frequency
+                            <Dial
+                                num={sineFreq.value}
+                                setNum={sineFreq.setValue}
+                            />
                         </div>
 
                         <div className="control-group">
@@ -408,13 +406,11 @@ export default function Controls() {
                                 color={cosineFactorAnimation.active ? animatedSliderColor : sliderColor}
                             />
 
-                            <div className="control-group" >
-                                Cosine Frequency
-                                <Dial
-                                    num={cosineFreq.value}
-                                    setNum={cosineFreq.setValue}
-                                />
-                            </div>
+                            Cosine Frequency
+                            <Dial
+                                num={cosineFreq.value}
+                                setNum={cosineFreq.setValue}
+                            />
                         </div>
 
                         <div className="controls-buttons-container">

@@ -15,7 +15,7 @@ type Props = {
     omitSign?: boolean
 }
 
-const baseSensitivity = .3;
+const baseSensitivity = 30;
 const minusSign = <div className="dial-sign">-</div>
 const plusSign = <div className="dial-sign">+</div>
 const decimalSeparator = <div className="decimal-separator">.</div>
@@ -48,53 +48,69 @@ export default function Dial(props: Props) {
         });
     }
 
+    const numOfDigits = (maxValue != undefined && minValue != undefined)
+        ? getNumOfDigits(minValue, maxValue)
+        : 3;
+
+    const precisionFinal = (precision != undefined && precision > 0)
+        ? precision
+        : 4;
+
+    const numsBeforeDecimalPoint = [];
+    for (let i = 0; i < numOfDigits; i++) {
+
+        const digit = numOfDigits - i - 1;
+        numsBeforeDecimalPoint[i] = (
+            <DialDigit
+                num={num}
+                setNum={handleSetNum}
+                handleRound={handleRound}
+                digit={digit}
+                sensitivity={Math.pow(10, -digit) * baseSensitivity}
+            />
+        )
+    }
+
+    const numsAfterDecimalPoint = [];
+    for (let i = 0; i < precisionFinal; i++) {
+
+        const digit = -(i + 1);
+        numsAfterDecimalPoint[i] = (
+            <DialDigit
+                num={num}
+                setNum={handleSetNum}
+                handleRound={handleRound}
+                digit={digit}
+                sensitivity={Math.pow(10, -digit) * baseSensitivity}
+            />
+        )
+    }
+
     return (
         <div className="dial-container">
             {!omitSign && (num < 0 ? minusSign : plusSign)}
 
-            <DialDigit
-                num={num}
-                setNum={handleSetNum}
-                handleRound={handleRound}
-                digit={2}
-                sensitivity={1 * baseSensitivity} />
-            <DialDigit
-                num={num}
-                setNum={handleSetNum}
-                handleRound={handleRound}
-                digit={1}
-                sensitivity={10 * baseSensitivity} />
-            <DialDigit
-                num={num}
-                setNum={handleSetNum}
-                handleRound={handleRound}
-                digit={0}
-                sensitivity={100 * baseSensitivity} />
-            {decimalSeparator}
-            <DialDigit
-                num={num}
-                setNum={handleSetNum}
-                handleRound={handleRound}
-                digit={-1}
-                sensitivity={1000 * baseSensitivity} />
-            <DialDigit
-                num={num}
-                setNum={handleSetNum}
-                handleRound={handleRound}
-                digit={-2}
-                sensitivity={10000 * baseSensitivity} />
-            <DialDigit
-                num={num}
-                setNum={handleSetNum}
-                handleRound={handleRound}
-                digit={-3}
-                sensitivity={100000 * baseSensitivity} />
-            <DialDigit
-                num={num}
-                setNum={handleSetNum}
-                digit={-4}
-                handleRound={handleRound}
-                sensitivity={1000000 * baseSensitivity} />
+            {numsBeforeDecimalPoint}
+            {precisionFinal > 0 ? decimalSeparator : ""}
+            {numsAfterDecimalPoint}
         </div>
     )
+}
+
+
+function getNumOfDigits(minValue: number, maxValue: number) {
+
+    const epsilon = 0.00000000000001;
+
+    const biggestNum = Math.max(Math.abs(maxValue), Math.abs(minValue));
+    const biggestNumLog10 = Math.log10(biggestNum);
+    const numOfDigits = Math.ceil(biggestNumLog10 + epsilon);
+
+    return numOfDigits;
+}
+
+function getMappingArray(minValue: number, maxValue: number, precision: number) {
+
+
+    // const a = [...Array(5).keys()].map(i => i + 0);
 }

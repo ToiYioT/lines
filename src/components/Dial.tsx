@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import DialDigit from './DialDigit';
 
 type Props = {
+    name?: string
     num: number
     setNum: React.Dispatch<React.SetStateAction<number>>
 
@@ -18,11 +19,12 @@ type Props = {
 const baseSensitivity = 30;
 const minusSign = <div className="dial-digit dial-sign">-</div>
 const plusSign = <div className="dial-digit dial-sign">+</div>
-const decimalSeparator = <div className="decimal-separator">.</div>
+const decimalSeparator = <div className="dial-digit decimal-separator">.</div>
 
 export default function Dial(props: Props) {
 
     const {
+        name,
         num,
         setNum,
         minValue, maxValue, precision,
@@ -87,13 +89,18 @@ export default function Dial(props: Props) {
     }
 
     return (
-        <div className="dial-container">
-            {!omitSign && (num < 0 ? minusSign : plusSign)}
+        <>
+            <div className="dial-name">
+                {name}
+            </div>
+            <div className="dial-container">
+                {!omitSign && (num < 0 ? minusSign : plusSign)}
 
-            {numsBeforeDecimalPoint}
-            {precisionFinal > 0 ? decimalSeparator : ""}
-            {numsAfterDecimalPoint}
-        </div>
+                {numsBeforeDecimalPoint}
+                {precisionFinal > 0 ? decimalSeparator : ""}
+                {numsAfterDecimalPoint}
+            </div>
+        </>
     )
 }
 
@@ -107,10 +114,4 @@ function getNumOfDigits(minValue: number, maxValue: number) {
     const numOfDigits = Math.ceil(biggestNumLog10 + epsilon);
 
     return numOfDigits;
-}
-
-function getMappingArray(minValue: number, maxValue: number, precision: number) {
-
-
-    // const a = [...Array(5).keys()].map(i => i + 0);
 }

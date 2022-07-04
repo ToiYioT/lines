@@ -325,8 +325,8 @@ export default function Controls() {
                                 color={sizeAnimation.active ? animatedSliderColor : sliderColor}
                             />
 
-                            Number of lines
                             <Dial
+                                name='Number Of Lines'
                                 num={numOfLines}
                                 setNum={setNumOfLines}
                                 minValue={numOfLinesMin}
@@ -367,8 +367,8 @@ export default function Controls() {
                             />
                         </div>
                         <div className="control-group">
-                            Sub Lines
                             <Dial
+                                name='Sub Lines'
                                 num={subLines.value}
                                 setNum={subLines.setValue}
                                 minValue={0}
@@ -378,8 +378,8 @@ export default function Controls() {
                             />
                         </div>
                         <div className="control-group">
-                            Angle
                             <Dial
+                                name='Angle'
                                 num={angle.value}
                                 setNum={angle.setValue}
                                 minValue={-180}
@@ -397,9 +397,9 @@ export default function Controls() {
                                 color={sineFactorAnimation.active ? animatedSliderColor : sliderColor}
                             />
 
-
-                            Sine Frequency
                             <Dial
+
+                                name='Sine Frequency'
                                 num={sineFreq.value}
                                 setNum={sineFreq.setValue}
                                 minValue={-180}
@@ -415,8 +415,8 @@ export default function Controls() {
                                 color={cosineFactorAnimation.active ? animatedSliderColor : sliderColor}
                             />
 
-                            Cosine Frequency
                             <Dial
+                                name='Cosine Frequency'
                                 num={cosineFreq.value}
                                 setNum={cosineFreq.setValue}
                                 minValue={-180}

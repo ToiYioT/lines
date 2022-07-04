@@ -16,8 +16,8 @@ type Props = {
 }
 
 const baseSensitivity = 30;
-const minusSign = <div className="dial-sign">-</div>
-const plusSign = <div className="dial-sign">+</div>
+const minusSign = <div className="dial-digit dial-sign">-</div>
+const plusSign = <div className="dial-digit dial-sign">+</div>
 const decimalSeparator = <div className="decimal-separator">.</div>
 
 export default function Dial(props: Props) {
@@ -52,7 +52,7 @@ export default function Dial(props: Props) {
         ? getNumOfDigits(minValue, maxValue)
         : 3;
 
-    const precisionFinal = (precision != undefined && precision > 0)
+    const precisionFinal = (precision != undefined && precision >= 0)
         ? precision
         : 4;
 

@@ -4,7 +4,6 @@
 
 .dial-container {
     display: flex;
-    gap: .2rem;
 }
 
 .dial-digit-container {}
@@ -14,17 +13,14 @@
     color: white;
 
     font-size: 2rem;
-    padding: .4rem .8rem;
-    border-radius: .2rem;
+    padding: .4rem .5rem;
     user-select: none;
 }
 
 .dial-sign {
 
     color: var(--digit-color);
-    font-size: 2rem;
-    padding: .4rem .8rem;
-    border-radius: .2rem;
+    background-color: white;
 }
 
 .decimal-separator {

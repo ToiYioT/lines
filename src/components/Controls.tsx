@@ -326,12 +326,13 @@ export default function Controls() {
                             />
 
                             Number of lines
-                            <Slider
-                                min={numOfLinesMin}
-                                max={numOfLinesMax}
-                                value={numOfLines}
-                                onChange={setNumOfLines}
-                                color={numOfLinesAnimation.active ? animatedSliderColor : sliderColor}
+                            <Dial
+                                num={numOfLines}
+                                setNum={setNumOfLines}
+                                minValue={numOfLinesMin}
+                                maxValue={numOfLinesMax}
+                                omitSign={true}
+                                precision={0}
                             />
                         </div>
 
@@ -366,6 +367,17 @@ export default function Controls() {
                             />
                         </div>
                         <div className="control-group">
+                            Sub Lines
+                            <Dial
+                                num={subLines.value}
+                                setNum={subLines.setValue}
+                                minValue={0}
+                                maxValue={10}
+                                omitSign={true}
+                                precision={5}
+                            />
+                        </div>
+                        <div className="control-group">
                             Angle
                             <Dial
                                 num={angle.value}
@@ -375,16 +387,6 @@ export default function Controls() {
                             />
                         </div>
 
-                        <div className="control-group">
-                            Sub Lines
-                            <Dial
-                                num={subLines.value}
-                                setNum={subLines.setValue}
-                                minValue={0}
-                                maxValue={10}
-                                omitSign={true}
-                            />
-                        </div>
 
 
                         <div className="control-group">

@@ -50,6 +50,18 @@ export default function Dial(props: Props) {
         });
     }
 
+    function handleMultiply(factor: number) {
+        setNum((prevNum: number) => {
+            const multiplied = prevNum * factor;
+            if (minValue != undefined && maxValue != undefined) {
+                if (multiplied < maxValue && multiplied > minValue) {
+                    return multiplied;
+                } else return prevNum;
+            }
+            return multiplied;
+        })
+    }
+
     const numOfDigits = (maxValue != undefined && minValue != undefined)
         ? getNumOfDigits(minValue, maxValue)
         : 3;
@@ -99,11 +111,32 @@ export default function Dial(props: Props) {
                 {numsBeforeDecimalPoint}
                 {precisionFinal > 0 ? decimalSeparator : ""}
                 {numsAfterDecimalPoint}
+
+                <div className="dial-buttons">
+                    <div className="dial-buttons-column">
+                        <div
+                            className="dial-button dial-button-margin-bottom"
+                            onClick={() => handleMultiply(2)}
+                        >x2</div>
+                        <div className="dial-button"
+                            onClick={() => handleMultiply(0.5)}
+                        >/2</div>
+                    </div>
+                    <div className="dial-buttons-column">
+                        <div
+                            className="dial-button dial-button-margin-bottom"
+                            onClick={() => handleMultiply(3)}
+                        >x3</div>
+                        <div className="dial-button"
+                            onClick={() => handleMultiply(1 / 3)}
+                        >/3</div>
+                    </div>
+
+                </div>
             </div>
         </>
     )
 }
-
 
 function getNumOfDigits(minValue: number, maxValue: number) {
 

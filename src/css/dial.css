@@ -1,17 +1,21 @@
 :root {
-    --digit-color: hwb(201 51% 24%);
+    --digit-color: hsl(202, 34%, 64%);
+    --digit-color-darker: hsl(202, 34%, 40%);
 }
 
 .dial-container {
     display: flex;
     /* background-color: var(--digit-color); */
     justify-content: center;
+    align-items: center;
     border-radius: .2rem;
     font-weight: bold;
 }
 
 
 .dial-name {
+    display: flex;
+    /* justify-content: center; */
     padding-bottom: .5rem;
 }
 
@@ -26,13 +30,26 @@
     user-select: none;
 }
 
-.dial-sign {
-
-    /* color: var(--digit-color);
-    background-color: white; */
-}
-
 .decimal-separator {
     padding-left: 0;
     padding-right: 0;
+}
+
+.dial-buttons {
+    display: flex;
+    margin-left: auto;
+    gap: .2rem;
+}
+
+.dial-button {
+    border: 1px solid rgba(0, 0, 0, 0.24);
+    border-radius: .2rem;
+    padding: .2rem;
+    user-select: none;
+    color: var(--digit-color-darker);
+    text-align: center;
+}
+
+.dial-button-margin-bottom {
+    margin-bottom: 0.2rem;
 }

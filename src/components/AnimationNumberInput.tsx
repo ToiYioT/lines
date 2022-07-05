@@ -24,7 +24,7 @@ export default function AnimationNumberInput({ label, value, setValue,
                 <div className="animation-detail-name">
                     {label}
                 </div>
-                <div className="animation-detail-buttons">
+                {/* <div className="animation-detail-buttons">
                     <ActionIcon
                         onClick={() => setValue(value / 2)}
                     >
@@ -35,7 +35,7 @@ export default function AnimationNumberInput({ label, value, setValue,
                     >
                         <Plus size={24} />
                     </ActionIcon>
-                </div>
+                </div> */}
             </div>
 
             < div className="animation-number-input-container" >

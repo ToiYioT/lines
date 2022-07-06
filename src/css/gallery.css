@@ -1,19 +1,23 @@
+:root {
+    --screen-density: 1;
+}
+
 .gallery-view {}
 
 .gallery-grid {
     display: grid;
     gap: 3rem 1.5rem;
     /* grid-auto-flow: column; */
-    grid-template-rows: repeat(auto-fill, minmax(320px, 1fr));
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(calc(320px / var(--screen-density)), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(calc(250px / var(--screen-density)), 1fr));
 
     justify-items: center;
     margin-bottom: 2rem;
 }
 
 .gallery-item {
-    width: 250px;
-    height: 320px;
+    width: calc(250px / var(--screen-density));
+    height: calc(320px / var(--screen-density));
 
     position: relative;
     display: flex;
@@ -52,8 +56,8 @@
 }
 
 .canvas-thumbnail {
-    width: 200px;
-    height: 200px;
+    width: calc(200px / var(--screen-density));
+    height: calc(200px / var(--screen-density));
     cursor: pointer;
 }
 

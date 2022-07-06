@@ -11,11 +11,9 @@ type Props = {
 export default function Canvas(props: Props) {
 
     const { draw, dimensions, animate, ...rest } = props;
-    const canvasRef = useCanvas({ draw, animate });
+    const canvasRef = useCanvas({ draw, animate, dimensions });
 
     return <canvas
-        width={dimensions.width}
-        height={dimensions.height}
         className='canvas'
         ref={canvasRef} {...rest} />
 }

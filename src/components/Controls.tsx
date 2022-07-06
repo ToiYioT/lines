@@ -29,8 +29,23 @@ export default function Controls() {
     const [fullScreen, setFullScreen] = useState(false);
     const { toggle: toggleFullScreen } = useFullscreen();
 
-    const [canvasWidth, canvasHeight] = [fullScreen ? window.innerWidth : 800, window.innerHeight];
+    const [canvasWidth, setCanvasWidth] = useState<number>(getCanvasWidth(fullScreen));
+    const [canvasHeight, setCanvasHeight] = useState<number>(window.innerHeight);
+
     const [centerX, centerY] = [canvasWidth / 2, canvasHeight / 2];
+
+
+
+    useEffect(() => {
+        const resizeHandler = () => {
+            setCanvasWidth(getCanvasWidth(fullScreen));
+            setCanvasHeight(window.innerHeight);
+        }
+
+        window.addEventListener('resize', resizeHandler);
+        return () => window.removeEventListener('resize', resizeHandler);
+    }, [fullScreen]);
+
 
     const { getSelectedLinework,
         saveLinework,
@@ -185,6 +200,7 @@ export default function Controls() {
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
         ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 1 / window.devicePixelRatio;
         ctx.beginPath();
 
 
@@ -262,7 +278,9 @@ export default function Controls() {
 
     return (
         <div className="canvas-and-controls-container" >
-            <div className="canvas-container" >
+            <div className="canvas-container"
+                style={{ width: canvasWidth, height: canvasHeight }}
+            >
                 <Canvas
                     draw={draw}
                     animate={true}
@@ -492,4 +510,9 @@ function calculateAnimation(animationsOn: boolean,
     return animationsOn ? active * animation.reach
         * Math.sin(animation.speed * frameCount + animation.phase * Math.PI / 2)
         : 0;
+}
+
+function getCanvasWidth(fullScreen: boolean) {
+
+    return fullScreen ? window.innerWidth : window.innerWidth - 500;
 }

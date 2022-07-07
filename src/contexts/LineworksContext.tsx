@@ -90,7 +90,16 @@ export function LineworksProvider({ children }: Props) {
         })
 
         if (id == selectedLineworkId) {
-            setSelectedLinework(lineworkItems[lineworkItems.length - 1].id);
+            const lastLineworkId = lineworkItems[lineworkItems.length - 1].id;
+            const oneBeforeLastLineworkId = lineworkItems[lineworkItems.length - 2].id;
+
+            if (selectedLineworkId == lastLineworkId) {
+                // if we delete the last linework (first in gallery)
+                // we can't select the last, so we select the one before that
+                setSelectedLinework(oneBeforeLastLineworkId);
+            } else {
+                setSelectedLinework(lastLineworkId);
+            }
         }
     }
 

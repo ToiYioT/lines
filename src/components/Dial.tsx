@@ -8,6 +8,7 @@ type Props = {
     name?: string
     num: number
     setNum: React.Dispatch<React.SetStateAction<number>>
+    color?: string
 
     minValue?: number
     maxValue?: number
@@ -24,11 +25,9 @@ const decimalSeparator = <div className="dial-digit decimal-separator">.</div>
 export default function Dial(props: Props) {
 
     const {
-        name,
-        num,
-        setNum,
+        name, num, setNum,
         minValue, maxValue, precision,
-        omitSign } = props;
+        omitSign, color } = props;
 
     function handleSetNum(diff: number) {
         setNum((prevNum: number) => {
@@ -105,7 +104,10 @@ export default function Dial(props: Props) {
             <div className="dial-name">
                 {name}
             </div>
-            <div className="dial-container">
+            <div
+                className="dial-container"
+                style={color ? { color: color } : undefined}
+            >
                 {!omitSign && (num < 0 ? minusSign : plusSign)}
 
                 {numsBeforeDecimalPoint}

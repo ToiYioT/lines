@@ -14,6 +14,7 @@ import Dial from './Dial';
 
 const sliderColor = "gray";
 const animatedSliderColor = "lime";
+const animatedColorHSL = "hsl(85deg,74%,45%)";
 
 const [angleMin, angleMax] = [0, 360];
 const [subLinesMin, subLinesMax] = [.1, 10];
@@ -351,6 +352,7 @@ export default function Controls() {
                                 maxValue={numOfLinesMax}
                                 omitSign={true}
                                 precision={0}
+                                color={numOfLinesAnimation.active ? animatedColorHSL : undefined}
                             />
                         </div>
 
@@ -362,7 +364,6 @@ export default function Controls() {
                                 step={.1}
                                 value={skip}
                                 onChange={setSkip}
-                                // color={sizeAnimation.active ? animatedSliderColor : sliderColor}
                                 color={sliderColor}
                             />
                             Skew
@@ -393,6 +394,7 @@ export default function Controls() {
                                 maxValue={10}
                                 omitSign={true}
                                 precision={5}
+                                color={subLinesAnimation.active ? animatedColorHSL : undefined}
                             />
                         </div>
                         <div className="control-group">
@@ -402,6 +404,7 @@ export default function Controls() {
                                 setNum={angle.setValue}
                                 minValue={-180}
                                 maxValue={180}
+                                color={angleAnimation.active ? animatedColorHSL : undefined}
                             />
                         </div>
 
@@ -416,12 +419,12 @@ export default function Controls() {
                             />
 
                             <Dial
-
                                 name='Sine Frequency'
                                 num={sineFreq.value}
                                 setNum={sineFreq.setValue}
                                 minValue={-180}
                                 maxValue={180}
+                                color={sineFreqAnimation.active ? animatedColorHSL : undefined}
                             />
                         </div>
 
@@ -439,6 +442,7 @@ export default function Controls() {
                                 setNum={cosineFreq.setValue}
                                 minValue={-180}
                                 maxValue={180}
+                                color={cosineFreqAnimation.active ? animatedColorHSL : undefined}
                             />
                         </div>
 

@@ -5,25 +5,23 @@
 
 .dial-container {
     display: flex;
-    /* background-color: var(--digit-color); */
     justify-content: center;
     align-items: center;
     border-radius: .2rem;
     font-weight: bold;
+
+    color: var(--digit-color);
 }
 
 
 .dial-name {
     display: flex;
-    /* justify-content: center; */
     padding-bottom: .5rem;
 }
 
 .dial-digit-container {}
 
 .dial-digit {
-    /* color: white; */
-    color: var(--digit-color);
 
     font-size: 2rem;
     padding: .4rem .5rem;

@@ -11,6 +11,7 @@ import AnimationTab from './AnimationTab';
 import FullScreenButton from './FullScreenButton';
 import { useFullscreen } from '@mantine/hooks';
 import Dial from './Dial';
+import { getRandomLinework } from '../utilities/RandomLinework';
 
 const sliderColor = "gray";
 const animatedSliderColor = "lime";
@@ -20,8 +21,7 @@ const [angleMin, angleMax] = [0, 360];
 const [subLinesMin, subLinesMax] = [.1, 10];
 const [sineFactorMin, sineFactorMax] = [-1, 1];
 const [cosineFactorMin, cosineFactorMax] = [-1, 1];
-const [sineFreqMin, sineFreqMax] = [-180, 180];
-const [cosineFreqMin, cosineFreqMax] = [-180, 180];
+const [frequencyMin, frequencyMax] = [-999, 999];
 const [numOfLinesMin, numOfLinesMax] = [1, 10000];
 const [sizeMin, sizeMax] = [0, 4000];
 
@@ -178,19 +178,20 @@ export default function Controls() {
     }
 
     function randomizeControls() {
+        const random = getRandomLinework();
 
-        angle.setValue(getRandomBetween(angleMin, angleMax));
-        subLines.setValue(getRandomBetween(subLinesMin, subLinesMax));
-        sineFactor.setValue(getRandomBetween(sineFactorMin, sineFactorMax));
-        cosineFactor.setValue(getRandomBetween(cosineFactorMin, cosineFactorMax));
-        sineFreq.setValue(getRandomBetween(sineFreqMin, sineFreqMax));
-        cosineFreq.setValue(getRandomBetween(cosineFreqMin, cosineFreqMax));
+        angle.setValue(random.angle);
+        subLines.setValue(random.subLines);
+        sineFactor.setValue(random.sineFactor);
+        cosineFactor.setValue(random.cosineFactor);
+        sineFreq.setValue(random.sineFreq);
+        cosineFreq.setValue(random.cosineFreq);
 
-        setNumOfLines(getRandomBetween(100, 1000));
-        setSize(400);
+        setNumOfLines(random.numOfLines);
+        setSize(random.size);
 
-        setBgColor(getRandomColor());
-        setLineColor(getRandomColor());
+        setBgColor(random.bgColor);
+        setLineColor(random.lineColor);
     }
 
     const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
@@ -316,7 +317,7 @@ export default function Controls() {
                                     value={bgColor}
                                     defaultValue={bgColor}
                                     onChange={setBgColor}
-                                    format="rgba"
+                                    format="hsla"
                                     disallowInput
                                 />
                             </div>
@@ -327,11 +328,12 @@ export default function Controls() {
                                     value={lineColor}
                                     defaultValue={lineColor}
                                     onChange={setLineColor}
-                                    format="rgba"
+                                    format="hsla"
                                     disallowInput
                                 />
                             </div>
                         </div>
+
 
                         <div className="control-group">
 
@@ -422,8 +424,8 @@ export default function Controls() {
                                 name='Sine Frequency'
                                 num={sineFreq.value}
                                 setNum={sineFreq.setValue}
-                                minValue={-180}
-                                maxValue={180}
+                                minValue={frequencyMin}
+                                maxValue={frequencyMax}
                                 color={sineFreqAnimation.active ? animatedColorHSL : undefined}
                             />
                         </div>
@@ -440,12 +442,11 @@ export default function Controls() {
                                 name='Cosine Frequency'
                                 num={cosineFreq.value}
                                 setNum={cosineFreq.setValue}
-                                minValue={-180}
-                                maxValue={180}
+                                minValue={frequencyMin}
+                                maxValue={frequencyMax}
                                 color={cosineFreqAnimation.active ? animatedColorHSL : undefined}
                             />
                         </div>
-
                         <div className="controls-buttons-container">
 
 
@@ -488,22 +489,6 @@ export default function Controls() {
             </div>
         </div>
     )
-}
-
-function getRandomBetween(value1: number, value2: number) {
-    const rand = Math.random();
-    return value1 + (value2 - value1) * rand;
-}
-
-function getRandomColor() {
-    const randomColor = "rgba("
-        + Math.floor(Math.random() * 255) + ", " +
-        + Math.floor(Math.random() * 255) + ", " +
-        + Math.floor(Math.random() * 255) + ", " +
-        + (Math.floor(Math.random() * 255) / 255 + .1) + ")";
-
-    return randomColor;
-
 }
 
 function calculateAnimation(animationsOn: boolean,

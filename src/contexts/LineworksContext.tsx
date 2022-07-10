@@ -175,7 +175,7 @@ type LineworkItem = {
     linework: Linework
 }
 
-function getNewLinework() {
+export function getNewLinework() {
 
     const newLinework: Linework = {
         name: "New Linework",
@@ -188,7 +188,7 @@ function getNewLinework() {
         skew: 1,
         skewAngle: 0,
 
-        angle: 0,
+        angle: 144,
         subLines: 1,
         sineFactor: 0,
         sineFreq: 0,
